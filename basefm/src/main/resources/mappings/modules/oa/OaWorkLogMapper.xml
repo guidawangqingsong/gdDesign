@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.jjxx.modules.oa.mapper.OaWorkLogMapper" ><!-- Mybatis实现dao层接口 实现存放存放映射文件-->
+  <sql id="Base_Column_List" >
+    t.id,
+    t.create_by AS "createBy.id",
+    u.realname as "createByName", 
+    t.create_date,
+    t.update_by AS "updateBy.id",
+    t.update_date,
+    t.del_flag,
+    t.staff_id,
+    t.log_theme,
+    t.log_content,
+    t.log_nextplan AS nextPlan,
+    (SELECT COUNT(1) FROM sys_attachment WHERE bill_id=t.id) AS logAttach,
+    t.log_state,
+    t.unfinished,
+    t.reason,
+    t.org_id,
+    t.log_type,
+    t.log_time,
+    ss.code as staffNumber
+  </sql>
+  
+  <!-- 关联职员信息 -->
+  <sql id="leftJoinStaff">
+  		left join sys_staff ss on ss.id = t.staff_id
+  		left join sys_user u on t.create_by = u.id<!-- 关联用户信息 -->
+  </sql>
+ 
+  <select id="selectPage" resultType="OaWorkLog">
+	SELECT
+    t.id,
+    t.create_by AS "createBy.id",
+	u.realname as "createByName", 
+    t.create_date,
+    t.update_by AS "updateBy.id",
+    t.update_date,
+    t.del_flag,
+    t.remarks,
+	s.`code` AS "staff_id",
+    t.log_theme,
+    t.log_content,
+    t.log_nextplan as nextPlan,
+    t.log_attach,
+    t.log_state,
+    t.unfinished,
+    t.reason,
+    t.org_id,
+    t.log_type,
+    t.log_time,
+    (SELECT COUNT(1) FROM sys_attachment WHERE bill_id=t.id) AS logAttach
+	FROM oa_work_log t
+	LEFT JOIN sys_user u on (t.create_by = u.id) 
+	LEFT  JOIN sys_staff s on (u.staff_id = s.id)
+	<where>
+	${ew.sqlSegment} 
+	</where>
+ 	 </select>
+	<!-- 以为s表与u表关联，所以通过U表查询出s表的code字段   多表关联查询-->
+   
+   
+	<!-- 批量删除（数据伪删除Sql）重写删除方法，该方法名*id与mybatis层的方法名称一样，所以只需要写xml文件即可 -->
+	<update id = "deleteBatchIds" parameterType="java.util.List" >
+	   UPDATE oa_work_log SET del_flag='1' WHERE  id IN
+	     <foreach collection="list" index="index" item="item" open="(" separator="," close=")">  
+	          #{item}  
+	      </foreach>
+	</update>
+ 
+	<!-- 根据Id,获取单条日志信息 -->
+	<select id="selectById" resultType="OaWorkLog">
+		select <include refid="Base_Column_List"/> from 
+		oa_work_log t 
+		<include refid="leftJoinStaff"/>
+		where t.id = #{id}
+	</select>
+		 
+	</mapper>

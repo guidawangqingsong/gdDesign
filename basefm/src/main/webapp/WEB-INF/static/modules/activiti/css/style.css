@@ -1,0 +1,546 @@
+*{padding: 0;margin: 0;font-family: "微软雅黑";}
+html,body{
+	background-color: #Fff;
+	font-size: 14px;
+}
+ul{list-style: none;}
+/* div{padding: 2px;} */
+i{color:#fff;}
+a{text-decoration: none;}
+li,img,a
+{
+	-webkit-transition: all .3s ease-in;
+}
+img{width: 100%;}
+.body-default .main{
+	padding:20px 5px 5px 5px;
+	position: relative;
+}
+.body-default .main>.box{
+	width: 280px;
+	background-color: #F8F8F8;
+	padding: 5px;
+	/* box-shadow: 0 0 5px #ccc; */
+	border:1px solid #F0F2F5;
+	position: absolute;
+	top: 0px;
+}
+
+.body-default .main>.box>.box-btn a.add{
+	background-color: #60BFEF;
+	color: #fff;
+	font-size: 24px;
+	float: left;
+	width: 20px;
+	height: 20px;
+	line-height: 20px;
+	text-align: center;
+	border-radius: 50%;
+	font-weight: bold;
+}
+.body-default .main>.box>.box-btn a.more{
+	font-size: 12px;
+	float: right;
+	color: #646464;
+}
+.body-default .main>.box:nth-child(2){
+	left: 310px;
+}
+.body-default .main>.box:nth-child(3){
+	left: 615px;
+}
+.body-default .main>.box:nth-child(4){
+	left: 920px;
+}
+.body-default .main>.box:nth-child(5){
+	left: 1225px;
+}
+.body-default .main>.box:nth-child(6){
+	left: 1530px;
+}
+.body-default .main>.box:nth-child(7){
+	left: 1835px;
+}
+.body-default .main>.box>.t{
+	font-size: 16px;
+	font-weight: bold;
+	line-height: 35px;
+}
+.body-default .main>.box>.t>.status{
+	float: right;
+	font-size: 16px;
+	position: relative;
+}
+.body-default .main>.box>.t>.status>i{
+	width:20px;
+	height:20px;
+	text-align:center;
+	border-radius:50%;
+	color:#2A8DE2;
+	font-size:14px;
+	line-height:22px;
+}
+.body-default .main>.box>.t>.status:hover ul{display: block;}
+.body-default .main>.box>.t>.status>ul{
+	width:100px;
+	position: absolute;
+	top:0;
+	left:0px;
+	z-index:9999;
+	box-shadow: 0 0 5px #ccc;
+	display: none;
+}
+.body-default .main>.box>.t>.status>ul>li{
+	display:block;
+	font:normal normal 14px/28px "微软雅黑";
+	padding:0;
+	margin:0;
+	box-shadow:none;
+	text-align: center;
+}
+.body-default .main>.box>.t>.status>ul>li:hover{
+	color:#2A8DE2;
+}
+
+.body-default .main>.box>.t>.complete{
+	color: #65CE46;
+}
+.body-default .main>.box ul>li{
+	box-shadow: 0 0 5px #ccc;
+	padding: 5px 40px 5px 5px;
+	margin: 10px 5px;
+	position: relative;
+	overflow: hidden;
+	background-color: #fff;
+}
+.body-default .main>.box ul>li:hover{
+	box-shadow: 0px 0px 5px #49AFE3;
+		cursor: pointer;
+}
+/*未上传*/
+.body-default .main>.box ul>li.notupload:before{
+	content: "未完成";
+	width: 80px;
+	height: 40px;
+    position: absolute;
+    right: -29px;
+    top: -10px;
+    background-color: #9E9E9E;
+    color: #fff;
+    font-size: 13px;
+    line-height: 60px;
+	text-align: center;
+	-webkit-transform: rotate(45deg);
+	-moz-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	-o-transform: rotate(45deg);
+}
+/*通过*/
+.body-default .main>.box ul>li.complete:before{
+	content: "完成";
+	width: 80px;
+	height: 40px;
+    position: absolute;
+    right: -29px;
+    top: -10px;
+    background-color: #5BD032;
+    color: #fff;
+    font-size: 13px;
+    line-height: 55px;
+    text-align: center;
+	-webkit-transform: rotate(45deg);
+	-moz-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	-o-transform: rotate(45deg);
+	
+}
+/*打回*/
+.body-default .main>.box ul>li.back:before{
+	content: "打回";
+	width: 80px;
+	height: 40px;
+    position: absolute;
+    right: -29px;
+    top: -10px;
+    background-color: #F25A45;
+    color: #fff;
+    font-size: 13px;
+    line-height: 55px;
+    text-align: center;
+	-webkit-transform: rotate(45deg);
+	-moz-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	-o-transform: rotate(45deg);
+}
+/*提交*/
+.body-default .main>.box ul>li.submit:before{
+	content: "提交";
+	width: 80px;
+	height: 40px;
+    position: absolute;
+    right: -29px;
+    top: -10px;
+    background-color: #FDA915;
+    color: #fff;
+    font-size: 13px;
+    line-height: 55px;
+    text-align: center;
+	-webkit-transform: rotate(45deg);
+	-moz-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	-o-transform: rotate(45deg);
+}
+/*转交中*/
+.body-default .main>.box ul>li.change:before{
+	content: "转交中";
+	width: 80px;
+	height: 40px;
+    position: absolute;
+    right: -29px;
+    top: -10px;
+    background-color: #EFA512;
+    color: #fff;
+    font-size: 13px;
+    line-height: 55px;
+    text-align: center;
+	-webkit-transform: rotate(45deg);
+	-moz-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	-o-transform: rotate(45deg);
+}
+.body-default .main>.box li>.title,
+.body-default .main>.box li>.name,
+.body-default .main>.box li>.content{
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	font-size: 13px;
+}
+.body-default .main>.box li>.title{font-size:14px;padding:3px 0}
+.body-default .main>.box li>.name{font-size:12px;color:#999;padding:5px 0;}
+.body-default .main>.box li>.name .time{font-size:12px;color:#999;}
+.body-default .main>.box li>.content{font-size:12px;color:#565656;}
+.body-default .main>.box li>.time{
+	font-size: 13px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+.body-default .main>.box li>.info{
+	border-top: 1px solid #F5F5F5;
+	padding:5px 0;
+}
+.body-default .main>.box li>.info>.userinfo>img{
+	width: 30px;
+	float: left;
+	margin-right: 5px;
+}
+.body-default .main>.box li>.info>.userinfo>.text{
+	line-height: 30px;
+	color: #ccc;
+	font-size: 13px;
+}
+.body-default .main>.box li>.info>.userinfo>.text>b{
+	font-size: 14px;
+}
+.body-default .main>.box li>.info>.imglist{
+	text-align: right;
+}
+.body-default .main>.box li>.info>.imglist img{
+	width: 85px;
+}
+
+
+/*查看更多*/
+.morelist-default .main>.mission-list{padding: 0;}
+.morelist-default .main>.mission-list>li{
+	padding: 5px 5px 60px 3px;
+	margin: 15px 5px;
+	border:1px solid #c4d1de;
+	position: relative;
+	background-color:#fff;
+	overflow: hidden;
+}
+.morelist-default .main>.mission-list>li:AFTER{
+	content:"";
+	width:3px;
+	height:100%;
+	position: absolute;
+	top:0;
+	left:0px;
+	background-color: #3bb4f2;
+}
+.morelist-default .main>.mission-list>li:hover{
+	cursor: pointer;
+	box-shadow:0 0 10px #6CACE8;
+	border-color:#BDDFDB;
+}
+.morelist-default .main>.mission-list>li>div{padding-left:10px;}
+.morelist-default .main>.mission-list>li>.wbs-title{
+	padding:5px 30px 10px 10px;
+	border-bottom:1px solid #e8eef5;
+	margin-bottom:5px;
+	font-size:12px;
+	color:#757575;
+}
+.morelist-default .main>.mission-list>li>.title{color:#0086d8;font-size:14px;padding:0px 0 2px 10px;}
+.morelist-default .main>.mission-list>li>.title .tag{
+	float:right;
+	margin-top:10px;
+}
+.morelist-default .main>.mission-list>li>.title .tag>span{
+	border:1px solid  #BFDEF2;
+	background-color:#E6F5FC;
+	color:#2392C9;
+	padding:3px 5px;
+	border-radius:3px;
+	font-size:12px;
+}
+.morelist-default .main>.mission-list>li>.title>span{
+	font-size:12px;
+	color:#B8B8B8;
+	padding-left:10px;
+}
+.morelist-default .main>.mission-list>li>.task-content{color:#666;font-size:13px;}
+.morelist-default .main>.mission-list>li>.wbs-title>b{padding-right:5px;}
+.morelist-default .main>.mission-list>li>.am-cf>a{
+	font-size: 12px;
+}
+.morelist-default .main>.mission-list>li.notupload:before{
+	content: "未完成";
+	width: 80px;
+	height: 40px;
+    position: absolute;
+    right: -29px;
+    top: -10px;
+    background-color: #9E9E9E;
+    color: #fff;
+    font-size: 13px;
+    line-height: 60px;
+	text-align: center;
+	-webkit-transform: rotate(45deg);
+	-moz-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	-o-transform: rotate(45deg);
+}
+/*通过*/
+.morelist-default .main>.mission-list>li.complete:before{
+	content: "完成";
+	width: 80px;
+	height: 40px;
+    position: absolute;
+    right: -29px;
+    top: -10px;
+    background-color: #5BD032;
+    color: #fff;
+    font-size: 13px;
+    line-height: 55px;
+    text-align: center;
+	-webkit-transform: rotate(45deg);
+	-moz-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	-o-transform: rotate(45deg);
+}
+/*打回*/
+.morelist-default .main>.mission-list>li.back:before{
+	content: "打回";
+	width: 80px;
+	height: 40px;
+    position: absolute;
+    right: -29px;
+    top: -10px;
+    background-color: #F25A45;
+    color: #fff;
+    font-size: 13px;
+    line-height: 55px;
+    text-align: center;
+	-webkit-transform: rotate(45deg);
+	-moz-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	-o-transform: rotate(45deg);
+}
+/*提交*/
+.morelist-default .main>.mission-list>li.submit:before{
+	content: "提交";
+	width: 80px;
+	height: 40px;
+    position: absolute;
+    right: -29px;
+    top: -10px;
+    background-color: #FDA915;
+    color: #fff;
+    font-size: 13px;
+    line-height: 55px;
+    text-align: center;
+	-webkit-transform: rotate(45deg);
+	-moz-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	-o-transform: rotate(45deg);
+}
+.morelist-default .main>.mission-list>li>.time>span{
+	font-size: 12px;
+	margin-right: 10px;
+}
+.morelist-default .main>.mission-list>li>.info{
+	margin-top:10px;
+	border-top: 1px solid #e8eef5;
+	padding:10px 0px 10px 10px;
+}
+.morelist-default .main>.mission-list>li>.info .title{
+	padding:5px 0;
+}
+
+.morelist-default .main>.mission-list>li>.info>.userinfo>img{
+	width: 42px;
+	float: left;
+	margin-right: 5px;
+}
+.morelist-default .main>.mission-list>li>.info>.userinfo>.text{
+	line-height:45px;
+	color: #ccc;
+	font-size: 12px;
+}
+.morelist-default .main>.mission-list>li>.info>.userinfo>.text>b{
+	font-size: 14px;
+}
+.morelist-default .main>.mission-list>li>.info>.imglist{
+	text-align: right;
+	margin-bottom:95px;
+}
+.morelist-default .main>.mission-list>li>.info>.imglist img{
+	/* width: 85px; */
+}
+
+/*图纸列表*/
+.body-default #img-list li{float: left;}
+.body-default #img-list li>a{
+	display: block;
+	width: 200px;
+	height: 160px;
+	text-align: center;
+	border: 1px solid #C0C0C0;
+	padding: 3px;
+	margin:5px auto ;
+	background-color: #fff;
+	overflow: hidden;
+	
+}
+.body-default #img-list li:hover a{
+	box-shadow: 0 0 5px #49AFE3;
+}
+.body-default #img-list li:hover  img{
+	-webkit-transform: scale(1.1,1.1);
+}
+.body-default #img-list li .img{
+	height: 140px;
+	overflow: hidden;
+}
+.body-default #img-list li .img>img{
+	width: auto;
+	max-height: 140px;
+}
+.body-default #img-list li p{
+	color: #3C3C3C;
+	font-size: 12px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+@media only screen and (min-width: 1200px){
+	.body-default #img-list li{
+		width: 16.666666667%;
+	}
+}
+@media only screen and (max-width: 1200px) and (min-width:1000px) {
+	.body-default #img-list li{
+		width: 20%;
+	}
+}
+@media only screen and (max-width: 1000px) and (min-width:900px) {
+	.body-default #img-list li{
+		width: 25%;
+	}
+}
+@media only screen and (max-width: 900px) {
+	.body-default #img-list li{
+		width: 33.33333%;
+	}
+}
+@media only screen and (max-width: 700px){
+	.body-default #img-list li{
+		width: 50%;
+	}
+}
+.t-size-xs{font-size:10px;}
+.i-black{color:#000;}
+.i-gray{color:#999;}
+
+
+/*流程审批*/
+#flow-audit .panel{
+	position: absolute;
+}
+#flow-audit .panel.tools{
+	width: 100%;
+	height: 50px;
+	border-bottom: 1px solid #ddd;
+}
+#flow-audit .panel.tools>.am-btn
+{
+	margin:12px 0px 0 2px;
+	padding:5px 7px;
+	font-size:12px;
+}
+#flow-audit .panel.top{
+	width: 100%;
+	border-bottom: 1px solid #ddd;
+}
+#flow-audit .panel.f-left{width: 30%;}
+#flow-audit .panel.f-right{
+	width: 70%;
+	border-left: 1px solid #ddd;
+}
+#flow-audit .panel.f-left>.manage{
+	padding: 20px 0;
+	margin-bottom: 5px;
+}
+#flow-audit .panel.f-left>.idea{
+	padding: 5px 0;
+}
+#flow-audit .panel.f-left>.manage>input{
+	margin-left: 15px;
+}
+#flow-audit .panel.f-left>.idea>textarea{
+	outline: none;
+	border-color: #ddd;
+	margin-left: 15px;
+	width: 90%;
+}
+#flow-audit .panel.f-left>.idea>textarea:focus{
+	border-color: #337BF3;
+}
+#flow-audit .panel.f-left>.manage>.t,
+#flow-audit .panel.f-left>.idea>.t{
+	text-align: left;
+	line-height: 25px;
+	position: relative;
+	padding:0 0 5px 14px;
+	color: #7B7B7B;
+}
+#flow-audit .panel.f-left>.manage>.t:before,
+#flow-audit .panel.f-left>.idea>.t:before{
+	content: "";
+	position: absolute;
+	width: 4px;
+	height: 12px;
+	background-color: #337BF3;
+	top: 7px;
+	left: 5px;
+}
+#pagination input{
+	width:30px;
+	height:30px;
+	outline: none;
+	border:none;
+	padding:0 5px;
+}

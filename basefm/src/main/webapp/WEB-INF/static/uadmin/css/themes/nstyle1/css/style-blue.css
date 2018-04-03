@@ -1,0 +1,300 @@
+/*
+	主题：商务蓝
+	作者：贝爷
+	日期：2017-10-26
+	版本：v1.0
+ * */
+
+@charset "utf-8";
+html,
+body {
+	padding: 0;
+	margin: 0;
+	overflow: hidden;
+	min-width: 1400px;
+}
+ul{list-style: none;padding: 0;margin: 0;}
+li,a {
+	position: relative;
+	transition: all .3s ease;
+	-webkit-transition: all .3s ease;
+	-ms-transition: all .3s ease;
+	-moz-transition: all .3s ease;
+	-o-transition: all .3s ease;
+}
+
+.am-tabs-nav .am-icon-close {
+    position: absolute;
+    top: 7px;
+    right: 5px;
+    color: #888;
+    cursor: pointer;
+    z-index: 100;
+    display: none;
+  }
+.am-tabs-nav>li:hover .am-icon-close{
+	display: block;
+}
+.am-tabs-nav .am-icon-close:hover{color: red;}
+.am-nav-tabs>li.am-active:before{
+	content: "";
+	width: 10px;
+	height: 10px;
+	position: absolute;
+	bottom: -5px;
+	left: 50%;
+	background: #fff;
+	z-index: 9999;
+	border-bottom: 1px solid #DDDDDD;
+	border-left: 1px solid #DDDDDD;
+	transform: rotate(-45deg);
+	-webkit-transform: rotate(-45deg);
+	-moz-transform: rotate(-45deg);
+	-ms-transform: rotate(-45deg);
+	-ot-transform: rotate(-45deg);
+}
+
+
+/*===顶部菜单*/
+header{
+	height: 60px;
+	background-color: #337BF1;
+	position: relative;
+}
+header *{color: #fff;}
+header>div{
+	position: absolute;
+}
+header>.logo{
+	width: 226px;
+	font: normal bold 20px/60px "微软雅黑";
+}
+header>.logo>img{
+	height: 30px;
+	margin: 0 5px 0 10px;
+	
+}
+header>div>ul>li{
+	float: left;
+	text-align: center;
+	position: relative;
+}
+header>div>ul>li,
+header>div>ul>li p{
+	font-size: 15px;
+	margin: 0;
+	padding: 0;
+}
+header>.top-menu{
+	min-width: 800px;
+	height: 60px;
+	position: absolute;
+	top: 0;
+	left: 226px;
+	overflow: hidden;
+}
+header>.top-menu>ul{
+	position: relative;
+	overflow: hidden;
+}
+header>.top-menu li:hover{background-color: #4E8CF3;}
+header>.top-menu li:before{
+	content: "";
+	width: 1px;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	right: 0;
+	background: #5A91EC;
+}
+header>.top-menu li.active{
+	background-color: #77B6F9;
+}
+header>.top-menu li.active:before{
+	content: "";
+	background-color: #77B6F9;
+}
+header>.top-menu li>a{
+	display: block;
+	width: 90px;
+	height: 60px;
+}
+header>.top-menu>a{
+	width: 20px;
+	height: 60px;
+	position: absolute;
+	top: 0;
+	z-index: 9999;
+	background: #1367F2;
+	opacity: .8;
+	text-align: center;
+	display: none;
+}
+header>.top-menu>a:hover{
+	opacity: 1;
+}
+header>.top-menu>a>i{
+	height: 60px;
+	width: 20px;
+	font-size: 38px;
+}
+header>.top-menu>a.left{
+	left: 0px;
+}
+header>.top-menu>a.right{
+	right: 0px;
+}
+
+header>.tools{
+	bottom: 0;
+	right: 0;
+	height: 30px;
+}
+header>.org{
+	top: 0;
+	right: 20px;
+	height: 30px;
+}
+header>.tools li{
+	line-height: 30px;
+	padding: 0 20px;
+	cursor: pointer;
+}
+header>.tools li:hover{background-color: #4E8CF3;}
+header>.tools li:hover>ul{
+	display: block;
+}
+header>.tools li>ul{
+	width: 150px;
+	position: absolute;
+	top: 30px;
+	right: 0;
+	z-index: 9999;
+	background-color: #F8F8F8;
+	margin: 0;
+	box-shadow: 0 2px 5px #ddd;
+	border: 1px solid #ddd;
+	display: none;
+}
+header>.tools li>ul:before{
+	content: "";
+	width: 10px;
+	height: 10px;
+	position: absolute;
+	top: -5px;
+	right: 28px;
+	background-color:#F8F8F8 ;
+	transform: rotate(-45deg);
+	-webkit-transform: rotate(-45deg);
+	-moz-transform: rotate(-45deg);
+	-ms-transform: rotate(-45deg);
+	-ot-transform: rotate(-45deg);
+}
+header>.tools li>ul>li{
+	float: left;
+	width: 100%;
+	height: 40px;
+	line-height: 40px;
+	color: #536472;
+	cursor: pointer;
+	border-bottom: 1px solid #eee;
+}
+header>.tools li>ul>li:hover{
+	background-color: #5FA5ED;
+	color: #fff;
+}
+
+/*===内容部分*/
+#content{position: relative;}
+#content>.left{
+	width: 226px;
+	height: 100%;
+	border-right: 1px solid #DDE7F0;
+	position: absolute;
+	top: 0px;
+	left: 0;
+}
+#content>.right{
+	width: 100%;
+	position: absolute;
+	top: 0px;
+	left: 226px;
+}
+#content>.left>ul>li{
+	font-size: 14px;
+	height: 50px;
+	line-height: 50px;
+	background-color:#fff ;
+	
+	
+}
+#content>.left>ul li{color: #626F7F;}
+#content>.left>ul>li>a{
+	display: block;
+	background-color: #F8F8F8;
+}
+#content>.left>ul>li>a>i{
+	margin: 0 5px 0 10px;
+}
+#content>.left>ul>li>a>img{
+	height: 16px;
+	margin: 0 5px 0 10px;
+}
+#content>.left>ul li.active>a{
+	background-color: #5FA5ED;
+	color: #fff;
+}
+
+#content>.left>ul>li>a:before{
+	content: "";
+	width: 100%;
+	height: 1px;
+	position: absolute;
+	bottom: 0;
+	background-color: #DDE7F0;
+}
+/*==第二层子菜单*/
+#content>.left>ul>li>ul,
+#content>.left>ul>li>ul>li>ul{
+	position: relative;
+	z-index: 9990;
+	margin: 0;
+	display: none;
+}
+#content>.left>ul>li>ul>li>ul{z-index: 9999;}
+#content>.left>ul>li>ul>li,
+#content>.left>ul>li>ul>li>ul>li{
+	height: 45px;
+	line-height: 45px;
+	font-size: 14px;
+	padding-left: 20px;
+	margin-left: 20px;
+	border-left: 1px dashed #ccc;
+	cursor: pointer;
+}
+#content>.left>ul>li>ul>li>a{
+	display: block;
+}
+#content>.left>ul>li>ul>li>a>[class^=am-icon-]{
+	float: right;
+	color: #000;
+	margin-right: 20px;
+	
+}
+#content>.left>ul>li>ul>li>a:hover,
+#content>.left>ul>li>ul>li>ul>li:hover{
+	color: #0D62F1;
+	font-weight: bold;
+}
+
+#content>.left>ul>li>ul>li:before,
+#content>.left>ul>li>ul>li>ul>li:before{
+	content: "";
+	width: 15px;
+	height: 1px;
+	position: absolute;
+	top: 22.555px;
+	left: 0;
+	border-bottom: 1px dashed #ccc;
+}
+/*==第三层子菜单*/

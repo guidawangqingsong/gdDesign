@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.jjxx.modules.sys.mapper.RegionMapper" >
+
+	<sql id="Base_Column_List" >
+		t.id,
+		t.name,
+		t.parent_id,
+		t.parent_ids,
+		p.name AS parentName,
+	    t.code,
+	    t.region_level,
+	    t.region_order,
+	    t.region_name_en,
+	    t.region_Sshortname_en,
+	   (select count(*) from sys_region s
+		WHERE s.parent_id=t.id) as
+		hasChildren
+	</sql>
+	
+	<sql id="parentJoins">
+		LEFT JOIN sys_region p ON p.id = t.parent_id
+	</sql>
+	
+	<!-- 级联查询 -->
+	<select id="initSelect" resultType="Region">
+		select id,name from sys_region t where 1 = 1 
+		<if test="pId!=null and pId!=''">
+			and parent_id = #{pId}
+		</if>
+		<if test="pId==null or pId==''">
+			and parent_id = 1
+		</if>
+	</select>
+		
+    <!-- 查找通过ID查找树信息 -->
+	<select id="selectByTreeId" resultType="Region"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from sys_region t
+		<include refid="parentJoins" />
+		where t.id = #{id,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 查找树列表 -->
+	<select id="selectTreeList" resultType="Region">
+		select
+		<include refid="Base_Column_List" />
+		from sys_region t
+		<include refid="parentJoins" />
+		<where>
+			${ew.sqlSegment}
+		</where>
+	</select>
+
+	<!-- 更新子树 -->
+	<update id="updateSunTreeParentIds">
+		update sys_region set parent_ids=CONCAT(#{newParentIds},
+        <if test="'${dbType}' == 'mysql'">
+            substring(parent_ids, length(#{oldParentIds})+1,length(parent_ids)+1))
+        </if>
+        <if test="'${dbType}' == 'oracle'">
+            substr(parent_ids, length(#{oldParentIds})+1,length(parent_ids)+1))
+        </if>
+		where parent_ids like concat(#{oldParentIds}, '%')
+	</update>
+	
+	<!-- 删除子树 -->
+	<delete id="deleteSunTree" parameterType="java.lang.String">
+		delete from sys_region
+		where parent_ids like concat(#{oldParentIds}, '%')
+	</delete>
+  
+</mapper>

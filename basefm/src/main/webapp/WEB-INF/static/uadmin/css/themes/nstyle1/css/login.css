@@ -1,0 +1,150 @@
+/*
+	主题：商务蓝
+	作者：贝
+	日期：2017-10-27
+	版本：v1.0
+ * */
+@charset "utf-8";
+
+html,body{
+	padding: 0;
+	margin: 0;
+	overflow: hidden;
+	min-width: 1000px;
+	position: relative;
+}
+ul{
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+a{text-decoration: none;}
+.form-group{height:50px;}	
+#top{
+	width: 100%;
+	background: -webkit-linear-gradient(top,#287FF5,#42A4F0);
+	position: absolute;
+	top:0;
+}
+#top>.bg{
+	width: 100%;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	
+}
+#top>.w{
+	height: 300px;
+	background: url(../img/w1.png)repeat top left;
+	z-index: 8000;
+}
+#top>.b1{
+	height: 180px;
+	background: url(../img/b1.png) repeat-x bottom left;
+	-webkit-animation: bmove1 14s  linear infinite;
+	z-index: 9000;
+}
+@-webkit-keyframes bmove1{
+	from{background-position-x:0px;}
+	to{background-position-x:1651px;}
+}
+#top>.b2{
+	height: 250px;
+	background: url(../img/b2.png) repeat-x bottom left;
+	-webkit-animation: bmove2 20s  linear infinite;
+	z-index: 8999;
+}
+@-webkit-keyframes bmove2{
+	from{background-position-x:0px;}
+	to{background-position-x:-1651px;}
+}
+#top>.b3{
+	height: 220px;
+	background: url(../img/b3.png) repeat-x bottom left;
+	-webkit-animation: bmove3 20s  linear infinite;
+	-webkit-animation-delay: 1s;
+	z-index: 8888;
+}
+@-webkit-keyframes bmove3{
+	from{background-position-x:0px;}
+	to{background-position-x:1651px;}
+}
+#bottom{
+	width: 100%;
+	background-color: #F4FAFF;
+}
+#form{
+	width: 410px;
+	height: 300px;
+	background-color: #fff;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin: auto;
+	padding-top:30px;
+	border-radius: 5px;
+	box-shadow: 0 10px 50px rgba(35,135,242,.16);
+	z-index: 9999;
+}
+#form>.logo{
+	width: 100%;
+	position: absolute;
+	top: -160px;
+	text-align: center;
+}
+#form>.logo>img{
+	display: block;
+	margin: 0 auto;
+}
+#form>.logo>p{
+	font: normal bold 36px/40px "黑体";
+	color: #fff;
+	margin-top:20px;
+}
+#form>form>ul{
+	width: 370px;
+	margin: 0 auto;
+	margin-top: 70px;
+}
+#form>form>ul>li{
+	height: 35px;
+	line-height: 35px;
+	border: 1px solid #C9C9C9;
+	margin-bottom: 23px;
+	border-radius: 5px;
+	position: relative;
+}
+#form>form>ul>li.btn{border-color: #3D8FFC;overflow: hidden;}
+#form>form>ul>li>span{
+	float: left;
+	width: 32px;
+	line-height: 35px;
+	text-align: center;
+	padding-top: 8px;
+}
+#form>form>ul>li>input{
+	width: 328px;
+	height: 35px;
+	line-height: 35px;
+	position: absolute;
+	top: 0;
+	left: 32px;
+	border: none;
+	outline: none;
+}
+#form form  .submit-btn{
+	display: block;
+	height: 35px;
+	text-align: center;
+	background-color: #3D8FFC;
+	color: #fff;
+	font-family: "微软雅黑";
+	font-size: 18px;
+}
+#form>form>ul>li.error{
+	border: none;
+	color: red;
+	text-align: center;
+}

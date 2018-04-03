@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.jjxx.modules.sys.mapper.StaffMapper" >
+
+  <resultMap id="BaseResultMap" type="cn.jjxx.modules.sys.entity.Staff" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="org_id" property="orgId" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="INTEGER" />
+    <result column="moblie" property="moblie" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="idcard" property="idcard" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="DATE" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="officetel" property="officetel" jdbcType="VARCHAR" />
+    <result column="ethnicities" property="ethnicities" jdbcType="VARCHAR" />
+    <result column="addr" property="addr" jdbcType="VARCHAR" />
+    <result column="degree" property="degree" jdbcType="VARCHAR" />
+    <result column="protitle" property="protitle" jdbcType="VARCHAR" />
+    <result column="position" property="position" jdbcType="VARCHAR" />
+    <result column="parent_position" property="parentPosition" jdbcType="VARCHAR" />
+    <result column="pre_company" property="preCompany" jdbcType="VARCHAR" />
+    <result column="lead" property="lead" jdbcType="INTEGER" />
+    <result column="image_url" property="imageUrl" jdbcType="VARCHAR" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="orgName" property="orgName" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    t.id,
+    t.code,
+    t.org_id,
+    t.user_id,
+    t.name,
+    t.sex,
+    t.moblie,
+    t.email,
+    t.idcard,
+    t.birthday,
+    t.status,
+    t.type,
+    t.officetel,
+    t.ethnicities,
+    t.addr,
+    t.degree,
+    t.protitle,
+    t.position,
+    t.parent_position,
+    t.pre_company,
+    t.lead,
+    t.image_url,
+    t.remarks,
+    t.del_flag,
+    t.create_by,
+    t.create_date,
+    t.update_by,
+    t.update_date,
+    p.name as orgName
+  </sql>
+  
+  <sql id="parentJoins">
+		 LEFT JOIN sys_organization p ON p.id = t.org_id
+  </sql>
+  
+     <select id="selectStaffById"   parameterType="java.lang.String" resultMap="BaseResultMap">
+	  select 
+   	  <include refid="Base_Column_List" />
+      from sys_staff t 
+      <include refid="parentJoins"/>
+	   where t.id = #{id}	
+  	 </select>
+  
+    <select id="selectStaffPage" resultType="Staff">
+	  select  
+	  <include refid="Base_Column_List" /> 
+	  from sys_staff t 
+		  <include refid="parentJoins"/>
+	  <where>
+	   ${ew.sqlSegment} 
+	  </where>
+ 	 </select> 
+ 	 
+ 	 
+ 	 <!-- 根据组织Id,获取当前staff -->
+ 	 <select id="findStaff" resultType="Staff">
+ 	 	select id,user_id,name,image_url,moblie from sys_staff where org_id = #{orgId}
+ 	 </select>
+</mapper>

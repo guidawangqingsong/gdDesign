@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.jjxx.modules.sys.mapper.InfcMapper" >
+
+  <sql id="Base_Column_List" >
+    t.id,
+    t.code,
+    t.name,
+    t.req_type,
+    t.oper_type,
+    t.use_eqp,
+    t.support_type,
+    t.interface_url,
+    t.defined_sql,
+    t.req_body,
+    t.suc_msg,
+    t.fail_msg,
+    t.remark,
+    t.status,
+    t.create_by AS "createBy.id",
+    t.create_date,
+    t.update_by AS "updateBy.id",
+    t.update_date,
+    t.del_flag
+  </sql>
+  
+</mapper>

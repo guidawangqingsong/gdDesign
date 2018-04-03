@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.jjxx.modules.workflow.mapper.ActHiProcinstMapper" >
+
+  <sql id="Base_Column_List" >
+    t.ID_,
+    t.PROC_INST_ID_,
+    t.BUSINESS_KEY_,
+    t.PROC_DEF_ID_,
+    t.START_TIME_,
+    t.END_TIME_,
+    t.DURATION_ AS "duration.id",
+    t.START_USER_ID_,
+    t.START_ACT_ID_,
+    t.END_ACT_ID_,
+    t.SUPER_PROCESS_INSTANCE_ID_,
+    t.DELETE_REASON_,
+    t.TENANT_ID_,
+    t.NAME_
+  </sql>
+  
+  <!-- 查询分页获取流程实例 -->
+  <select id="selectProcinstPage" resultType="ActHiProcinst">
+  		select rt.name as flowType,rm.NAME_ as flowName,rp.VERSION_ as version,u.realname as startor,
+  		tk.ID_ as taskId, t.* 
+		from act_hi_procinst t left join sys_user u on u.id = t.START_USER_ID_
+		inner join act_re_procdef rp on rp.id_ = t.PROC_DEF_ID_ 
+		inner join act_re_model rm on rm.KEY_ = rp.KEY_ 
+		left join act_ru_task tk on tk.PROC_INST_ID_ = t.PROC_INST_ID_ 
+		left join act_re_type rt on rt.id = rm.CATEGORY_
+		<where>
+		   ${ew.sqlSegment} 
+		</where>
+  </select>
+  
+</mapper>

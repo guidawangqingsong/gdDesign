@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.jjxx.modules.sys.mapper.UserOrganizationMapper" >
+  <resultMap id="BaseResultMap" type="cn.jjxx.modules.sys.entity.UserOrganization" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="organization_id" property="organizationId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    t.id, 
+    t.user_id, 
+    t.organization_id
+  </sql>
+  
+  <select id="findUserByOrgId" parameterType="java.lang.String" resultMap="BaseResultMap">
+	  select 
+   	    <include refid="Base_Column_List" />
+      from sys_user_organization t 
+      where t.organization_id = #{id}
+  </select>
+  
+  
+  <select id="selectListByUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
+	  select 
+   	    <include refid="Base_Column_List" />
+      from sys_user_organization t 
+      LEFT JOIN sys_organization o on t.organization_id = o.id
+      WHERE
+      (
+         t.user_id = #{userId}
+         <choose>
+            <when test="orgId != '' and orgId != null">
+                 and o.parent_id = #{orgId}
+            </when>
+            <otherwise>
+                 and (o.parent_id not in (select organization_id from sys_user_organization where user_id = #{userId}) or o.parent_id is null)
+            </otherwise>
+         </choose>
+      )
+  </select>
+
+</mapper>

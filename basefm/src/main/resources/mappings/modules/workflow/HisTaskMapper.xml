@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.jjxx.modules.workflow.mapper.HisTaskMapper" >
+
+  <sql id="Base_Column_List" >
+    t.ID_,
+    t.PROC_DEF_ID_,
+    t.TASK_DEF_KEY_,
+    t.PROC_INST_ID_,
+    t.EXECUTION_ID_,
+    t.NAME_,
+    t.PARENT_TASK_ID_,
+    t.DESCRIPTION_,
+    t.OWNER_,
+    t.ASSIGNEE_,
+    t.START_TIME_,
+    t.CLAIM_TIME_,
+    t.END_TIME_,
+    t.DURATION_,
+    t.DELETE_REASON_,
+    t.PRIORITY_,
+    t.DUE_DATE_,
+    t.FORM_KEY_,
+    t.CATEGORY_,
+    t.TENANT_ID_
+  </sql>
+  
+  <select id="selectHisTaskPage" resultType="HisTask">
+	  select  
+	  <include refid="Base_Column_List" /> ,p.NAME_ as processName,u.realname as assigneeName,rt.name as flowType,pu.realname as startor
+	  from act_hi_taskinst t 
+	  inner join act_re_procdef p  on p.ID_ = t.PROC_DEF_ID_ 
+	  left join act_hi_procinst pi on pi.id_ = t.PROC_INST_ID_
+      left join sys_user pu on pu.id =  pi.START_USER_ID_
+	  left join act_re_model m on m.KEY_ = p.KEY_
+	  left join act_re_type rt on rt.id = m.CATEGORY_  
+	  left join sys_user u on u.id = t.ASSIGNEE_
+	  <where>
+	   ${ew.sqlSegment} 
+	  </where>
+  </select> 
+  
+  <!-- 查询历史审批记录 -->
+  <select id="getHisTakComment" resultType="HisTask">
+  	select t.ID_,t.NAME_,c.TYPE_ as type,c.MESSAGE_ as message,t.END_TIME_,u.realname as assigneeName,h.NAME_ as attachName 
+  	from act_hi_taskinst t left join act_hi_comment c on t.ID_ = c.TASK_ID_  left join sys_user u on u.id = t.ASSIGNEE_ 
+	left join act_hi_attachment h on t.ID_ = h.TASK_ID_
+	where t.PROC_INST_ID_ = #{procInstId}
+  </select>
+  
+</mapper>

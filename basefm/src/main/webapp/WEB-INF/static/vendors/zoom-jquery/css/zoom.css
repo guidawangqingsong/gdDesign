@@ -1,0 +1,163 @@
+body{background-color: #fff;}
+#pageContent {width: 100%;	height: 100%;overflow: hidden;position:relative;margin:0px auto;}
+#imgContainer {width: 100%;height: 100%;}
+#positionButtonDiv {
+	background: #F1F2F3;
+	border: solid 1px #E0E3E4;
+	box-shadow:-2px 2px 8px #DBDEDF;
+	color: #fff;
+	padding: 8px;
+	text-align: left;
+	position: absolute;
+	right:35px;top:35px;
+}
+#positionButtonDiv 
+.positionButtonSpan span {
+	float: right;
+}
+.positionMapClass area {cursor: pointer;}
+#positionButtonDiv  .zoomButton,
+#positionButtonDiv .zoomButton2,
+#positionButtonDiv .zoomButton3 {
+	width: 20px;
+	height: 20px;
+	line-height: 20px;
+	position: absolute;
+	bottom: 72px;
+	cursor: pointer;
+	border: 1px solid #939393;
+	text-align: center;
+	overflow: hidden;
+	color: #939393;
+}
+#positionButtonDiv .zoomButton2 {
+	bottom: 5px;
+}
+#positionButtonDiv .zoomButton3 {
+	width: 48px;
+	height: 30px;
+	line-height: 30px;
+	bottom: 34px;
+	left: 12px;
+	overflow: hidden;
+}
+#positionButtonDiv  .zoomButton:hover,
+#positionButtonDiv .download:hover,
+#positionButtonDiv .zoomButton3:hover{
+	background-color: #939393;
+	color: #fff;
+}
+
+#positionButtonDiv  .max{
+	
+	left: 12px;
+	/*background: url(../images/max.png) no-repeat center;
+	background-size:90% ;*/
+}
+#positionButtonDiv  .min{
+	right: 12px;
+	/*background: url(../images/min.png) no-repeat center;
+	background-size:90% ;*/
+}
+
+
+#positionButtonDiv .info{
+	left: 12px;
+	overflow: inherit;
+}
+#positionButtonDiv .info .img-info{
+	width: 500px;
+	position: absolute;
+	top: 0;
+	right: 30px;
+	background-color: #F1F2F3;
+	border: solid 1px #DBDEDF;
+	box-shadow:0px 0px 10px #DBDEDF;
+	padding: 5px;
+	display: none;
+}
+#positionButtonDiv .info .img-info:before{
+	content: "";
+	position: absolute;
+	top: 5px;
+	right: -5px;
+	border-top: 10px solid transparent;
+	border-right: 10px solid #DBDEDF;
+	-webkit-transform: rotate(-45deg);
+}
+#positionButtonDiv .info:hover .img-info{
+	display: block;
+}
+#positionButtonDiv .info .img-info>span{
+	display: block;
+	text-align: left;
+	font-size: 14px;
+	position: relative;
+	margin:5px 0;
+}
+#positionButtonDiv .info .img-info>span>span{
+	text-align: right;
+}
+#positionButtonDiv .info .img-info>.detail{
+	margin-top: 15px;
+	border: 1px dashed #ccc;
+	padding: 3px;
+}
+#positionButtonDiv .info .img-info>.detail>font{
+	position: absolute;
+	top: -15px;
+	left: 5px;
+	background-color: #222;
+}
+#positionButtonDiv .download{
+	right: 12px;
+}
+
+
+#positionButtonDiv p{
+	padding: 0;
+	margin: 0;
+	margin-bottom: 90px;
+}
+.zoomableContainer {
+		background-image: url("images/transparent.png");
+}
+.cutLR-btn{
+	width:50px;
+	height:100px;
+	border:1px solid #ccc;
+	/* background-color:#F1F2F3; */
+	position: absolute;
+	top:50%;
+	z-index:9999;
+}
+.cutLR-btn.left{left:50px;background:#F1F2F3 url('../images/left.png') no-repeat center;}
+.cutLR-btn.right{right:50px;background:#F1F2F3 url('../images/right.png') no-repeat center;}
+
+
+@font-face {font-family: "iconfont";
+  src: url('iconfont.eot?t=1512093289112'); /* IE9*/
+  src: url('iconfont.eot?t=1512093289112#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('data:application/x-font-woff;charset=utf-8;base64,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') format('woff'),
+  url('iconfont.ttf?t=1512093289112') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('iconfont.svg?t=1512093289112#iconfont') format('svg'); /* iOS 4.1- */
+}
+
+.iconfont,
+[class *=icon-] {
+  font-family:"iconfont" !important;
+  font-size:16px;
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-xiazai:before { content: "\e6a1"; }
+
+.icon-quanping:before { content: "\e61c"; }
+
+.icon-prompt:before { content: "\e600"; }
+
+.icon-amplification_icon:before { content: "\e666"; }
+
+.icon-suoxiao:before { content: "\e624"; }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.jjxx.modules.mf.mapper.MedicalFeeInfoMapper" >
+
+  <sql id="Base_Column_List" >
+    t.id,
+    t.register_fee,
+    t.medical_fee,
+    t.treatment_fee,
+    t.hospital_fee,
+    t.other,
+    t.personal_fee
+  </sql>
+  
+</mapper>

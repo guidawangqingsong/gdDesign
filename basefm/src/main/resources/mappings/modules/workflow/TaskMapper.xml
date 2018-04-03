@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.jjxx.modules.workflow.mapper.TaskMapper" >
+
+  <sql id="Base_Column_List" >
+    t.ID_,
+    t.REV_,
+    t.EXECUTION_ID_,
+    t.PROC_INST_ID_,
+    t.PROC_DEF_ID_,
+    t.NAME_,
+    t.PARENT_TASK_ID_,
+    t.DESCRIPTION_,
+    t.TASK_DEF_KEY_,
+    t.OWNER_,
+    t.ASSIGNEE_,
+    t.DELEGATION_,
+    t.PRIORITY_,
+    t.CREATE_TIME_,
+    t.DUE_DATE_,
+    t.CATEGORY_,
+    t.SUSPENSION_STATE_,
+    t.TENANT_ID_,
+    t.FORM_KEY_
+  </sql>
+  
+   <select id="selectTaskPage" resultType="Task">
+	  select  
+	  <include refid="Base_Column_List" /> ,p.NAME_ as flowName,u.realname as assigneeName,rt.name as flowType,pu.realname as startor
+	  from act_ru_task t 
+	  inner join act_re_procdef p  on p.ID_ = t.PROC_DEF_ID_
+	  left join act_hi_procinst pi on pi.id_ = t.PROC_INST_ID_
+      left join sys_user pu on pu.id =  pi.START_USER_ID_ 
+	  left join act_re_model m on m.KEY_ = p.KEY_
+	  left join act_re_type rt on rt.id = m.CATEGORY_
+	  left join sys_user u on u.id = t.ASSIGNEE_
+	  <where>
+	   ${ew.sqlSegment} 
+	  </where>
+  </select> 
+</mapper>
