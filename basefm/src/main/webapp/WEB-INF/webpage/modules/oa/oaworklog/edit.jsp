@@ -17,7 +17,7 @@
 		   <tbody>
 				<tr>
 					<td  class="width-15 active text-right">	
-		              <label>员工编号:</label>	<!-- 应该关联sys_staff表查询员工id -->
+		              <label>医护编号:</label>	<!-- 应该关联sys_staff表查询员工id -->
 		            </td>
 					<td class="width-35">
 						<form:input path="staffNumber" htmlEscape="false" class="form-control" disabled="true" datatype="*"/>
@@ -75,7 +75,7 @@
 				</tr>
 				<tr>
 					<td  class="width-15 active text-right">	
-		              <label>明天计划:</label>
+		              <label>医用计划:</label>
 		            </td>
 					<td class="width-35" colspan="3">
 						<form:textarea path="nextPlan" rows="4" htmlEscape="false" class="form-control"      />

@@ -26,7 +26,7 @@
 		</div>
 		<div class="absolute right">
 			<ul class="tabs-t">
-				<li class="active"><div id="echarts-title">标段完成百分比</div></li>
+				<li class="active"><div id="echarts-title">组织预测百分比</div></li>
 			</ul>
 			<ul class="tabs-c">
 				<li class="active">
@@ -34,9 +34,8 @@
 					<div id="echarts-list">
 						<table border="1">
 							<tr>
-								<th>标段</th>
-								<th>总任务数</th>
-								<th>完成数</th>
+								<th>组织</th>
+								<th>总预测数</th>
 							</tr>
 							<!-- <tr><td>三都一标</td><td>20</td><td>20%</td></tr>
 							<tr><td>三都一标</td><td>20</td><td>20%</td></tr>
@@ -51,7 +50,7 @@
 		</div>
 		<div class="absolute bottom">
 			<ul class="tabs-t">
-				<li class="active"><div id="echarts2-title">标段项目完成度</div></li>
+				<li class="active"><div id="echarts2-title">医用预测统计图</div></li>
 			</ul>
 			<ul class="tabs-c">
 				<li class="active">
