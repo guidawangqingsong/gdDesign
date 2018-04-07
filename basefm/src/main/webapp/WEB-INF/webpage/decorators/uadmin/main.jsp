@@ -2,7 +2,8 @@
  		
   		<div class="absolute left">
 			<div class="uinfo">
-				<img src="${appPath}/${fns:getUser().portrait}" style="height:143px" class="head" onload="this.style.left=-(this.width-145)/2+'px'" onerror="this.src='${staticPath}/uadmin/images/gallery/adminFlower.jpg'"/>
+			<!--${appPath}/${fns:getUser().portrait}  -->
+				<img src="" style="height:143px" class="head" onload="this.style.left=-(this.width-145)/2+'px'" onerror="this.src='${staticPath}/uadmin/images/gallery/adminFlower.jpg'"/>
 				<p class="name">${fns:getUser().username}</p>
 				<p class="job">${fns:getUser().realname}</p>
 			</div>
@@ -37,12 +38,6 @@
 								<th>组织</th>
 								<th>总预测数</th>
 							</tr>
-							<!-- <tr><td>三都一标</td><td>20</td><td>20%</td></tr>
-							<tr><td>三都一标</td><td>20</td><td>20%</td></tr>
-							<tr><td>三都一标</td><td>20</td><td>20%</td></tr>
-							<tr><td>三都一标</td><td>20</td><td>20%</td></tr>
-							<tr><td>三都一标</td><td>20</td><td>20%</td></tr>
-							<tr><td>三都一标</td><td>20</td><td>20%</td></tr> -->
 						</table>
 					</div>
 				</li>

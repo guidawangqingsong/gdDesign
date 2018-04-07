@@ -12,5 +12,4 @@ import cn.jjxx.modules.ms.entity.MedicalSample;
  *
  */
 public interface MedicalSampleMapper extends BaseMapper<MedicalSample> {
-    
 }

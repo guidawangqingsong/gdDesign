@@ -362,6 +362,8 @@ function tipInfo(result){
  */
 function deleteRowData(title,url,infoid,gridId,tipMsg) {
 	   url=url.replace("{id}",infoid);
+	   var ids = [];
+	   var rows =$("#"+gridId).jqGrid('getGridParam','selarrrow');
 	   if(tipMsg==undefined||tipMsg==''){
 		   msg= "您确定要删除该信息?";
 	   }
@@ -732,7 +734,7 @@ function isContains(str, substr) {
  * @param id//主键字段
  */
 function detail(title,url, gridId,width,height) {
-	var rowsData =$("#"+gridId).bootstrapTable('getSelections');
+	var rowsData= $("#"+gridId).jqGrid('getGridParam','selarrrow');
     if (!rowsData || rowsData.length==0) {
 	  top.layer.alert('请至少选择一条数据!', {icon: 0, title:'警告'});
 		return; 
@@ -742,8 +744,9 @@ function detail(title,url, gridId,width,height) {
 		return;
 	}
     
-    var id = rowsData[0].id;;
-    openDialogView(title,url+"&id="+id,"800px", "500px","");
+    var id = rowsData[0];
+    url=url.replace("/{id}",id);
+    openDialogDetail(title,url,width,height);
 }
 
 

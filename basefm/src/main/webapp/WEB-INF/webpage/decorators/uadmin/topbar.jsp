@@ -301,7 +301,7 @@
                    <a data-hover="dropdown" href="#" class="dropdown-toggle"  onclick="openCutOrgWindow('${adminPath}/sys/user/getUserOrgs','切换组织')"><span class="hidden-xs">组织：${fns:getUser().orgName}</span></a>
                </li>
                <li class="dropdown topbar-user">
-                   <a data-hover="dropdown" href="#" class="dropdown-toggle"><img src="${appPath}/${fns:getUser().portrait}" alt="" class="img-responsive img-circle" />&nbsp;<span class="hidden-xs">用户：${fns:getUser().realname}</span>&nbsp;<span class="caret"></span>
+                   <a data-hover="dropdown" href="#" class="dropdown-toggle"><img src="" alt="" class="img-responsive img-circle" />&nbsp;<span class="hidden-xs">用户：${fns:getUser().realname}</span>&nbsp;<span class="caret"></span>
                    </a>
                    <ul class="dropdown-menu dropdown-user pull-right">
                        <li><a href="javascript:" onclick="openCutOrgWindow('${adminPath}/sys/user/${fns:getUser().id}/avatar','修改头像')"><i class="fa fa-camera-retro"></i>修改头像</a></li>

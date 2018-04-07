@@ -112,7 +112,7 @@
 		}else{
 			url += "?orgId="+orgId;//路径传参
 		}
-		openDialog(title,url,gridid,width,height);
+		openDialog1(title,url,gridid,width,height);
 	}
 	
 	/**

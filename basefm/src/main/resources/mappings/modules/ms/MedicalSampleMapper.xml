@@ -13,4 +13,24 @@
     t.personal_fee
   </sql>
   
+  <!-- 批量删除（数据伪删除Sql）重写删除方法，该方法名*id与mybatis层的方法名称一样，所以只需要写xml文件即可 -->
+	<update id = "deleteBatchIds" parameterType="java.util.List" >
+	   UPDATE medical_sample SET del_flag='1' WHERE  id IN
+	     <foreach collection="list" index="index" item="item" open="(" separator="," close=")">  
+	          #{item}  
+	      </foreach>
+	</update>
+  
+   <!-- 单条记录删除（数据伪删除Sql）重写删除方法，该方法名*id与mybatis层的方法名称一样，所以只需要写xml文件即可 -->
+	<update id = "deleteById" parameterType="java.util.List" >
+	   UPDATE medical_sample SET del_flag='1' WHERE  id=#{id}
+	</update>
+  
+   <!-- 根据Id,获取单条日志信息 -->
+	<select id="selectById" resultType="MedicalSample">
+		select <include refid="Base_Column_List"/> from 
+		medical_sample  t
+		where t.id = #{id}
+	</select>
+  
 </mapper>

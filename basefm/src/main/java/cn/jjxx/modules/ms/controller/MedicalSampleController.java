@@ -12,20 +12,26 @@ import cn.jjxx.core.query.wrapper.EntityWrapper;
 import cn.jjxx.core.security.shiro.authz.annotation.RequiresMethodPermissions;
 import cn.jjxx.core.utils.ObjectUtils;
 import cn.jjxx.core.utils.StringUtils;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializeFilter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
 import cn.jjxx.core.common.controller.BaseBeanController;
 import cn.jjxx.core.security.shiro.authz.annotation.RequiresPathPermission;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+
 import java.io.IOException;
 import java.util.List;
+
 import cn.jjxx.modules.ms.entity.MedicalSample;
 import cn.jjxx.modules.ms.service.IMedicalSampleService;
 
@@ -65,9 +71,13 @@ public class MedicalSampleController extends BaseBeanController<MedicalSample> {
                           HttpServletResponse response) throws IOException {
         EntityWrapper<MedicalSample> entityWrapper = new EntityWrapper<MedicalSample>(entityClass);
         propertyPreFilterable.addQueryProperty("id");
+        //获取没被删除的数据
+        String delFlag = request.getParameter("delFlag");
+        entityWrapper.eq("del_flag", 0);
         // 预处理
         QueryableConvertUtils.convertQueryValueToEntityValue(queryable, entityClass);
         SerializeFilter filter = propertyPreFilterable.constructFilter(entityClass);
+        
         PageJson<MedicalSample> pagejson = new PageJson<MedicalSample>(medicalSampleService.list(queryable,entityWrapper));
         String content = JSON.toJSONString(pagejson, filter);
         StringUtils.printJson(response, content);
@@ -80,7 +90,7 @@ public class MedicalSampleController extends BaseBeanController<MedicalSample> {
         }
         return display("edit");
     }
-
+    
     @RequestMapping(value = "create", method = RequestMethod.POST)
     @ResponseBody
     public AjaxJson create(Model model, @Valid @ModelAttribute("data") MedicalSample medicalSample, BindingResult result,
@@ -168,7 +178,16 @@ public class MedicalSampleController extends BaseBeanController<MedicalSample> {
         model.addAttribute("data", medicalSample);
         return display("edit");
     }
-
+    
+    @RequestMapping(value = "/{id}", method = {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public AjaxJson view(Model model, @PathVariable("id") String id, MedicalSample medicalSample, BindingResult result,
+                           HttpServletRequest request, HttpServletResponse response) {
+    	AjaxJson ajaxJson = new AjaxJson();
+    	medicalSampleService.selectById(id);
+        return ajaxJson;
+    }
+    
     @RequestMapping(value = "validate", method = { RequestMethod.GET, RequestMethod.POST })
     @ResponseBody
     public ValidJson validate(DuplicateValid duplicateValid, HttpServletRequest request) {

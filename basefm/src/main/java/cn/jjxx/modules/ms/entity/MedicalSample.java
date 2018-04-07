@@ -25,7 +25,7 @@ public class MedicalSample extends AbstractEntity<String> {
 	private String id;
     /**删除标记（0：正常；1：删除）*/
     @TableField(value = "del_flag")
-	private Integer delFlag;
+	private String delFlag;
     /**挂号费*/
     @TableField(value = "register_fee")
 	private Double registerFee;
@@ -64,7 +64,7 @@ public class MedicalSample extends AbstractEntity<String> {
 	 * 获取  delFlag
 	 *@return: Integer  删除标记（0：正常；1：删除）
 	 */
-	public Integer getDelFlag(){
+	public String getDelFlag(){
 		return this.delFlag;
 	}
 
@@ -72,7 +72,7 @@ public class MedicalSample extends AbstractEntity<String> {
 	 * 设置  delFlag
 	 *@param: delFlag  删除标记（0：正常；1：删除）
 	 */
-	public void setDelFlag(Integer delFlag){
+	public void setDelFlag(String delFlag){
 		this.delFlag = delFlag;
 	}
 	/**

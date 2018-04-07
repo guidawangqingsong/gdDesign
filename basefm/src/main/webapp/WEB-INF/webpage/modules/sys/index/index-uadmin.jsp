@@ -191,7 +191,7 @@
 			myChart2.showLoading();
 			$.ajax({
 				type:"POST",
-				url:"${adminPath}/wbs/taskmain/findHomeCharts",
+				url:"",
 				dataType:"json",
 				success:function(data){
 					var pielist = data.extend.pieList;
@@ -240,7 +240,7 @@
 		function getMessage(){
 			$.ajax({
 				type:"POST",
-				url:"${adminPath}/wbs/message/findMyMsg",
+				url:"",
 				success:function(data){
 					data = data.data[0];
 					$(".left>.tip .mess").html(data.num);

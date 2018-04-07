@@ -57,7 +57,7 @@
 		              <label>日志类型:</label>
 		            </td>
 					<td class="width-35">
-					    <form:select  readonly="true" onclick="hehe()" disabled="disabled"
+					    <form:select  readonly="true" disabled="disabled"
 							path="logType" htmlEscape="false" class="form-control"
 							dict="logType" datatype="*" nullmsg="请选择设备分类!" 
 							cssClass="i-checks required" cssStyle="width:100%"/>   

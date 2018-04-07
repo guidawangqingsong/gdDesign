@@ -12,6 +12,5 @@ import cn.jjxx.modules.ms.entity.MedicalSample;
  *
  */
 public interface IMedicalSampleService extends ICommonService<MedicalSample> {
-
 }
 
