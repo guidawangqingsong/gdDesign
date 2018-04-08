@@ -8,7 +8,7 @@
     u.realname as "createByName", 
     t.create_date,
     t.update_by AS "updateBy.id",
-    up.realname as "createByName", 
+    up.realname as "updateByName", 
     t.update_date,
     t.del_flag,
     t.remarks,
@@ -29,6 +29,39 @@
   		LEFT JOIN sys_user u on t.create_by=u.id<!-- 关联用户信息 -->
 		LEFT JOIN sys_user up on t.update_by=up.id
   </sql>
+  
+   <select id="selectPage" resultType="MainMedicalInfo">
+		SELECT
+	    t.id,
+	    t.create_by AS "createBy.id",
+	    u.realname as "createByName", 
+	    t.create_date,
+	    t.update_by AS "updateBy.id",
+	    up.realname as "updateByName", 
+	    t.update_date,
+	    t.del_flag,
+	    t.remarks,
+	    t.register_fee,
+	    t.medical_fee,
+	    t.treatment_fee,
+	    t.hospital_fee,
+	    t.other,
+	    t.personal_fee,
+	    s.`code` AS "staff_id",
+	    t.org_id
+		FROM main_medical_info t
+		LEFT JOIN sys_user u on (t.create_by = u.id)
+		LEFT JOIN sys_user up on (t.update_by = up.id) 
+		LEFT JOIN sys_staff s on (u.staff_id = s.id)
+	<where>
+		${ew.sqlSegment} 
+	</where>
+ 	</select>
+  
+  <!-- 单条记录删除（数据伪删除Sql）重写删除方法，该方法名*id与mybatis层的方法名称一样，所以只需要写xml文件即可 -->
+	<update id = "deleteById" parameterType="java.util.List" >
+	   UPDATE main_medical_info SET del_flag='1' WHERE  id=#{id}
+	</update>
   
   <!-- 批量删除（数据伪删除Sql）重写删除方法，该方法名*id与mybatis层的方法名称一样，所以只需要写xml文件即可 -->
 	<update id = "deleteBatchIds" parameterType="java.util.List" >
