@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.jjxx.modules.medicalinfo.mapper.MainMedicalInfoMapper" >
+
+  <sql id="Base_Column_List" >
+    t.id,
+    t.create_by AS "createBy.id",
+    u.realname as "createByName", 
+    t.create_date,
+    t.update_by AS "updateBy.id",
+    up.realname as "createByName", 
+    t.update_date,
+    t.del_flag,
+    t.remarks,
+    t.register_fee,
+    t.medical_fee,
+    t.treatment_fee,
+    t.hospital_fee,
+    t.other,
+    t.personal_fee,
+    t.staff_id,
+    t.org_id,
+    ss.code as staffNumber
+  </sql>
+  
+  <!-- 关联职员信息 -->
+  <sql id="leftJoinStaff">
+  		left join sys_staff ss on ss.id = t.staff_id
+  		LEFT JOIN sys_user u on t.create_by=u.id<!-- 关联用户信息 -->
+		LEFT JOIN sys_user up on t.update_by=up.id
+  </sql>
+  
+  <!-- 批量删除（数据伪删除Sql）重写删除方法，该方法名*id与mybatis层的方法名称一样，所以只需要写xml文件即可 -->
+	<update id = "deleteBatchIds" parameterType="java.util.List" >
+	   UPDATE main_medical_info SET del_flag='1' WHERE  id IN
+	     <foreach collection="list" index="index" item="item" open="(" separator="," close=")">  
+	          #{item}  
+	      </foreach>
+	</update>
+	
+	<!-- 根据Id,获取单条费用信息 -->
+	<select id="selectById" resultType="OaWorkLog">
+		select <include refid="Base_Column_List"/> from 
+		main_medical_info t 
+		<include refid="leftJoinStaff"/>
+		where t.id = #{id}
+	</select>
+  
+</mapper>
