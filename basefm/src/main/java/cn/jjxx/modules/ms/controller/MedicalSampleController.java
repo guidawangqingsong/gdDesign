@@ -184,7 +184,8 @@ public class MedicalSampleController extends BaseBeanController<MedicalSample> {
     public AjaxJson view(Model model, @PathVariable("id") String id, MedicalSample medicalSample, BindingResult result,
                            HttpServletRequest request, HttpServletResponse response) {
     	AjaxJson ajaxJson = new AjaxJson();
-    	medicalSampleService.selectById(id);
+    	EntityWrapper<MedicalSample> entityWrapper = new EntityWrapper<MedicalSample>(entityClass);
+    	medicalSampleService.selectById(entityWrapper.eq("id", id));
         return ajaxJson;
     }
     

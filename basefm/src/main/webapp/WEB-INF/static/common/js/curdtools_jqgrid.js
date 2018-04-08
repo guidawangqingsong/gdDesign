@@ -735,6 +735,15 @@ function isContains(str, substr) {
  */
 function detail(title,url, gridId,width,height) {
 	var rowsData= $("#"+gridId).jqGrid('getGridParam','selarrrow');
+	var multiselect=$("#"+gridId).jqGrid('getGridParam','multiselect');
+	var rowData= $("#"+gridId).jqGrid('getGridParam','selrow');
+	if(!multiselect)
+   	{
+   		if(rowData)
+   		{
+   			  rowsData[0]=rowData;
+   		}
+   	}
     if (!rowsData || rowsData.length==0) {
 	  top.layer.alert('请至少选择一条数据!', {icon: 0, title:'警告'});
 		return; 
@@ -745,7 +754,7 @@ function detail(title,url, gridId,width,height) {
 	}
     
     var id = rowsData[0];
-    url=url.replace("/{id}",id);
+    url=url.replace("{id}",id);
     openDialogDetail(title,url,width,height);
 }
 

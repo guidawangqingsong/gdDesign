@@ -29,8 +29,7 @@
    <!-- 根据Id,获取单条日志信息 -->
 	<select id="selectById" resultType="MedicalSample">
 		select <include refid="Base_Column_List"/> from 
-		medical_sample  t
-		where t.id = #{id}
+		medical_sample t where t.id = #{id}
 	</select>
   
 </mapper>

@@ -23,8 +23,8 @@
 	<grid:toolbar function="update"/>
 	<grid:toolbar title="删除" btnclass="btn-primary" function="batchDeleteSample" url="${adminPath}/ms/medicalsample/batch/delete" icon="fa-trash"/>	
 	<grid:toolbar title="添加" function="create" btnclass="btn-primary" winwidth="600px" winheight="400px" icon="fa-plus"/>
-	<grid:toolbar title="查看" btnclass="btn btn-sm btn-success" winwidth="600px" winheight="400px" 
-	function="detail" url="${adminPath}/ms/medicalsample/" icon="fa-search"/>
+	<grid:toolbar title="查看" function="detail"  url="${adminPath}/ms/medicalsample/{id}/update"  btnclass="btn btn-sm btn-success" 
+	winwidth="600px" winheight="400px" icon="fa-search"/>
 	
 	<grid:toolbar function="search"/>
 	<grid:toolbar function="reset"/>
