@@ -21,18 +21,16 @@
 	<div data-options="region:'center'">
 		 <grid:grid id="oaWorkLogGridId" url="${adminPath}/oa/oaworklog/ajaxList" >
 			<grid:column label="sys.common.key" hidden="true"   name="id" width="100"/>
+			
 			<grid:column label="医护编号" name="staffId"/> <!-- 自动获取员工编号,不能手工添加 -->
 			<grid:column label="创建人"  name="createByName" query="true" queryMode="input"/>
+			<grid:column label="更新时间"  name="updateDate" />
 		    <grid:column label="日志主题"  name="logTheme" query="true"  queryMode="input"/>
-		    <grid:column label="日志内容"  name="logContent" />
 		    <grid:column label="医用计划"  name="nextPlan" />
-		    <%-- <grid:column label="日志状态"  name="logState"/> --%> <!--当使用字典值时，这里 也需要写dict参数，否则显示的是字典编号id -->
 		    <grid:column label="日志类型"  name="logType"  dict="logType" query="true" queryMode="select" /><!--实现字典框查询  -->
 		    <grid:column label="遗留问题"  name="unfinished" />
 		    <grid:column label= "未完成的原因"  name="reason" />
-		    <%-- <grid:query name="orgId" queryMode="hidden" /> --%>  <!-- 根据组织id号查询，方式为隐藏,此处的查询不能指定表查询 -->
 		    <grid:query name="staffId" queryMode="hidden" /> 
-			<%--<grid:column label="日志时间" name="logTime" query="true" /> --%>
 			<grid:column label="日志时间"  name="logTime" query="true" queryMode="date" condition="between" />
 			<grid:column label="查看附件"  name="logAttach" formatter="true"/>
 			<label class="Validform_checktip"></label>
@@ -41,6 +39,7 @@
 			<grid:toolbar title="添加" btnclass="btn-primary" winwidth="800px" winheight="600px" icon="fa-plus" function="createPage"  url="${adminPath}/oa/oaworklog/create"/>
 			<grid:toolbar title="查看" function="detail"  url="${adminPath}/oa/oaworklog/{id}/update"  btnclass="btn btn-sm btn-success" 
 			winwidth="800px" winheight="600px" icon="fa-search"/>
+			
 			<%-- <grid:toolbar title="搜索" function="search"/> --%>
 			<grid:toolbar title="搜索" btnclass="btn-info" layout="right"  icon="fa fa-search" 
 						function="dataSearch1('oaWorkLogGridIdGrid')"  />
@@ -77,13 +76,14 @@
 		var gridId = 'oaWorkLogGridIdGrid';
 	    orgId = treeNode.id; 		 //获取组织的节点id，是变量生命期短很安全。
 	    $("input[name='orgId']").val(treeNode.id);   // 选择属性name=orgId的input元素进行赋值操作
-	    search('oaWorkLogGridIdGrid');
 	
 		$("#"+gridId).jqGrid('setGridParam',{
 		    datatype:'json',  
 		    postData:{"orgId":orgId}, //发送数据  
 		    page:1  
-		 }).trigger("reloadGrid"); //重新载入    
+		 }).trigger("reloadGrid"); //重新载入 
+		search('oaWorkLogGridIdGrid');
+		reset('oaWorkLogGridIdGrid');
 	} 
 	
 	$(document).ready(function(){
