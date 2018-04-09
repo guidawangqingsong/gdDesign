@@ -23,8 +23,8 @@
 			<grid:column label="sys.common.key" hidden="true"   name="id" width="100"/>
 			<grid:column label="sys.common.opt"  name="opt" formatter="button" width="100"/>
 			<grid:button groupname="opt" function="delete" />
-			
-			<grid:column label="医护编号" name="staffNumber"/> <!-- 自动获取员工编号,不能手工添加 -->
+
+			<grid:column label="医护编号" name="staffId"/> <!-- 自动获取员工编号,不能手工添加 -->
 			<grid:column label="创建人"  name="createByName" query="true" queryMode="input"/>
 			<grid:column label="创建时间"  name="createDate" query="true" queryMode="date"/>
 			<grid:column label="更新人"  name="updateByName"/>
@@ -32,13 +32,14 @@
 			<grid:column label="人均医疗费用（预测）"  name="personalFee" query="true" queryMode="input"/>
 			<grid:column label="备注信息"  name="remarks"/>
 			
-			<grid:toolbar function="update"/>
+			<grid:toolbar function="update" winwidth="600px" winheight="400px"/>
 			<grid:toolbar title="删除" btnclass="btn-primary" function="batchDeleteInfo" url="${adminPath}/medicalinfo/mainmedicalinfo/batch/delete" icon="fa-trash"/>	
 			<grid:toolbar title="添加" function="createPage" url="${adminPath}/medicalinfo/mainmedicalinfo/create" btnclass="btn-primary" winwidth="600px" winheight="400px" icon="fa-plus"/>
 			<grid:toolbar title="查看" function="detail"  url="${adminPath}/medicalinfo/mainmedicalinfo/{id}/update"  btnclass="btn btn-sm btn-success" 
 			winwidth="600px" winheight="400px" icon="fa-search"/>
 			
-			<grid:toolbar function="search"/>
+			<%-- <grid:toolbar function="search"/> --%>
+			<grid:toolbar title="搜索" function="dataSearch('mainMedicalInfoGridIdGrid')" btnclass="btn-info" layout="right" icon="fa fa-search" />
 			<grid:toolbar function="reset"/>
 		</grid:grid>
 	</div>
@@ -68,17 +69,17 @@
 	
 	//单击组织树触发事件，并获取orgId的值
 	function onClick(event, treeId, treeNode, clickFlag) {
-		var gridId = 'oaWorkLogGridIdGrid';
+		 var gridId = 'mainMedicalInfoGridIdGrid';
 		 orgId = treeNode.id; 		 //获取组织的节点id，是变量生命期短很安全。
-		 //$("input[name='orgId']").val(treeNode.id);   // 选择属性name=orgId的input元素进行赋值操作
-		 //dataSearch1('oaWorkLogGridIdGrid');
-		 search('oaWorkLogGridIdGrid');
+		 $("input[name='orgId']").val(treeNode.id);   // 选择属性name=orgId的input元素进行赋值操作
+		 search('mainMedicalInfoGridIdGrid');
 		
  		 $("#"+gridId).jqGrid('setGridParam',{  
  		        datatype:'json',  
 		        postData:{"orgId":orgId}, //发送数据  
  		        page:1  
- 		  }).trigger("reloadGrid"); //重新载入    
+ 		  }).trigger("reloadGrid"); //重新载入   
+ 		 reset('mainMedicalInfoGridIdGrid');
 	}
 	
 	$(document).ready(function(){
@@ -107,7 +108,7 @@
 		}else{
 			url += "?orgId="+orgId;//路径传参
 		}
-		openDialog(title,url,gridid,width,height);
+		openDialog1(title,url,gridid,width,height);
 	}
 	
 	/**
@@ -115,7 +116,7 @@
 	 * @param gridId 列表id
 	 * 注：调用此方法；所有查询条件都需自己在后台设置
 	 */
-	function dataSearch1(gridId) {
+	function dataSearch(gridId) {
 		var queryParams = {};
 		var queryFields=$('#queryFields').val();
 		queryParams['queryFields'] = queryFields;
@@ -127,9 +128,6 @@
 			}
 			queryParams[$(this).attr('name')] = val;
 		});
-		
-
-		//刷新
 		//传入查询条件参数  
 		$("#"+gridId).jqGrid('setGridParam',{  
 			datatype:'json',  
@@ -137,6 +135,43 @@
 			page:1  
 		}).trigger("reloadGrid"); //重新载入    
 	}
+	
+	//打开对话框(添加或修改的弹框)
+	function openDialog1(title,url,gridId,width,height){
+			if(navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i)){//如果是移动端，就使用自适应大小弹窗
+				width='auto';
+				height='auto';
+			}else{//如果是PC端，根据用户设置的width和height显示。
+		}
+		top.layer.open({
+			type: 2,  
+			area: [width, height],
+			title: title,
+			maxmin: true, //开启最大化最小化按钮
+			content: url ,
+			btn: ['确定', '关闭'],
+			yes: function(index, layero){
+				var body = top.layer.getChildFrame('body', index);
+				var iframeWin = layero.find('iframe')[0]; //得到iframe页的窗口对象，执行iframe页的方法：iframeWin.method();
+				//文档地址
+				//http://www.layui.com/doc/modules/layer.html#use	         
+				iframeWin.contentWindow.doSubmit(function(results){ 
+					tipInfo(results);
+					//判断逻辑并关闭
+					setTimeout(function(){top.layer.close(index)}, 100);//延时0.1秒，对应360 7.1版本bug
+					//刷新表单
+					refreshTable(gridId); 
+				});
+			},
+			cancel: function(index){}
+		}); 	 
+	} 
+	
+	/**方法操作成功后刷新表单*/
+	function refreshTable(gridId){
+		dataSearch(gridId);
+	}
+	
 	
 	/**
 	 * 多记录刪除請求

@@ -20,7 +20,7 @@
     t.personal_fee,
     t.staff_id,
     t.org_id,
-    ss.code as staffNumber
+    ss.`code` as staffNumber
   </sql>
   
   <!-- 关联职员信息 -->
@@ -58,10 +58,13 @@
 	</where>
  	</select>
   
-  <!-- 单条记录删除（数据伪删除Sql）重写删除方法，该方法名*id与mybatis层的方法名称一样，所以只需要写xml文件即可 -->
-	<update id = "deleteById" parameterType="java.util.List" >
-	   UPDATE main_medical_info SET del_flag='1' WHERE  id=#{id}
-	</update>
+  	<!-- 根据Id,获取单条日志信息 -->
+	<select id="selectById" resultType="MainMedicalInfo">
+		select <include refid="Base_Column_List"/> from 
+		main_medical_info t 
+		<include refid="leftJoinStaff"/>
+		where t.id = #{id}
+	</select>
   
   <!-- 批量删除（数据伪删除Sql）重写删除方法，该方法名*id与mybatis层的方法名称一样，所以只需要写xml文件即可 -->
 	<update id = "deleteBatchIds" parameterType="java.util.List" >
@@ -71,12 +74,9 @@
 	      </foreach>
 	</update>
 	
-	<!-- 根据Id,获取单条费用信息 -->
-	<select id="selectById" resultType="OaWorkLog">
-		select <include refid="Base_Column_List"/> from 
-		main_medical_info t 
-		<include refid="leftJoinStaff"/>
-		where t.id = #{id}
-	</select>
-  
+	<!-- 单条记录删除（数据伪删除Sql）重写删除方法，该方法名*id与mybatis层的方法名称一样，所以只需要写xml文件即可 -->
+	<update id = "deleteById" parameterType="java.util.List" >
+	   UPDATE main_medical_info SET del_flag='1' WHERE  id=#{id}
+	</update>
+	
 </mapper>

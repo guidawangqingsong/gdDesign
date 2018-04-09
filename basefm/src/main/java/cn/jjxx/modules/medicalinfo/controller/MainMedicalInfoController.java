@@ -46,7 +46,7 @@ import cn.jjxx.modules.sys.utils.UserUtils;
 /**   
  * @Title: 医疗费用总表
  * @Description: 医疗费用总表
- * @author jjxx
+ * @author jjxx.wangqingsong
  * @date 2018-04-08 14:33:15
  * @version V1.0   
  *
@@ -84,13 +84,24 @@ public class MainMedicalInfoController extends BaseBeanController<MainMedicalInf
         
         //获取没被删除的数据
         String delFlag = request.getParameter("delFlag");
-        entityWrapper.eq("del_flag", 0);
+        entityWrapper.eq("t.del_flag", 0);
         
-       //设置时间查询条件
-  		String[] arrayTime = request.getParameterValues("createDate"); 
-  		Map<String,Object> timeMap =  getStartDateAndEndTime(arrayTime);
+        //通过组织查询,如果orgId 不为空，拼接查询条件，通过orgId来查找
+        //判断如果该用户是某组织下的，则只显示没有绑定组织的日志,只能查看自己所属组织下的日志。
+        String orgId = request.getParameter("orgId");
+        entityWrapper.eq("t.org_id", orgId);
+        
+        //根据创建人查询
+    	String creatBy = request.getParameter("createByName");//获取页面的要查询的信息
+    	if(!StringUtils.isEmpty(creatBy)){
+    		entityWrapper.eq("u.realname", creatBy);//根据输入的用户名查询日志
+    	}
+        
+        //设置时间查询条件
+  		String time = request.getParameter("createDate"); 
+  		Map<String,Object> timeMap =  getStartDateAndEndTime(time);
   		if(!ObjectUtils.isNullOrEmpty(timeMap)){
-  			entityWrapper.eq("t.create_date", timeMap.get("startTime"));
+  			entityWrapper.eq("t.create_date", timeMap.get("createTime"));
   		}
   		
         // 预处理
@@ -106,27 +117,14 @@ public class MainMedicalInfoController extends BaseBeanController<MainMedicalInf
 	 * @param timeArray 前端获取的时间数组格式，如：request.getParameterValues("applyDate"); 
 	 * @return Map<String,Object> 返回Map，Key（起始时间）为startTime；Key2(终止时间)为：endTime
 	 */
-	public static Map<String,Object> getStartDateAndEndTime(String[] timeArray){
-		if(ObjectUtils.isNullOrEmpty(timeArray)){
+	public static Map<String,Object> getStartDateAndEndTime(String time){
+		if(ObjectUtils.isNullOrEmpty(time)){
 			return null;
 		}
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Map<String,Object> timeMap = new HashMap<String,Object>();
-		String timeStr = timeArray[0];
-		int index = timeStr.indexOf(",");
 		String createTime = "";
-		if(index!=-1){//用户输入的是开始时间或者 两个时间都选了
-			String[] times = timeStr.split(",");
-			createTime = times[0] +" 00:00:00";
-			if(times.length==2){
-				createTime = times[1] + " 23:59:59";
-			}else{
-				createTime = sdf.format(new Date())+ " 23:59:59";
-			}
-			System.out.println(times.length);
-		}else{
-			createTime = "1970-01-01 00:00:00";
-		}
+		createTime = sdf.format(new Date());
 		timeMap.put("createTime", createTime);
 		return timeMap;
 	}
@@ -138,7 +136,7 @@ public class MainMedicalInfoController extends BaseBeanController<MainMedicalInf
         if (!model.containsAttribute("data")) {
         	medicalInfo.setStaffId(user.getStaffId());		//因为user表与staff表有关联，所以可以通过user来获取staffid
         	Staff staff = staffService.selectById(user.getStaffId());//通过staffid来查询staff的所有信息
-            
+        	
             if(!ObjectUtils.isNullOrEmpty(staff)){			//判断staff实体有没有查询出来
             	medicalInfo.setStaffNumber(staff.getCode());	//获取staff的编号
         	}

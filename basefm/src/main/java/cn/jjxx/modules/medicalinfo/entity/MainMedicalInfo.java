@@ -15,7 +15,7 @@ import java.util.Date;
 /**   
  * @Title: 医疗费用总表
  * @Description: 医疗费用总表
- * @author jjxx
+ * @author jjxx.wangqingsong
  * @date 2018-04-08 14:33:15
  * @version V1.0   
  *

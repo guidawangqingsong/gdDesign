@@ -55,10 +55,9 @@ import cn.jjxx.modules.sys.service.impl.StaffServiceImpl;
 import cn.jjxx.modules.sys.utils.UserUtils;
 
 /**   
- * @Title: 员工日志管理
- * @Description: 员工日志管理
+ * @Title: 费用日志管理
+ * @Description: 费用日志管理
  * @author grace
- * @date 2018-02-06 11:40:23
  * @version V1.0   
  *
  */
@@ -101,7 +100,7 @@ public class OaWorkLogController extends BaseBeanController<OaWorkLog> {
       
         //首先拿到所有同一组织下的日志
         String logState = request.getParameter("logState");
-       // entityWrapper.eq("t.log_state", 0); 
+        // entityWrapper.eq("t.log_state", 0); 
         
         //再根据自己的ID拿到自己不公开的日志
         //获取当前系统登入人的ID,只能查看自己的日志
@@ -123,7 +122,6 @@ public class OaWorkLogController extends BaseBeanController<OaWorkLog> {
         String logTheme = request.getParameter("logTheme");
         if(!StringUtils.isEmpty(logTheme)){
         	entityWrapper.like("t.log_theme", logTheme);//模糊查询
-        	//entityWrapper.eq("log_theme", logTheme);//准确查询
         }
        
         //获取前台 日志类型
@@ -134,7 +132,7 @@ public class OaWorkLogController extends BaseBeanController<OaWorkLog> {
         
     	//根据创建人查询日志
     	String creatBy = request.getParameter("createByName");//获取页面的要查询的信息
-    	System.out.println(creatBy+"         createby");
+    	System.out.println(creatBy+"createby");
     	if(!StringUtils.isEmpty(creatBy)){
     		entityWrapper.eq("u.realname", creatBy);//根据输入的用户名查询日志
     	}
@@ -145,8 +143,6 @@ public class OaWorkLogController extends BaseBeanController<OaWorkLog> {
 		if(!ObjectUtils.isNullOrEmpty(timeMap)){
 			entityWrapper.between("t.log_time", timeMap.get("startTime"), timeMap.get("endTime"));
 		}
-    	
-    	
     	
         //设置日志主题查询条件
         // 预处理
@@ -166,7 +162,7 @@ public class OaWorkLogController extends BaseBeanController<OaWorkLog> {
 		if(ObjectUtils.isNullOrEmpty(timeArray)){
 			return null;
 		}
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Map<String,Object> timeMap = new HashMap<String,Object>();
 		String timeStr = timeArray[0];
 		int index = timeStr.indexOf(",");
@@ -195,8 +191,7 @@ public class OaWorkLogController extends BaseBeanController<OaWorkLog> {
      * @param model 模型实体类.<br>
      * @param request http请求.<br>
      * @param response http相应.<br>
-     * @author wyt .<br>
-     * @date 2018/2/28 .<br>
+     * @author jjxx.wangqingsong .<br>
      */
     @RequestMapping(value = "create", method = RequestMethod.GET)
     public String create(Model model, HttpServletRequest request, HttpServletResponse response) {
@@ -206,7 +201,7 @@ public class OaWorkLogController extends BaseBeanController<OaWorkLog> {
         if (!model.containsAttribute("data")) {				//使用前端通过data绑定的数据。
         	oaWorkLog.setStaffId(user.getStaffId());		//因为user表与staff表有关联，所以可以通过user来获取staffid
         	Staff staff = staffService.selectById(user.getStaffId());//通过staffid来查询staff的所有信息
-        	Attachment attachment = new Attachment();		//如何在新增日志时候，添加附件到数据库中的附件表中去呢？？
+        	Attachment attachment = new Attachment();		//在新增日志时候，添加附件到数据库中的附件表中去
         	if(!ObjectUtils.isNullOrEmpty(staff)){			//判断staff实体有没有查询出来
         		oaWorkLog.setStaffNumber(staff.getCode());	//获取staff的编号
         	}
@@ -235,8 +230,7 @@ public class OaWorkLogController extends BaseBeanController<OaWorkLog> {
      * @param model 模型实体类.<br>
      * @param request http请求.<br>
      * @param response http相应.<br>
-     * @author wyt .<br>
-     * @date 2018/2/28 .<br>
+     * @author jjxx.wangqingsong.<br>
      */
     @RequestMapping(value = "{id}/update", method = RequestMethod.GET)
     public String update(@PathVariable("id") String id, Model model, HttpServletRequest request,
@@ -319,8 +313,7 @@ public class OaWorkLogController extends BaseBeanController<OaWorkLog> {
     /**
      * @descrption 执行伪删除操作.<br>
      * @param ids 删除的id.<br>
-     * @author wyt .<br>
-     * @date 2018/2/27 .<br>
+     * @author jjxx.wangqingsong .<br>
      */
     @RequestMapping(value = "batchDelete", method = { RequestMethod.GET, RequestMethod.POST })//批量删除
     @ResponseBody
@@ -376,8 +369,7 @@ public class OaWorkLogController extends BaseBeanController<OaWorkLog> {
      * @param model 模型实体类.<br>
      * @param request http请求.<br>
      * @param response http相应.<br>
-     * @author wyt .<br>
-     * @date 2018/2/28 .<br>
+     * @author jjxx.wangqingsong .<br>
      */
     @RequestMapping(value = "{id}/file", method = RequestMethod.GET)
     public String file(@PathVariable("id") String id, Model model, HttpServletRequest request,
@@ -387,29 +379,4 @@ public class OaWorkLogController extends BaseBeanController<OaWorkLog> {
         return display("file");
     }
     
-    
-    /**
-     * @descrption 实现文件下载功能.<br>
-     * @param model 模型实体类.<br>
-     * @param request http请求.<br>
-     * @param response http相应.<br>
-     * @author wyt .<br>
-     * @date 2018/3/2 .<br>
-     */
-   // @RequestMapping(value="/download/{id}",method = RequestMethod.GET)
-  /*  public void downloadFile(@PathVariable("id") String id,HttpServletRequest request,HttpServletResponse response) throws IOException {
-    	
-    	ServletOutputStream outputStream = response.getOutputStream();
-        InputStream inputStream = new FileInputStream(new File(imagePath));//文件输入流，从硬盘读文件
-        int available = inputStream.available();
-        response.setHeader("Content-Length",String.valueOf(available));
-        byte[] buffer = new byte[available];
-        int size = 0;
-        while ((size = inputStream.read(buffer, 0, available)) != -1){
-            outputStream.write(buffer);
-        }
-        inputStream.close();
-        outputStream.close();
-    }*/
-    	
 }

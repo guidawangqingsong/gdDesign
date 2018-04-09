@@ -36,12 +36,14 @@
 			<grid:column label="日志时间"  name="logTime" query="true" queryMode="date" condition="between" />
 			<grid:column label="查看附件"  name="logAttach" formatter="true"/>
 			<label class="Validform_checktip"></label>
-			<grid:toolbar function="update"/>
+			<grid:toolbar function="update" winwidth="800px" winheight="600px"/>
 			<grid:toolbar title="删除" btnclass="btn-primary" function="batchDeleteLog" url="${adminPath}/oa/oaworklog/batchDelete"/>	
 			<grid:toolbar title="添加" btnclass="btn-primary" winwidth="800px" winheight="600px" icon="fa-plus" function="createPage"  url="${adminPath}/oa/oaworklog/create"/>
+			<grid:toolbar title="查看" function="detail"  url="${adminPath}/oa/oaworklog/{id}/update"  btnclass="btn btn-sm btn-success" 
+			winwidth="800px" winheight="600px" icon="fa-search"/>
 			<%-- <grid:toolbar title="搜索" function="search"/> --%>
 			<grid:toolbar title="搜索" btnclass="btn-info" layout="right"  icon="fa fa-search" 
-						function="searchsuper('oaWorkLogGridIdGrid')"  />
+						function="dataSearch1('oaWorkLogGridIdGrid')"  />
 			
 			<grid:toolbar function="reset"/>
 		</grid:grid>
@@ -72,19 +74,17 @@
 	
 	//单击组织树触发事件，并获取orgId的值
 	function onClick(event, treeId, treeNode, clickFlag) {
-		/* debugger; */
 		var gridId = 'oaWorkLogGridIdGrid';
-		 orgId = treeNode.id; 		 //获取组织的节点id，是变量生命期短很安全。
-		 //$("input[name='orgId']").val(treeNode.id);   // 选择属性name=orgId的input元素进行赋值操作
-		 //dataSearch1('oaWorkLogGridIdGrid');
-		 search('oaWorkLogGridIdGrid');
-		
- 		 $("#"+gridId).jqGrid('setGridParam',{  
- 		        datatype:'json',  
-		        postData:{"orgId":orgId}, //发送数据  
- 		        page:1  
- 		  }).trigger("reloadGrid"); //重新载入    
-	}
+	    orgId = treeNode.id; 		 //获取组织的节点id，是变量生命期短很安全。
+	    $("input[name='orgId']").val(treeNode.id);   // 选择属性name=orgId的input元素进行赋值操作
+	    search('oaWorkLogGridIdGrid');
+	
+		$("#"+gridId).jqGrid('setGridParam',{
+		    datatype:'json',  
+		    postData:{"orgId":orgId}, //发送数据  
+		    page:1  
+		 }).trigger("reloadGrid"); //重新载入    
+	} 
 	
 	$(document).ready(function(){
 		//初始化树数据
@@ -180,31 +180,6 @@
 	function refreshTable1(gridId){
 		dataSearch1(gridId);
 	}
-	
-	function searchsuper(gridId) {
-		/* debugger; */
-		var queryParams = {}; 
-		var queryFields=$('#queryFields').val();
-		queryParams['queryFields'] = queryFields;//将从前端返回一个查询字段保存到查询参数里面。
-		//普通的查询
-		$('#' + gridId + "Query").find(":input").each(function() { //each() 方法为每个匹配元素规定要运行的函数
-			var val = $(this).val();// 将获得第一个匹配元素的当前值赋值给对象val
-			if (queryParams[$(this).attr('name')]) {
-				val = queryParams[$(this).attr('name')] + "," + $(this).val();
-			}
-			queryParams[$(this).attr('name')] = val;
-		});
-		
-		
-		//刷新
-		//传入查询条件参数  
-		$("#"+gridId).jqGrid('setGridParam',{  
-			datatype:'json',  
-			postData:queryParams, //发送数据  
-			page:1  
-		}).trigger("reloadGrid"); //重新载入    
-	}
-	
 	
 	/**
 	 * 多记录刪除請求
