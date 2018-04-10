@@ -73,13 +73,12 @@
 		 orgId = treeNode.id; 		 //获取组织的节点id，是变量生命期短很安全。
 		 $("input[name='orgId']").val(treeNode.id);   // 选择属性name=orgId的input元素进行赋值操作
 		 search('mainMedicalInfoGridIdGrid');
-		
+		 reset('mainMedicalInfoGridIdGrid');
  		 $("#"+gridId).jqGrid('setGridParam',{  
  		        datatype:'json',  
 		        postData:{"orgId":orgId}, //发送数据  
  		        page:1  
  		  }).trigger("reloadGrid"); //重新载入   
- 		 reset('mainMedicalInfoGridIdGrid');
 	}
 	
 	$(document).ready(function(){
