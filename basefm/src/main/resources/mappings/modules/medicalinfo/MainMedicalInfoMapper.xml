@@ -30,7 +30,7 @@
 		LEFT JOIN sys_user up on t.update_by=up.id
   </sql>
   
-   <select id="selectPage" resultType="cn.jjxx.modules.medicalevaluation.entity.MedicalEvaluation">
+   <select id="selectPage" resultType="MainMedicalInfo">
 		SELECT
 	    t.id,
 	    t.create_by AS "createBy.id",

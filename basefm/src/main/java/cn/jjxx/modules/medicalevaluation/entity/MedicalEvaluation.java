@@ -67,7 +67,7 @@ public class MedicalEvaluation extends AbstractEntity<String> {
 	private String remarks;
     /**组织评定*/
     @TableField(value = "origin_eva")
-	private String originEva;
+	private Double originEva;
     /**系统前端界面*/
     @TableField(value = "sys_frontUI")
 	private String sysFrontUI;
@@ -76,7 +76,7 @@ public class MedicalEvaluation extends AbstractEntity<String> {
 	private String sysBackstage;
     /**系统主要功能*/
     @TableField(value = "sys_predict")
-	private String sysPredict;
+	private Double sysPredict;
     /**系统设置*/
     @TableField(value = "sys_config")
 	private String sysConfig;
@@ -211,7 +211,7 @@ public class MedicalEvaluation extends AbstractEntity<String> {
 	 * 获取  originEva
 	 *@return: String  组织评定
 	 */
-	public String getOriginEva(){
+	public Double getOriginEva(){
 		return this.originEva;
 	}
 
@@ -219,7 +219,7 @@ public class MedicalEvaluation extends AbstractEntity<String> {
 	 * 设置  originEva
 	 *@param: originEva  组织评定
 	 */
-	public void setOriginEva(String originEva){
+	public void setOriginEva(Double originEva){
 		this.originEva = originEva;
 	}
 	/**
@@ -256,7 +256,7 @@ public class MedicalEvaluation extends AbstractEntity<String> {
 	 * 获取  sysPredict
 	 *@return: String  系统主要功能
 	 */
-	public String getSysPredict(){
+	public Double getSysPredict(){
 		return this.sysPredict;
 	}
 
@@ -264,7 +264,7 @@ public class MedicalEvaluation extends AbstractEntity<String> {
 	 * 设置  sysPredict
 	 *@param: sysPredict  系统主要功能
 	 */
-	public void setSysPredict(String sysPredict){
+	public void setSysPredict(Double sysPredict){
 		this.sysPredict = sysPredict;
 	}
 	/**

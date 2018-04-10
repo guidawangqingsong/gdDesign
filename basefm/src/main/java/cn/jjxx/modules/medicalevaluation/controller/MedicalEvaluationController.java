@@ -30,10 +30,19 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cn.jjxx.modules.medicalevaluation.entity.MedicalEvaluation;
 import cn.jjxx.modules.medicalevaluation.service.IMedicalEvaluationService;
+import cn.jjxx.modules.oa.entity.OaWorkLog;
+import cn.jjxx.modules.sys.entity.Staff;
+import cn.jjxx.modules.sys.entity.User;
+import cn.jjxx.modules.sys.service.IStaffService;
+import cn.jjxx.modules.sys.utils.UserUtils;
 
 /**   
  * @Title: 医用系统民主测评
@@ -50,6 +59,8 @@ public class MedicalEvaluationController extends BaseBeanController<MedicalEvalu
 
     @Autowired
     protected IMedicalEvaluationService medicalEvaluationService;
+    @Autowired
+    protected IStaffService staffService;
 
     public MedicalEvaluation get(String id) {
         if (!ObjectUtils.isNullOrEmpty(id)) {
@@ -86,7 +97,20 @@ public class MedicalEvaluationController extends BaseBeanController<MedicalEvalu
     	if(!StringUtils.isEmpty(creatBy)){
     		entityWrapper.eq("u.realname", creatBy);//根据输入的用户名查询日志
     	}
+    	
+    	//获取前台评价等级
+        String sysEvaType = request.getParameter("sysEvaType");
+    	if(!StringUtils.isEmpty(sysEvaType)){
+    		entityWrapper.eq("t.sys_config", sysEvaType);
+    	}
         
+    	//设置时间查询条件
+  		String[] arrayTime = request.getParameterValues("createDate"); 
+  		Map<String,Object> timeMap =  getStartDateAndEndTime(arrayTime);
+		if(!ObjectUtils.isNullOrEmpty(timeMap)){
+			entityWrapper.between("t.create_date", timeMap.get("startTime"), timeMap.get("endTime"));
+		}
+    	
         // 预处理
         QueryableConvertUtils.convertQueryValueToEntityValue(queryable, entityClass);
         SerializeFilter filter = propertyPreFilterable.constructFilter(entityClass);
@@ -95,10 +119,51 @@ public class MedicalEvaluationController extends BaseBeanController<MedicalEvalu
         StringUtils.printJson(response, content);
     }
 
+    /**
+	 * 从前端传入的 
+	 * @param timeArray 前端获取的时间数组格式，如：request.getParameterValues("applyDate"); 
+	 * @return Map<String,Object> 返回Map，Key（起始时间）为startTime；Key2(终止时间)为：endTime
+	 */
+	public static Map<String,Object> getStartDateAndEndTime(String[] timeArray){
+		if(ObjectUtils.isNullOrEmpty(timeArray)){
+			return null;
+		}
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Map<String,Object> timeMap = new HashMap<String,Object>();
+		String timeStr = timeArray[0];
+		int index = timeStr.indexOf(",");
+		String startTime = "";
+		String endTime = "";
+		if(index!=-1){//用户输入的是开始时间或者 两个时间都选了
+			String[] times = timeStr.split(",");
+			startTime = times[0] +" 00:00:00";
+			if(times.length==2){
+				endTime = times[1] + " 23:59:59";
+			}else{
+				endTime = sdf.format(new Date())+ " 23:59:59";
+			}
+			System.out.println(times.length);
+		}else{
+			startTime = "1970-01-01 00:00:00";
+			endTime = timeStr + " 23:59:59";
+		}
+		timeMap.put("startTime", startTime);
+		timeMap.put("endTime",  endTime);
+		return timeMap;
+	}
+    
     @RequestMapping(value = "create", method = RequestMethod.GET)
     public String create(Model model, HttpServletRequest request, HttpServletResponse response) {
-        if (!model.containsAttribute("data")) {
-            model.addAttribute("data", newModel());
+    	User user = UserUtils.getUser();
+    	MedicalEvaluation medicalEva=new MedicalEvaluation();
+    	
+    	if (!model.containsAttribute("data")) {
+    		medicalEva.setStaffId(user.getStaffId());
+    		Staff staff = staffService.selectById(user.getStaffId());
+    		if(!ObjectUtils.isNullOrEmpty(staff)){			//判断staff实体有没有查询出来
+    			medicalEva.setStaffNumber(staff.getCode());	//获取staff的编号
+        	}
+            model.addAttribute("data", medicalEva);
         }
         return display("edit");
     }
@@ -215,5 +280,20 @@ public class MedicalEvaluationController extends BaseBeanController<MedicalEvalu
             validJson.setInfo("验证异常，请检查字段是否正确!");
         }
         return validJson;
+    }
+    
+    /**
+     * @descrption 跳转到查看（file）附件界面.<br>
+     * @param model 模型实体类.<br>
+     * @param request http请求.<br>
+     * @param response http相应.<br>
+     * @author jjxx.wangqingsong .<br>
+     */
+    @RequestMapping(value = "{id}/file", method = RequestMethod.GET)
+    public String file(@PathVariable("id") String id, Model model, HttpServletRequest request,
+                              HttpServletResponse response) {
+        MedicalEvaluation medicalEvaluation = get(id);
+        model.addAttribute("data", medicalEvaluation);
+        return display("file");
     }
 }

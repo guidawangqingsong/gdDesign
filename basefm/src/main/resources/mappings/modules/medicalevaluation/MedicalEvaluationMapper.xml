@@ -19,7 +19,7 @@
     t.sys_config,
     t.staff_id,
     t.org_id,
-    t.eva_attach,
+    (SELECT COUNT(1) FROM sys_attachment WHERE bill_id=t.id) AS evaAttach,
     ss.`code` as staffNumber
   </sql>
   
@@ -48,7 +48,7 @@
 	    t.sys_config,
 	    s.`code` AS "staff_id",
 	    t.org_id,
-	    t.eva_attach
+	    (SELECT COUNT(1) FROM sys_attachment WHERE bill_id=t.id) AS evaAttach
 		FROM medical_evaluation t
 		LEFT JOIN sys_user u on (t.create_by = u.id)
 		LEFT JOIN sys_user up on (t.update_by = up.id) 

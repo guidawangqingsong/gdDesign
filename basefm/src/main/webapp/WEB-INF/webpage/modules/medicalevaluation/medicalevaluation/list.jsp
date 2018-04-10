@@ -27,11 +27,12 @@
 			<grid:column label="医护编号" name="staffId"/> <!-- 自动获取员工编号,不能手工添加 -->
 			<grid:column label="创建人"  name="createByName" query="true" queryMode="input"/>
 			<grid:column label="创建时间"  name="logTime" query="true" queryMode="date" condition="between" />
-		    <grid:column label="医用预测功能"  name="sysPredict"  dict="logType" query="true" queryMode="select" /><!--实现字典框查询  -->
+		    <grid:column label="医用预测功能"  name="sysPredict" query="true" queryMode="input"/> 
 		    <grid:column label="组织评定"  name="originEva" />
 		    <grid:column label= "系统前端界面"  name="sysFrontUI" />
 		    <grid:column label= "系统后台设计"  name="sysBackstage" />
-		    <grid:column label="系统设置"  name="sysConfig" />
+		    <!-- 实现字典框查询  -->
+		    <grid:column label="系统设置"  name="sysConfig" dict="sysEvaType" query="true" queryMode="select"/>
 		    <grid:query name="staffId" queryMode="hidden" /> 
 			<label class="Validform_checktip"></label>
 			<grid:toolbar function="update" winwidth="800px" winheight="600px"/>
@@ -175,7 +176,7 @@
 	
 	/**方法操作成功后刷新表单*/
 	function refreshTable1(gridId){
-		dataSearch1(gridId);
+		dataSearch(gridId);
 	}
 	
 	/**
@@ -239,7 +240,7 @@
 	
 	
 	/**附件的超链接*/
-	function oaWorkLogGridIdEvaAttachFormatter(value, options, row){
+	function medicalEvaluationGridIdEvaAttachFormatter(value, options, row){
 		var str = "";
 		if(value.length!=0){
 			str = "<a  onclick=file('"+row.id+"')>"+value+"</a>";
