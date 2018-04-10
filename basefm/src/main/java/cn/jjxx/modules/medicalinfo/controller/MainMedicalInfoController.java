@@ -98,11 +98,11 @@ public class MainMedicalInfoController extends BaseBeanController<MainMedicalInf
     	}
         
         //设置时间查询条件
-  		String time = request.getParameter("createDate"); 
-  		Map<String,Object> timeMap =  getStartDateAndEndTime(time);
-  		if(!ObjectUtils.isNullOrEmpty(timeMap)){
-  			entityWrapper.eq("t.create_date", timeMap.get("createTime"));
-  		}
+  		String[] arrayTime = request.getParameterValues("createDate"); 
+  		Map<String,Object> timeMap =  getStartDateAndEndTime(arrayTime);
+		if(!ObjectUtils.isNullOrEmpty(timeMap)){
+			entityWrapper.between("t.create_date", timeMap.get("startTime"), timeMap.get("endTime"));
+		}
   		
         // 预处理
         QueryableConvertUtils.convertQueryValueToEntityValue(queryable, entityClass);
@@ -117,15 +117,31 @@ public class MainMedicalInfoController extends BaseBeanController<MainMedicalInf
 	 * @param timeArray 前端获取的时间数组格式，如：request.getParameterValues("applyDate"); 
 	 * @return Map<String,Object> 返回Map，Key（起始时间）为startTime；Key2(终止时间)为：endTime
 	 */
-	public static Map<String,Object> getStartDateAndEndTime(String time){
-		if(ObjectUtils.isNullOrEmpty(time)){
+	public static Map<String,Object> getStartDateAndEndTime(String[] timeArray){
+		if(ObjectUtils.isNullOrEmpty(timeArray)){
 			return null;
 		}
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Map<String,Object> timeMap = new HashMap<String,Object>();
-		String createTime = "";
-		createTime = sdf.format(new Date());
-		timeMap.put("createTime", createTime);
+		String timeStr = timeArray[0];
+		int index = timeStr.indexOf(",");
+		String startTime = "";
+		String endTime = "";
+		if(index!=-1){//用户输入的是开始时间或者 两个时间都选了
+			String[] times = timeStr.split(",");
+			startTime = times[0] +" 00:00:00";
+			if(times.length==2){
+				endTime = times[1] + " 23:59:59";
+			}else{
+				endTime = sdf.format(new Date())+ " 23:59:59";
+			}
+			System.out.println(times.length);
+		}else{
+			startTime = "1970-01-01 00:00:00";
+			endTime = timeStr + " 23:59:59";
+		}
+		timeMap.put("startTime", startTime);
+		timeMap.put("endTime",  endTime);
 		return timeMap;
 	}
     

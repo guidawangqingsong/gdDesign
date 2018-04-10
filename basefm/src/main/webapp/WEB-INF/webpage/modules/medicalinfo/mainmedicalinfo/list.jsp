@@ -21,12 +21,13 @@
 	<div data-options="region:'center'">
 		 <grid:grid id="mainMedicalInfoGridId" url="${adminPath}/medicalinfo/mainmedicalinfo/ajaxList">
 			<grid:column label="sys.common.key" hidden="true"   name="id" width="100"/>
-			<grid:column label="sys.common.opt"  name="opt" formatter="button" width="100"/>
+			<grid:column label="sys.common.opt" name="opt" formatter="button" width="100"/>
+			<grid:button groupname="opt" title="预测" url="" outclass="btn-info" innerclass="fa-globe"/>
 			<grid:button groupname="opt" function="delete" />
 
 			<grid:column label="医护编号" name="staffId"/> <!-- 自动获取员工编号,不能手工添加 -->
 			<grid:column label="创建人"  name="createByName" query="true" queryMode="input"/>
-			<grid:column label="创建时间"  name="createDate" query="true" queryMode="date"/>
+			<grid:column label="创建时间"  name="createDate" query="true" queryMode="date" condition="between"/>
 			<grid:column label="更新人"  name="updateByName"/>
 			<grid:column label="更新时间"  name="updateDate" />
 			<grid:column label="人均医疗费用（预测）"  name="personalFee" query="true" queryMode="input"/>
