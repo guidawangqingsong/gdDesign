@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="cn.jjxx.modules.medicalinfo.mapper.MainMedicalInfoMapper" >
+<mapper namespace="cn.jjxx.modules.medicalevaluation.mapper.MedicalEvaluationMapper" >
 
   <sql id="Base_Column_List" >
     t.id,
     t.create_by AS "createBy.id",
-    u.realname as "createByName", 
+    u.realname as "createByName",
     t.create_date,
     t.update_by AS "updateBy.id",
-    up.realname as "updateByName", 
+    up.realname as "updateByName",
     t.update_date,
     t.del_flag,
     t.remarks,
-    t.register_fee,
-    t.medical_fee,
-    t.treatment_fee,
-    t.hospital_fee,
-    t.other,
-    t.personal_fee,
+    t.origin_eva,
+    t.sys_frontUI,
+    t.sys_backstage,
+    t.sys_predict,
+    t.sys_config,
     t.staff_id,
     t.org_id,
+    t.eva_attach,
     ss.`code` as staffNumber
   </sql>
   
@@ -30,26 +30,26 @@
 		LEFT JOIN sys_user up on t.update_by=up.id
   </sql>
   
-   <select id="selectPage" resultType="cn.jjxx.modules.medicalevaluation.entity.MedicalEvaluation">
+   <select id="selectPage" resultType="MedicalEvaluation">
 		SELECT
 	    t.id,
 	    t.create_by AS "createBy.id",
-	    u.realname as "createByName", 
+	    u.realname as "createByName",
 	    t.create_date,
 	    t.update_by AS "updateBy.id",
-	    up.realname as "updateByName", 
+	    up.realname as "updateByName",
 	    t.update_date,
 	    t.del_flag,
 	    t.remarks,
-	    t.register_fee,
-	    t.medical_fee,
-	    t.treatment_fee,
-	    t.hospital_fee,
-	    t.other,
-	    t.personal_fee,
+	    t.origin_eva,
+	    t.sys_frontUI,
+	    t.sys_backstage,
+	    t.sys_predict,
+	    t.sys_config,
 	    s.`code` AS "staff_id",
-	    t.org_id
-		FROM main_medical_info t
+	    t.org_id,
+	    t.eva_attach
+		FROM medical_evaluation t
 		LEFT JOIN sys_user u on (t.create_by = u.id)
 		LEFT JOIN sys_user up on (t.update_by = up.id) 
 		LEFT JOIN sys_staff s on (u.staff_id = s.id)
@@ -58,17 +58,17 @@
 	</where>
  	</select>
   
-  	<!-- 根据Id,获取单条日志信息 -->
-	<select id="selectById" resultType="MainMedicalInfo">
+  	<!-- 根据Id,获取单条测评信息 -->
+	<select id="selectById" resultType="MedicalEvaluation">
 		select <include refid="Base_Column_List"/> from 
-		main_medical_info t 
+		medical_evaluation t 
 		<include refid="leftJoinStaff"/>
 		where t.id = #{id}
 	</select>
   
   <!-- 批量删除（数据伪删除Sql）重写删除方法，该方法名*id与mybatis层的方法名称一样，所以只需要写xml文件即可 -->
 	<update id = "deleteBatchIds" parameterType="java.util.List" >
-	   UPDATE main_medical_info SET del_flag='1' WHERE  id IN
+	   UPDATE medical_evaluation SET del_flag='1' WHERE  id IN
 	     <foreach collection="list" index="index" item="item" open="(" separator="," close=")">  
 	          #{item}  
 	      </foreach>
@@ -76,7 +76,7 @@
 	
 	<!-- 单条记录删除（数据伪删除Sql）重写删除方法，该方法名*id与mybatis层的方法名称一样，所以只需要写xml文件即可 -->
 	<update id = "deleteById" parameterType="java.util.List" >
-	   UPDATE main_medical_info SET del_flag='1' WHERE  id=#{id}
+	   UPDATE medical_evaluation SET del_flag='1' WHERE  id=#{id}
 	</update>
-	
+  
 </mapper>

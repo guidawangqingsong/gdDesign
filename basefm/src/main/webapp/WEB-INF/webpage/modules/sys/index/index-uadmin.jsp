@@ -50,7 +50,7 @@
     <!--END PAGE WRAPPER-->
     </div>
     </div>
-    <html:js  name="jquery,bootstrap,metisMenu,slimscroll,layer,pace,bootstrap-hover-dropdown,jquery-cookie,Validform,echarts,imgUtil"/>
+    <html:js  name="jquery,bootstrap,metisMenu,slimscroll,layer,pace,bootstrap-hover-dropdown,jquery-cookie,Validform,echarts"/>
     <script src="${staticPath}/uadmin/js/jquery-migrate-1.2.1.min.js"></script>
     <script src="${staticPath}/uadmin/js/jquery-ui.js"></script>
     <!--loading bootstrap js-->
@@ -81,7 +81,7 @@
 		
 		$(document).ready(function() {
 			
-			setTimeout(function(){imgLoadError('${staticPath}');},100);
+			setTimeout(function(){},100);
 			    changePasswordForm=$("#changePasswordForm").Validform({
 				tiptype:function(msg,o,cssctl){
 					if(!o.obj.is("form")){

@@ -27,8 +27,8 @@
 		              <label>日志日期:</label>
 		            </td>
 		            <td class="width-45" colspan="3">
-						<form:input path="logTime" htmlEscape="false" class="form-control layer-date"  datefmt="yyyy-MM-dd"
-						onclick="laydate({istime: true, istoday:true, format: 'YYYY-MM-DD',min:laydate.now(-3),max:laydate.now(),
+						<form:input path="logTime" htmlEscape="false" class="form-control layer-date"  datefmt="yyyy-MM-dd hh:mm:ss"
+						onclick="laydate({istime: true, istoday:true, format: 'YYYY-MM-DD hh:mm:ss',min:laydate.now(-3),max:laydate.now(),
 						ready: function(){ins22.hint('日期可选值设定在 <br> #min 到  laydate.now()'); }})"  />
 						<label class="Validform_checktip"></label>
 					</td>

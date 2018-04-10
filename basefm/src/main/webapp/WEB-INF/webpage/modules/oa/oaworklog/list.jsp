@@ -42,12 +42,14 @@
 			
 			<%-- <grid:toolbar title="搜索" function="search"/> --%>
 			<grid:toolbar title="搜索" btnclass="btn-info" layout="right"  icon="fa fa-search" 
-						function="dataSearch1('oaWorkLogGridIdGrid')"  />
+						function="dataSearch1"  />
 			
 			<grid:toolbar function="reset"/>
 		</grid:grid>
 	</div>
 </div>
+
+
 <script type="text/javascript">
     var orgId ='';
 	var treeObj;
@@ -120,7 +122,8 @@
 	 * @param gridId 列表id
 	 * 注：调用此方法；所有查询条件都需自己在后台设置
 	 */
-	function dataSearch1(gridId) {
+	function dataSearch1() {
+		var gridId = 'oaWorkLogGridIdGrid';
 		var queryParams = {};
 		var queryFields=$('#queryFields').val();
 		queryParams['queryFields'] = queryFields;
@@ -133,8 +136,6 @@
 			queryParams[$(this).attr('name')] = val;
 		});
 		
-
-		//刷新
 		//传入查询条件参数  
 		$("#"+gridId).jqGrid('setGridParam',{  
 			datatype:'json',  
@@ -257,8 +258,6 @@
 		url = url.replace("{id}", id);
 		openDialogView("附件详情", url + "?id=" + id, "800px", "500px");		
 	}
-	
-
 	
 	// 打开对话框(查看)
 	function openDialogView(title, url, width, height) {

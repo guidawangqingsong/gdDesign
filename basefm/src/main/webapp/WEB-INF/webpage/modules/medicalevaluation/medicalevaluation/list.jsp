@@ -3,13 +3,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>医疗费用总表列表</title>
+  <title>医用系统民主测评列表</title>
   <meta name="decorator" content="list"/>
   <html:css  name="iCheck,Validform,jquery-ztree,easy-ui"/>
   <html:js  name="iCheck,Validform,jquery-ztree,easy-ui,public-js"/>
   <style type="text/css">.row{margin:0;}</style>
 </head>
-<body title="医疗费用总表">
+<body title="医用系统民主测评">
 <div class="easyui-layout" fit="true" id="cc" style="width:100%;">
     <%-- 左布局 --%>
     <div data-options="region:'west',split:true" style="width:20%;">
@@ -19,32 +19,35 @@
 	</div>
 	<%-- 中心布局 --%>
 	<div data-options="region:'center'">
-		 <grid:grid id="mainMedicalInfoGridId" url="${adminPath}/medicalinfo/mainmedicalinfo/ajaxList">
+		 <grid:grid id="medicalEvaluationGridId" url="${adminPath}/medicalevaluation/medicalevaluation/ajaxList">
 			<grid:column label="sys.common.key" hidden="true"   name="id" width="100"/>
-			<grid:column label="sys.common.opt" name="opt" formatter="button" width="100"/>
-			<grid:button groupname="opt" title="预测" url="" outclass="btn-info" innerclass="fa-globe"/>
+			<grid:column label="sys.common.opt"  name="opt" formatter="button" width="100"/>
 			<grid:button groupname="opt" function="delete" />
-
+			
 			<grid:column label="医护编号" name="staffId"/> <!-- 自动获取员工编号,不能手工添加 -->
 			<grid:column label="创建人"  name="createByName" query="true" queryMode="input"/>
-			<grid:column label="创建时间"  name="createDate" query="true" queryMode="date" condition="between"/>
-			<grid:column label="更新人"  name="updateByName"/>
-			<grid:column label="更新时间"  name="updateDate" />
-			<grid:column label="人均医疗费用（预测）"  name="personalFee" query="true" queryMode="input"/>
-			<grid:column label="备注信息"  name="remarks"/>
+			<grid:column label="创建时间"  name="logTime" query="true" queryMode="date" condition="between" />
+		    <grid:column label="医用预测功能"  name="sysPredict"  dict="logType" query="true" queryMode="select" /><!--实现字典框查询  -->
+		    <grid:column label="组织评定"  name="originEva" />
+		    <grid:column label= "系统前端界面"  name="sysFrontUI" />
+		    <grid:column label= "系统后台设计"  name="sysBackstage" />
+		    <grid:column label="系统设置"  name="sysConfig" />
+		    <grid:query name="staffId" queryMode="hidden" /> 
+			<label class="Validform_checktip"></label>
+			<grid:toolbar function="update" winwidth="800px" winheight="600px"/>
+			<grid:toolbar title="删除" btnclass="btn-primary" function="batchDeleteLog" url="${adminPath}/medicalevaluation/medicalevaluation/batchDelete"/>	
+			<grid:toolbar title="添加" btnclass="btn-primary" winwidth="800px" winheight="600px" icon="fa-plus" function="createPage"  url="${adminPath}/medicalevaluation/medicalevaluation/create"/>
+			<grid:toolbar title="查看" function="detail"  url="${adminPath}/medicalevaluation/medicalevaluation/{id}/update"  btnclass="btn btn-sm btn-success" 
+			winwidth="800px" winheight="600px" icon="fa-search"/>
 			
-			<grid:toolbar function="update" winwidth="600px" winheight="400px"/>
-			<grid:toolbar title="删除" btnclass="btn-primary" function="batchDeleteInfo" url="${adminPath}/medicalinfo/mainmedicalinfo/batch/delete" icon="fa-trash"/>	
-			<grid:toolbar title="添加" function="createPage" url="${adminPath}/medicalinfo/mainmedicalinfo/create" btnclass="btn-primary" winwidth="600px" winheight="400px" icon="fa-plus"/>
-			<grid:toolbar title="查看" function="detail"  url="${adminPath}/medicalinfo/mainmedicalinfo/{id}/update"  btnclass="btn btn-sm btn-success" 
-			winwidth="600px" winheight="400px" icon="fa-search"/>
-			
-			<%-- <grid:toolbar function="search"/> --%>
-			<grid:toolbar title="搜索" function="dataSearch" btnclass="btn-info" layout="right" icon="fa fa-search" />
+			<%-- <grid:toolbar title="搜索" function="search"/> --%>
+			<grid:toolbar title="搜索" btnclass="btn-info" layout="right"  icon="fa fa-search" function="dataSearch"  />
 			<grid:toolbar function="reset"/>
 		</grid:grid>
 	</div>
 </div>
+
+
 <script type="text/javascript">
     var orgId ='';
 	var treeObj;
@@ -70,18 +73,18 @@
 	
 	//单击组织树触发事件，并获取orgId的值
 	function onClick(event, treeId, treeNode, clickFlag) {
-		 var gridId = 'mainMedicalInfoGridIdGrid';
-		 orgId = treeNode.id; 		 //获取组织的节点id，是变量生命期短很安全。
-		 $("input[name='orgId']").val(treeNode.id);   // 选择属性name=orgId的input元素进行赋值操作
-		 
- 		 $("#"+gridId).jqGrid('setGridParam',{  
- 		        datatype:'json',  
-		        postData:{"orgId":orgId}, //发送数据  
- 		        page:1  
- 		  }).trigger("reloadGrid"); //重新载入   
- 		 search('mainMedicalInfoGridIdGrid');
-		 reset('mainMedicalInfoGridIdGrid');
-	}
+		var gridId = 'medicalEvaluationGridIdGrid';
+	    orgId = treeNode.id; 		 //获取组织的节点id，是变量生命期短很安全。
+	    $("input[name='orgId']").val(treeNode.id);   // 选择属性name=orgId的input元素进行赋值操作
+	
+		$("#"+gridId).jqGrid('setGridParam',{
+		    datatype:'json',  
+		    postData:{"orgId":orgId}, //发送数据  
+		    page:1  
+		 }).trigger("reloadGrid"); //重新载入 
+		search('medicalEvaluationGridIdGrid');
+		reset('medicalEvaluationGridIdGrid');
+	} 
 	
 	$(document).ready(function(){
 		//初始化树数据
@@ -118,7 +121,7 @@
 	 * 注：调用此方法；所有查询条件都需自己在后台设置
 	 */
 	function dataSearch() {
-		var gridId = 'mainMedicalInfoGridIdGrid';
+		var gridId = 'medicalEvaluationGridIdGrid';
 		var queryParams = {};
 		var queryFields=$('#queryFields').val();
 		queryParams['queryFields'] = queryFields;
@@ -130,13 +133,14 @@
 			}
 			queryParams[$(this).attr('name')] = val;
 		});
+		
 		//传入查询条件参数  
 		$("#"+gridId).jqGrid('setGridParam',{  
 			datatype:'json',  
 			postData:queryParams, //发送数据  
 			page:1  
 		}).trigger("reloadGrid"); //重新载入    
-	}
+	}	
 	
 	//打开对话框(添加或修改的弹框)
 	function openDialog1(title,url,gridId,width,height){
@@ -162,7 +166,7 @@
 					//判断逻辑并关闭
 					setTimeout(function(){top.layer.close(index)}, 100);//延时0.1秒，对应360 7.1版本bug
 					//刷新表单
-					refreshTable(gridId); 
+					refreshTable1(gridId); 
 				});
 			},
 			cancel: function(index){}
@@ -170,10 +174,9 @@
 	} 
 	
 	/**方法操作成功后刷新表单*/
-	function refreshTable(gridId){
-		dataSearch(gridId);
+	function refreshTable1(gridId){
+		dataSearch1(gridId);
 	}
-	
 	
 	/**
 	 * 多记录刪除請求
@@ -182,7 +185,8 @@
 	 * @param gname
 	 * @return
 	 */
-	function batchDeleteInfo(title,url,gridId) {
+	function batchDeleteLog(title,url,gridId) {
+		/* debugger; */
 		var ids = [];
 		var rows =$("#"+gridId).jqGrid('getGridParam','selarrrow');
 		var rowData= $("#"+gridId).jqGrid('getGridParam','selrow');
@@ -232,6 +236,45 @@
 		    return;
 		}
 	}
+	
+	
+	/**附件的超链接*/
+	function oaWorkLogGridIdEvaAttachFormatter(value, options, row){
+		var str = "";
+		if(value.length!=0){
+			str = "<a  onclick=file('"+row.id+"')>"+value+"</a>";
+		}
+		return str;
+	}
+	
+	/**打开附件窗口*/
+	function file(id){
+		var url = "${adminPath}/medicalevaluation/medicalevaluation/{id}/file";//{}占位符
+		url = url.replace("{id}", id);
+		openDialogView("附件详情", url + "?id=" + id, "800px", "500px");		
+	}
+
+	// 打开对话框(查看)
+	function openDialogView(title, url, width, height) {
+		if (navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i)) {// 如果是移动端，就使用自适应大小弹窗
+			width = 'auto';
+			height = 'auto';
+		} 
+		else {// 如果是PC端，根据用户设置的width和height显示。
+			
+		}
+		top.layer.open({
+			type : 2,
+			area : [ width, height ],
+			title : title,
+			maxmin : true, // 开启最大化最小化按钮
+			content : url,
+			btn : [ '关闭' ],
+			cancel : function(index) {
+			}
+		});
+	}
 </script>
+
 </body>
 </html>

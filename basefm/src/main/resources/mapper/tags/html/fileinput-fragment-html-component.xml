@@ -219,7 +219,7 @@
 			 
 			 
 			 function ${path}uploadsuccess(event, data, previewId, index){
-			 debugger;
+			 <!-- debugger; -->
 					if(callBack){
 					 	callBack(data);
 					}
@@ -233,7 +233,7 @@
 			 }
 			 
 			 function update${path}Bind(){
-			 debugger;
+			 <!-- debugger; -->
 			       var fileids="";
 			       for (var i = 0; i < ${path}FileList.length; i++) {
 			      		<#if saveType??&&saveType=='1'>
