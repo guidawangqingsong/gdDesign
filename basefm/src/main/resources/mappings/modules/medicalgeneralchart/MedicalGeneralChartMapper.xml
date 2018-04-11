@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.jjxx.modules.medicalgeneralchart.mapper.MedicalGeneralChartMapper" >
+
+  <sql id="Base_Column_List" >
+    t.id,
+    t.create_by AS "createBy.id",
+    u.realname as "createByName", 
+    t.create_date,
+    t.update_by AS "updateBy.id",
+    up.realname as "updateByName", 
+    t.update_date,
+    t.del_flag,
+    t.remarks,
+    t.staff_id,
+    t.org_id,
+    ss.`code` as staffNumber,
+    (select count(id) from medical_evaluation where sys_config='A' or sys_config='B')as highOpinon,
+	(select count(id) from medical_evaluation where sys_config='C' or sys_config='D')as lowOpinon
+  </sql>
+  
+  <!-- 关联职员信息 -->
+  <sql id="leftJoinStaff">
+  		left join sys_staff ss on ss.id = t.staff_id
+  		LEFT JOIN sys_user u on t.create_by=u.id<!-- 关联用户信息 -->
+		LEFT JOIN sys_user up on t.update_by=up.id
+  </sql>
+  
+  <select id="selectPage" resultType="MedicalGeneralChart">
+		SELECT
+	   	t.id,
+	    t.create_by AS "createBy.id",
+	    u.realname as "createByName", 
+	    t.create_date,
+	    t.update_by AS "updateBy.id",
+	    up.realname as "updateByName", 
+	    t.update_date,
+	    t.del_flag,
+	    t.remarks,
+	    s.`code` as staff_id,
+	    t.org_id,
+	    (select count(id) from medical_evaluation where sys_config='A' or sys_config='B')as high_opinon,
+	    (select count(id) from medical_evaluation where sys_config='C' or sys_config='D')as low_opinon
+		FROM medical_general_chart t
+		LEFT JOIN sys_user u on (t.create_by = u.id)
+		LEFT JOIN sys_user up on (t.update_by = up.id) 
+		LEFT JOIN sys_staff s on (u.staff_id = s.id)
+	<where>
+		${ew.sqlSegment} 
+	</where>
+ 	</select>
+  
+  	<!-- 根据Id,获取单条信息 -->
+	<select id="selectById" resultType="MedicalGeneralChart">
+		select <include refid="Base_Column_List"/> from 
+		medical_general_chart t 
+		<include refid="leftJoinStaff"/>
+		where t.id = #{id}
+	</select>
+  
+  <!-- 批量删除（数据伪删除Sql）重写删除方法，该方法名*id与mybatis层的方法名称一样，所以只需要写xml文件即可 -->
+	<update id = "deleteBatchIds" parameterType="java.util.List" >
+	   UPDATE medical_general_chart SET del_flag='1' WHERE  id IN
+	     <foreach collection="list" index="index" item="item" open="(" separator="," close=")">  
+	          #{item}  
+	      </foreach>
+	</update>
+	
+	<!-- 单条记录删除（数据伪删除Sql）重写删除方法，该方法名*id与mybatis层的方法名称一样，所以只需要写xml文件即可 -->
+	<update id = "deleteById" parameterType="java.util.List" >
+	   UPDATE medical_general_chart SET del_flag='1' WHERE  id=#{id}
+	</update>
+  
+    <!-- 统计不同组织系统设置评价A、B、C、D四个等级所占的比例 -->
+  	<select id="selectGradeJson" parameterType="String" resultType="java.util.HashMap">
+  		select o.name,count(m.id) as ACount from medical_evaluation m 
+		left join sys_organization o on o.id = m.org_id
+		where m.del_flag=0 and sys_config='A' group by org_id
+  	</select>
+  
+  	<!-- 统计不同组织主要功能评分大于60与小于60的所占比 -->
+  	<select id="selectPredictJson" parameterType="String" resultType="java.util.HashMap">
+  	</select>
+  
+</mapper>

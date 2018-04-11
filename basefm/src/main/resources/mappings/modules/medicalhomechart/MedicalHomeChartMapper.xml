@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.jjxx.modules.medicalhomechart.mapper.MedicalHomeChartMapper" >
+
+  <sql id="Base_Column_List" >
+    t.id,
+    t.create_by AS "createBy.id",
+    u.realname as "createByName",
+    t.create_date,
+    t.update_by AS "updateBy.id",
+    up.realname as "updateByName",
+    t.update_date,
+    t.del_flag,
+    t.remarks,
+    t.org_id,
+    t.predict_count
+  </sql>
+  
+  <!-- 关联职员信息 -->
+  <sql id="leftJoinStaff">
+  		LEFT JOIN sys_user u on t.create_by=u.id<!-- 关联用户信息 -->
+		LEFT JOIN sys_user up on t.update_by=up.id
+  </sql>
+  
+  <!-- 查询首页组织饼图数据 -->
+	<select id="findHomePieJson" parameterType="String" resultType="java.util.HashMap">
+		select o.name,count(m.id) as predictCount from main_medical_info m 
+		left join sys_organization o on o.id = m.org_id where m.del_flag=0 group by org_id
+	</select>
+  
+  <!-- 查询首页组织柱形图数据 -->
+	<select id="findHomeBarJson" parameterType="String" resultType="java.util.HashMap">
+		select o.name,count(m.id) as predictCount 
+		from main_medical_info m left join sys_organization o on o.id = m.org_id
+		group by org_id
+	</select>
+	
+	<!-- 查询首页预测次数最大的组织 -->
+	<select id="findHomeMaxJson" parameterType="String" resultType="java.util.HashMap">
+		select o.name,count(m.id) as predictCount 
+		from main_medical_info m 
+		left join sys_organization o on o.id = m.org_id where m.del_flag=0 group by org_id
+		having predictCount=(select max(a.predictCount1) from 
+							(select count(m.id) as predictCount1 from main_medical_info m 
+							left join sys_organization o on o.id = m.org_id where m.del_flag=0 group by org_id) a )
+	</select>
+  
+  <!-- 根据Id,获取单条图表信息 -->
+	<select id="selectById" resultType="MedicalHomeChart">
+		select <include refid="Base_Column_List"/> from 
+		medical_home_chart t 
+		<include refid="leftJoinStaff"/>
+		where t.id = #{id}
+	</select>
+  
+</mapper>

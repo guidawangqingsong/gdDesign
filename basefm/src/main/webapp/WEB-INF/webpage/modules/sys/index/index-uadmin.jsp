@@ -156,8 +156,8 @@
 		 var option = {
 				    tooltip : { trigger: 'axis'  },
 				  	//颜色标记
-				    legend: { data:data.ld },
-				    color:['#33B66A','#A38CF8','#FFB258'],
+				    //legend: { data:data.ld },
+				    color:['#A4D3EE'],
 				    xAxis : [
 				        {
 				            type : 'category',
@@ -171,7 +171,20 @@
 				        bottom: '10%',
 				        containLabel: true
 				    },
-				    series : data.vd
+				    series : [
+				        {
+				            type:'bar',
+				            barWidth:'50px',
+				            data:data.vd,
+				            markPoint: {  
+	                            data: [  
+	                                {type: 'max', name: '最大值'},  
+	                                {type: 'min', name: '最小值'}  
+	                            ]  
+	                        }
+				    	}
+				    ] 
+				    //series:data.vd
 				};
 
 	        // 使用刚指定的配置项和数据显示图表。
@@ -191,43 +204,37 @@
 			myChart2.showLoading();
 			$.ajax({
 				type:"POST",
-				url:"",
+				url:"${adminPath}/medicalhomechart/medicalhomechart/findHomeCharts",
 				dataType:"json",
 				success:function(data){
 					var pielist = data.extend.pieList;
 					var barlist = data.extend.barList;
-					var isTender = data.extend.isTender;
-					if(isTender){
-						$("#echarts-title").html("检测项完成配比")
-						$("#echarts2-title").html("标段任务完成度")
-					}else{
-						$("#echarts-title").html("标段完成配比")
-						$("#echarts2-title").html("检测项完成度")
-					}
+					$("#echarts-title").html("组织预测百分比")
+					$("#echarts2-title").html("医用预测统计图")
+					
+					//饼图设置
 					$.each(pielist,function(i,item){
 						_pieData.ld.push(item.name);
-						temp = {value:item.num,name:item.name};
+						temp = {value:item.predictCount,name:item.name};
 						_pieData.vd.push(temp);
 					});
 					
-					 _barData.ld=['总数','完成数','未完成数'];
-					var d1 =[],d2=[],d3=[];
+					var d=[];
 					var tablelist = '';
+					
+					//列表展示
 					 $.each(barlist,function(i,item){
-						d1.push(item.num);//未完成数
-						d2.push(item.unnum==undefined?'-':item.unnum);//完成数
-						d3.push(item.allNum==undefined?'-':item.allNum);//总数
-						 _barData.xd.push(item.name==undefined?'-':item.name);
-						if(i<=8) tablelist += '<tr><td>'+item.name+'</td><td>'+item.allNum+'</td><td>'+item.num+'</td></tr>'
+						 _barData.ld=[item.name];
+						 d.push(item.predictCount);
+						_barData.xd.push(item.name==undefined?'-':item.name);
+						if(i<=8) tablelist += '<tr><td>'+item.name+'</td><td>'+item.predictCount+'</td><td>'
 					});
 					 tablelist = tablelist.replace(/undefined/g,'-');
 					 $("#echarts-list>table").append(tablelist);
-					 _barData.vd=[
-					              {name:'总数', type:'bar',barWidth:'10px',data:d3},
-					              {name:'未完成数', type:'bar',barWidth:'10px',data:d2},
-					              {name:'完成数', type:'bar',barWidth:'10px',data:d1}
-								];
-					
+					 
+					//条形图设置
+					_barData.vd=d;
+					 
 				},
 				complete:function(){
 					myChart1.hideLoading();
@@ -237,20 +244,8 @@
 				}
 			});
 		}
-		function getMessage(){
-			$.ajax({
-				type:"POST",
-				url:"",
-				success:function(data){
-					data = data.data[0];
-					$(".left>.tip .mess").html(data.num);
-					if(data.num > 0) $(".left>.tip .mess").parent().attr("data-href","${adminPath}/wbs/taskmain");
-				}
-			});
-		}
 		$(function() {
 			initEchartsData();
-			getMessage();
 			//Echarts1();
 			//Echarts2();
 			init();
