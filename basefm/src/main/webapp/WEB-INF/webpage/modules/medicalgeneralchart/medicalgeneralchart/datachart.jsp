@@ -5,10 +5,12 @@
 <head>
   <title>综合分析列表</title>
   <meta name="decorator" content="list"/>
-  <html:css  name="iCheck,Validform,jquery-ztree,easy-ui"/>
+  <link type="text/css" rel="stylesheet" href="${staticPath}/vendors/jquery-ui-1.10.4.custom/css/ui-lightness/jquery-ui-1.10.4.custom.min.css">
+  <html:css  name="iCheck,Validform,jquery-ztree,easy-ui,favicon,font-awesome,animate,pace"/>
   <html:js  name="iCheck,Validform,jquery-ztree,easy-ui,public-js"/>
   <style type="text/css">.row{margin:0;}</style>
 </head>
+
 <body title="综合分析">
 <div class="easyui-layout" fit="true" id="cc" style="width:100%;">
 	<%-- 左布局 --%>
@@ -17,7 +19,7 @@
 			<ul id="treeObj" class="ztree"></ul>
 		</div>
 	</div>
-	<%-- 中心布局 --%>
+	<%-- 底部布局 --%>
 	<div data-options="region:'south',split:true">
 		 <grid:grid id="medicalGeneralChartGridId" url="${adminPath}/medicalgeneralchart/medicalgeneralchart/ajaxList">
 			<grid:column label="sys.common.key" hidden="true"   name="id" width="100"/>
@@ -27,24 +29,39 @@
 			<grid:column label="医护编号" name="staffId"/> <!-- 自动获取员工编号,不能手工添加 -->
 			<grid:column label="创建人"  name="createByName" query="true" queryMode="input"/>
 			<grid:column label="创建时间"  name="createDate" query="true" queryMode="date" condition="between"/>
-			<grid:column label="更新人"  name="updateByName"/>
-			<grid:column label="更新时间"  name="updateDate" />
 			<grid:column label="好评数量"  name="highOpinon"/>
 			<grid:column label="差评数量"  name="lowOpinon"/>
 			
 			<grid:toolbar title="删除" btnclass="btn-primary" function="batchDeleteInfo" url="${adminPath}/medicalgeneralchart/medicalgeneralchart/batch/delete" icon="fa-trash"/>	
 			<grid:toolbar title="查看" function="detail"  url="${adminPath}/medicalgeneralchart/medicalgeneralchart/{id}/update"  btnclass="btn btn-sm btn-success" 
 			winwidth="600px" winheight="400px" icon="fa-search"/>
+			<grid:toolbar title="添加" btnclass="btn-primary" winwidth="800px" winheight="600px" icon="fa-plus" function="createPage"  url="${adminPath}/medicalgeneralchart/medicalgeneralchart/create"/>
 			
-			<%-- <grid:toolbar function="search"/> --%>
 			<grid:toolbar title="搜索" function="dataSearch" btnclass="btn-info" layout="right" icon="fa fa-search" />
 			<grid:toolbar function="reset"/>
 		</grid:grid>
 	</div>
 	<%-- 中心布局 --%>
-	<div data-options="region:'center'" style="width:20%;">
-		 <div class="zTreeDemoBackground left">
-			<ul id="treeObj" class="ztree"></ul>
+	<div data-options="region:'center'">
+		<div class="absolute left">
+			<ul class="tabs-t">
+				<li class="active"><div id="echarts-title">好评百分比</div></li>
+			</ul>
+			<ul class="tabs-c">
+				<li class="active">
+					<div id="echarts1" style="width:50%;height:200px;"></div>
+				</li>
+			</ul>
+		</div>
+		<div class="absolute right">
+			<ul class="tabs-t">
+				<li class="active"><div id="echarts2-title">预测高分百分比</div></li>
+			</ul>
+			<ul class="tabs-c">
+				<li class="active">
+					<div id="echarts2" style="width:50%;height:200px;"></div>
+				</li>
+			</ul>
 		</div>
 	</div>
 </div>
@@ -97,6 +114,22 @@
 			$(".portlet-body,.portlet-body>div").css("height",winHeight+"px");
 			$(".ui-jqgrid-view").css("height",winHeight-150+"px")
 		}catch(e){}
+	}
+	
+	/**
+	 * 新增事件打开窗口(是否包含组织id，有的话组织id为：orgId)
+	 * 需要声明全局变量 orgId
+	 * @param title 编辑框标题
+	 * @param addurl//目标页面地址
+	 */
+	function createPage(title,url,gridid,width,height) { 
+		if(!orgId){//新增时需要选择组织id
+			top.layer.alert('请选择左边组织!', {icon: 0, title:'警告'});
+			return;
+		}else{
+			url += "?orgId="+orgId;//路径传参
+		}
+		openDialog1(title,url,gridid,width,height);
 	}
 	
 	/**
@@ -220,5 +253,151 @@
 		}
 	}
 </script>
+
+<!--图表js  -->
+<script type="text/javascript">
+	var myChart1 = echarts.init(document.getElementById('echarts1'));
+	var myChart2 = echarts.init(document.getElementById('echarts2'));
+	//var myChart3 = echarts.init(document.getElementById('echarts3'));
+	//var myChart4 = echarts.init(document.getElementById('echarts4'));
+	var _pieData1={ld:[],vd:[]};
+	var _pieData2={ld:[],vd:[]};
+	function Echarts1(data){
+		 var option = {
+				    tooltip: {
+				        trigger: 'item',
+				        formatter: "{a} <br/>{b}: {c} ({d}%)"
+				    },
+				    //颜色标记
+				    legend: {
+				        orient: 'horizontal',
+				        x: 'center',
+				        data:data.ld
+				    },
+		            itemStyle: {  
+		                narmal: {  
+		                    labelLine:{length:20}
+		                }  
+		            } ,
+				    series: [
+				        {
+				            name:'占比',
+				            type:'pie',
+				            radius: ['40%', '70%'],
+				            avoidLabelOverlap: false,
+				            //悬浮提示框
+				            data:data.vd
+				        }
+				    ]
+				};
+
+	        // 使用刚指定的配置项和数据显示图表。
+	        myChart1.setOption(option);
+	        window.onresize = myChart1.resize; 
+	}
+	function Echarts2(data){
+		 var option = {
+				 tooltip: {
+				        trigger: 'item',
+				        formatter: "{a} <br/>{b}: {c} ({d}%)"
+				    },
+				    //颜色标记
+				    legend: {
+				        orient: 'horizontal',
+				        x: 'center',
+				        data:data.ld
+				    },
+		            itemStyle: {  
+		                narmal: {  
+		                    labelLine:{length:20}
+		                }  
+		            } ,
+				    series: [
+				        {
+				            name:'占比',
+				            type:'pie',
+				            radius: ['40%', '70%'],
+				            avoidLabelOverlap: false,
+				            //悬浮提示框
+				            data:data.vd
+				        }
+				    ]
+				};
+
+	        // 使用刚指定的配置项和数据显示图表。
+	        myChart2.setOption(option);
+	        window.onresize = myChart2.resize; 
+	}
+		function init() {
+			var winW = $(".page-content").width();
+			$(".right").css({'width': winW - 415 + "px"});
+			$(".page-content").height($(window).height()-50);
+			var pageH = $(".page-content").height();
+			$(".bottom").css({'width': winW + "px"});
+			$("#echarts2").css('height',pageH-530+"px");
+		}
+		function initEchartsData(){
+			myChart1.showLoading();
+			myChart2.showLoading();
+			$.ajax({
+				type:"POST",
+				url:"${adminPath}/medicalgeneralchart/medicalgeneralchart/findGeneralCharts",
+				dataType:"json",
+				success:function(data){
+					var hgradeList = data.extend.hgradeList;
+					//var lgradearList = data.extend.lgradearList;
+					var hpredictList = data.extend.hpredictList;
+					//var lpredictList = data.extend.lpredictList;
+					$("#echarts-title").html("好评百分比")
+					$("#echarts2-title").html("预测高分百分比")
+					
+					//饼图设置
+					$.each(hgradeList,function(i,item){
+						_pieData1.ld.push(item.name);
+						temp = {value:item.ACount,name:item.name};
+						_pieData1.vd.push(temp);
+					});
+					/* $.each(lgradearList,function(i,item){
+						_pieData.ld.push(item.name);
+						temp = {value:item.DCount,name:item.name};
+						_pieData.vd.push(temp);
+					}); */
+					$.each(hpredictList,function(i,item){
+						_pieData2.ld.push(item.name);
+						temp = {value:item.hpCount,name:item.name};
+						_pieData2.vd.push(temp);
+					});
+					/* $.each(lpredictList,function(i,item){
+						_pieData.ld.push(item.name);
+						temp = {value:item.lpCount,name:item.name};
+						_pieData.vd.push(temp);
+					}); */
+				},
+				complete:function(){
+					myChart1.hideLoading();
+					Echarts1(_pieData1);
+					myChart2.hideLoading();
+					Echarts2(_pieData2);
+				}
+			});
+		}
+		$(function() {
+			initEchartsData();
+			//Echarts1();
+			//Echarts2();
+			init();
+			$(".right .tabs-t>li").click(function(){
+				$(".right .tabs-c>li").eq($(this).index()).addClass("active").siblings("li").removeClass("active");
+				$(this).addClass("active").siblings("li").removeClass("active");
+			});
+			$(".left>.tip>.am-u-sm-4").click(function(){
+				var url = $(this).attr("data-href");
+				if(url) location.href=url;
+			});
+		});
+		$(window).resize(init);
+		
+	</script>
+
 </body>
 </html>

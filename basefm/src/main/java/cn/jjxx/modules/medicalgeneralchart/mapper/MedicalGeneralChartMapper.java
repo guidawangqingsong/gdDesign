@@ -1,6 +1,12 @@
 package cn.jjxx.modules.medicalgeneralchart.mapper;
 
+import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+
 import cn.jjxx.modules.medicalgeneralchart.entity.MedicalGeneralChart;
  
 /**   
@@ -12,5 +18,11 @@ import cn.jjxx.modules.medicalgeneralchart.entity.MedicalGeneralChart;
  *
  */
 public interface MedicalGeneralChartMapper extends BaseMapper<MedicalGeneralChart> {
-    
+	List<Map<String,Object>> selectHGradeJson(@Param("orgIds") String orgIds);
+	
+	List<Map<String,Object>> selectLGradeJson(@Param("orgIds")String orgIds);
+	
+	List<Map<String,Object>> selectHPredictJson(@Param("orgIds")String orgIds);
+	
+	List<Map<String, Object>> selectLPredictJson(@Param("orgIds")String orgIds);
 }

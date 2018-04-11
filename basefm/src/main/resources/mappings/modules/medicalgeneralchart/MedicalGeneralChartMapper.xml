@@ -15,8 +15,10 @@
     t.staff_id,
     t.org_id,
     ss.`code` as staffNumber,
-    (select count(id) from medical_evaluation where sys_config='A' or sys_config='B')as highOpinon,
-	(select count(id) from medical_evaluation where sys_config='C' or sys_config='D')as lowOpinon
+    (select count(id) AS highOpinon from medical_evaluation
+	where sys_config='03' or sys_config='04' and del_flag=0)as highOpinon,
+	(select count(id) AS lowOpinon from medical_evaluation
+	where sys_config='01' or sys_config='02' and del_flag=0)as lowOpinon
   </sql>
   
   <!-- 关联职员信息 -->
@@ -39,8 +41,10 @@
 	    t.remarks,
 	    s.`code` as staff_id,
 	    t.org_id,
-	    (select count(id) from medical_evaluation where sys_config='A' or sys_config='B')as high_opinon,
-	    (select count(id) from medical_evaluation where sys_config='C' or sys_config='D')as low_opinon
+	    (select count(id) AS highOpinon from medical_evaluation
+		where sys_config='03' or sys_config='04' and del_flag=0)as high_opinon,
+	    (select count(id) AS lowOpinon from medical_evaluation
+		where sys_config='01' or sys_config='02' and del_flag=0)as low_opinon
 		FROM medical_general_chart t
 		LEFT JOIN sys_user u on (t.create_by = u.id)
 		LEFT JOIN sys_user up on (t.update_by = up.id) 
@@ -72,14 +76,29 @@
 	</update>
   
     <!-- 统计不同组织系统设置评价A、B、C、D四个等级所占的比例 -->
-  	<select id="selectGradeJson" parameterType="String" resultType="java.util.HashMap">
+  	<select id="selectHGradeJson" parameterType="String" resultType="java.util.HashMap">
   		select o.name,count(m.id) as ACount from medical_evaluation m 
 		left join sys_organization o on o.id = m.org_id
-		where m.del_flag=0 and sys_config='A' group by org_id
+		where m.del_flag=0 and sys_config='03' or sys_config='04' group by org_id
+  	</select>
+  
+  	<select id="selectLGradeJson" parameterType="String" resultType="java.util.HashMap">
+  		select o.name,count(m.id) as DCount from medical_evaluation m 
+		left join sys_organization o on o.id = m.org_id
+		where m.del_flag=0 and sys_config='01' or sys_config='02' group by org_id
   	</select>
   
   	<!-- 统计不同组织主要功能评分大于60与小于60的所占比 -->
-  	<select id="selectPredictJson" parameterType="String" resultType="java.util.HashMap">
+  	<select id="selectHPredictJson" parameterType="String" resultType="java.util.HashMap">
+  		select o.name,count(m.id) as hpCount from medical_evaluation m 
+		left join sys_organization o on o.id = m.org_id
+		where m.del_flag=0 and m.sys_predict>=60.0 group by org_id
+  	</select>
+  
+  	<select id="selectLPredictJson" parameterType="String" resultType="java.util.HashMap">
+  		select o.name,count(m.id) as lpCount from medical_evaluation m 
+		left join sys_organization o on o.id = m.org_id
+		where m.del_flag=0 and m.sys_predict &lt; 60.0 group by org_id
   	</select>
   
 </mapper>

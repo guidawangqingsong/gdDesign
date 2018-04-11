@@ -31,6 +31,7 @@ import javax.validation.Valid;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -38,6 +39,10 @@ import java.util.Map;
 
 import cn.jjxx.modules.medicalgeneralchart.entity.MedicalGeneralChart;
 import cn.jjxx.modules.medicalgeneralchart.service.IMedicalGeneralChartService;
+import cn.jjxx.modules.sys.entity.Staff;
+import cn.jjxx.modules.sys.entity.User;
+import cn.jjxx.modules.sys.service.IStaffService;
+import cn.jjxx.modules.sys.utils.UserUtils;
 
 /**   
  * @Title: 综合分析
@@ -54,6 +59,8 @@ public class MedicalGeneralChartController extends BaseBeanController<MedicalGen
 
     @Autowired
     protected IMedicalGeneralChartService medicalGeneralChartService;
+    @Autowired
+    protected IStaffService staffService;
 
     public MedicalGeneralChart get(String id) {
         if (!ObjectUtils.isNullOrEmpty(id)) {
@@ -141,8 +148,16 @@ public class MedicalGeneralChartController extends BaseBeanController<MedicalGen
     
     @RequestMapping(value = "create", method = RequestMethod.GET)
     public String create(Model model, HttpServletRequest request, HttpServletResponse response) {
-        if (!model.containsAttribute("data")) {
-            model.addAttribute("data", newModel());
+    	User user = UserUtils.getUser();
+    	MedicalGeneralChart generalChart=new MedicalGeneralChart();
+    	
+    	if (!model.containsAttribute("data")) {
+    		generalChart.setStaffId(user.getStaffId());
+    		Staff staff = staffService.selectById(user.getStaffId());
+    		if(!ObjectUtils.isNullOrEmpty(staff)){			//判断staff实体有没有查询出来
+    			generalChart.setStaffNumber(staff.getCode());	//获取staff的编号
+        	}
+            model.addAttribute("data", generalChart);
         }
         return display("edit");
     }
@@ -259,5 +274,77 @@ public class MedicalGeneralChartController extends BaseBeanController<MedicalGen
             validJson.setInfo("验证异常，请检查字段是否正确!");
         }
         return validJson;
+    }
+    
+    /**
+     * @Description: 获取首页图表数据 .<br>
+     * @param request .<br>
+     * @param response .<br>   
+     * @author jjxx.wangqingsong .<br>
+     * @date 2018-4-11 下午9:20:21.<br>
+     */
+    @SuppressWarnings("unchecked")
+    @RequestMapping(value = "findGeneralCharts")
+    @ResponseBody
+	public AjaxJson findGeneralCharts(HttpServletRequest request,HttpServletResponse response){
+    	AjaxJson j = new AjaxJson();
+    	List<Map<String,Object>> hgradeList = (List<Map<String, Object>>) selectHGradeJson(request).getData();
+    	List<Map<String,Object>> lgradeList = (List<Map<String, Object>>) selectLGradeJson(request).getData();
+    	List<Map<String,Object>> hpredictList = (List<Map<String, Object>>) selectHPredictJson(request).getData();
+    	List<Map<String,Object>> lpredictList = (List<Map<String, Object>>) selectLPredictJson(request).getData();
+
+    	j.put("hgradeList", hgradeList);
+    	j.put("lgradearList", lgradeList);
+    	j.put("hpredictList", hpredictList);
+    	j.put("lpredictList", lpredictList);
+    	return j;
+    }
+    
+    @RequestMapping(value = "selectHGradeJson")
+    @ResponseBody
+    public AjaxJson selectHGradeJson(HttpServletRequest request){
+    	AjaxJson j = new AjaxJson();
+    	String orgId = UserUtils.getUser().getOrgId();
+    	//boolean flag = checkIsTender();
+    	List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+    	list = medicalGeneralChartService.selectHGradeJson(orgId);
+    	j.setData(list);
+    	return j;
+    }
+    
+    @RequestMapping(value = "selectLGradeJson")
+    @ResponseBody
+    public AjaxJson selectLGradeJson(HttpServletRequest request){
+    	AjaxJson j = new AjaxJson();
+    	//boolean flag = checkIsTender();
+    	String orgId = UserUtils.getUser().getOrgId();
+    	List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+    	list = medicalGeneralChartService.selectLGradeJson(orgId);
+    	j.setData(list);
+    	return j;
+    }
+    
+    @RequestMapping(value = "selectHPredictJson")
+    @ResponseBody
+    public AjaxJson selectHPredictJson(HttpServletRequest request){
+    	AjaxJson j = new AjaxJson();
+    	//boolean flag = checkIsTender();
+    	String orgId = UserUtils.getUser().getOrgId();
+    	List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+    	list = medicalGeneralChartService.selectHPredictJson(orgId);
+    	j.setData(list);
+    	return j;
+    }
+    
+    @RequestMapping(value = "selectLPredictJson")
+    @ResponseBody
+    public AjaxJson selectLPredictJson(HttpServletRequest request){
+    	AjaxJson j = new AjaxJson();
+    	//boolean flag = checkIsTender();
+    	String orgId = UserUtils.getUser().getOrgId();
+    	List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+    	list = medicalGeneralChartService.selectLPredictJson(orgId);
+    	j.setData(list);
+    	return j;
     }
 }
