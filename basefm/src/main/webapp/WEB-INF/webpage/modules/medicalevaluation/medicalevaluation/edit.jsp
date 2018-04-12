@@ -27,7 +27,7 @@
 		              <label>组织评定:</label>
 		            </td>
 		            <td class="width-45" colspan="3">
-						<form:input path="originEva" htmlEscape="false" class="form-control" />
+						<form:input path="originEva" htmlEscape="false" class="form-control" datatype="n100"/>
 						<label class="Validform_checktip"></label>
 					</td>
 		   		</tr>
@@ -58,7 +58,7 @@
 		              <label>系统主要功能:</label>
 		            </td>
 		            <td class="width-35">
-						<form:input path="sysPredict" htmlEscape="false" class="form-control" datatype="dot"/>
+						<form:input path="sysPredict" htmlEscape="false" class="form-control" datatype="n100"/>
 						<label class="Validform_checktip"></label>
 					</td>
 					<td  class="width-15 active text-right">	

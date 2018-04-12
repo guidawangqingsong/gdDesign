@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>员工日志管理</title>
+    <title>医用日志管理</title>
     <meta name="decorator" content="form"/>
     <html:css name="bootstrap-fileinput" />
     <html:css name="simditor" />

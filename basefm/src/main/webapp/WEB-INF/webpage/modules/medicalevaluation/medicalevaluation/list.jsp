@@ -26,20 +26,21 @@
 			
 			<grid:column label="医护编号" name="staffId"/> <!-- 自动获取员工编号,不能手工添加 -->
 			<grid:column label="创建人"  name="createByName" query="true" queryMode="input"/>
-			<grid:column label="创建时间"  name="logTime" query="true" queryMode="date" condition="between" />
+			<grid:column label="创建时间"  name="createDate" query="true" queryMode="date" condition="between" />
 		    <grid:column label="医用预测功能"  name="sysPredict" query="true" queryMode="input"/> 
 		    <grid:column label="组织评定"  name="originEva" />
-		    <grid:column label= "系统前端界面"  name="sysFrontUI" />
-		    <grid:column label= "系统后台设计"  name="sysBackstage" />
+		    <grid:column label= "系统前端界面"  name="sysFrontUI" dict="sysEvaType"/>
+		    <grid:column label= "系统后台设计"  name="sysBackstage" dict="sysEvaType"/>
 		    <!-- 实现字典框查询  -->
 		    <grid:column label="系统设置"  name="sysConfig" dict="sysEvaType" query="true" queryMode="select"/>
-		    <grid:query name="staffId" queryMode="hidden" /> 
-			<label class="Validform_checktip"></label>
+		    <grid:column label="附件"  name="evaAttach" formatter="true"/>
+		    
 			<grid:toolbar function="update" winwidth="800px" winheight="600px"/>
-			<grid:toolbar title="删除" btnclass="btn-primary" function="batchDeleteLog" url="${adminPath}/medicalevaluation/medicalevaluation/batchDelete"/>	
-			<grid:toolbar title="添加" btnclass="btn-primary" winwidth="800px" winheight="600px" icon="fa-plus" function="createPage"  url="${adminPath}/medicalevaluation/medicalevaluation/create"/>
+			<grid:toolbar title="删除" btnclass="btn-primary" function="batchDeleteLog" url="${adminPath}/medicalevaluation/medicalevaluation/batch/delete"/>	
+			<grid:toolbar title="添加" function="createPage" btnclass="btn-primary" winwidth="800px" winheight="600px" icon="fa-plus" url="${adminPath}/medicalevaluation/medicalevaluation/create"/>
 			<grid:toolbar title="查看" function="detail"  url="${adminPath}/medicalevaluation/medicalevaluation/{id}/update"  btnclass="btn btn-sm btn-success" 
 			winwidth="800px" winheight="600px" icon="fa-search"/>
+			
 			
 			<%-- <grid:toolbar title="搜索" function="search"/> --%>
 			<grid:toolbar title="搜索" btnclass="btn-info" layout="right"  icon="fa fa-search" function="dataSearch"  />
@@ -167,7 +168,7 @@
 					//判断逻辑并关闭
 					setTimeout(function(){top.layer.close(index)}, 100);//延时0.1秒，对应360 7.1版本bug
 					//刷新表单
-					refreshTable1(gridId); 
+					refreshTable(gridId); 
 				});
 			},
 			cancel: function(index){}
@@ -175,7 +176,7 @@
 	} 
 	
 	/**方法操作成功后刷新表单*/
-	function refreshTable1(gridId){
+	function refreshTable(gridId){
 		dataSearch(gridId);
 	}
 	
@@ -221,7 +222,7 @@
 	   						var msg = d.msg;
 	   					    layer.msg(msg, {icon:1});
 	   					    //刷新表单
-	   			            refreshTable1(gridId);
+	   			            refreshTable(gridId);
 	   					}else{
 	   						var msg = d.msg;
 	   					    layer.msg(msg, {icon: 3,shade:0.3});

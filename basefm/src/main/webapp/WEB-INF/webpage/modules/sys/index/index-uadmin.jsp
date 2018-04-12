@@ -126,6 +126,7 @@
 				        formatter: "{a} <br/>{b}: {c} ({d}%)"
 				    },
 				    //颜色标记
+				    color:['#A4D3EE','#4A708B','#C67171','#C5C1AA','#4876FF'],
 				    legend: {
 				        orient: 'vertical',
 				        x: 'left',

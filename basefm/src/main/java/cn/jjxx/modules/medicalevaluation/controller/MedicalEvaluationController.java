@@ -98,8 +98,8 @@ public class MedicalEvaluationController extends BaseBeanController<MedicalEvalu
     		entityWrapper.eq("u.realname", creatBy);//根据输入的用户名查询日志
     	}
     	
-    	//获取前台评价等级
-        String sysEvaType = request.getParameter("sysEvaType");
+    	//获取后台评价等级
+        String sysEvaType = request.getParameter("sysConfig");
     	if(!StringUtils.isEmpty(sysEvaType)){
     		entityWrapper.eq("t.sys_config", sysEvaType);
     	}
@@ -216,6 +216,7 @@ public class MedicalEvaluationController extends BaseBeanController<MedicalEvalu
             e.printStackTrace();
             ajaxJson.fail("保存失败!<br />原因:" + e.getMessage());
         }
+        ajaxJson.setData(medicalEvaluation);
         return ajaxJson;
     }
 

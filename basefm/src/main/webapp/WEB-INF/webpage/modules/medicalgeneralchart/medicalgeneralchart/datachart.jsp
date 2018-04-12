@@ -7,7 +7,10 @@
   <meta name="decorator" content="list"/>
   <link type="text/css" rel="stylesheet" href="${staticPath}/vendors/jquery-ui-1.10.4.custom/css/ui-lightness/jquery-ui-1.10.4.custom.min.css">
   <html:css  name="iCheck,Validform,jquery-ztree,easy-ui,favicon,font-awesome,animate,pace"/>
-  <html:js  name="iCheck,Validform,jquery-ztree,easy-ui,public-js"/>
+  <link type="text/css" rel="stylesheet" href="${staticPath}/uadmin/css/datachart.css">
+  <!-- costom css  -->
+  
+  <html:js  name="iCheck,Validform,jquery-ztree,easy-ui,bootstrap,public-js,bootstrap-hover-dropdown,echarts"/>
   <style type="text/css">.row{margin:0;}</style>
 </head>
 
@@ -49,7 +52,7 @@
 			</ul>
 			<ul class="tabs-c">
 				<li class="active">
-					<div id="echarts1" style="width:50%;height:200px;"></div>
+					<div id="echarts1" style="width:60%;height:300px;"></div>
 				</li>
 			</ul>
 		</div>
@@ -59,12 +62,13 @@
 			</ul>
 			<ul class="tabs-c">
 				<li class="active">
-					<div id="echarts2" style="width:50%;height:200px;"></div>
+					<div id="echarts2" style="width:60%;height:300px;"></div>
 				</li>
 			</ul>
 		</div>
 	</div>
 </div>
+
 <script type="text/javascript">
     var orgId ='';
 	var treeObj;
@@ -269,6 +273,7 @@
 				        formatter: "{a} <br/>{b}: {c} ({d}%)"
 				    },
 				    //颜色标记
+				    color:['#A4D3EE','#4A708B','#C67171','#C5C1AA','#4876FF'],
 				    legend: {
 				        orient: 'horizontal',
 				        x: 'center',
@@ -302,6 +307,7 @@
 				        formatter: "{a} <br/>{b}: {c} ({d}%)"
 				    },
 				    //颜色标记
+				    color:['#A4D3EE','#4A708B','#C67171','#C5C1AA','#4876FF'],
 				    legend: {
 				        orient: 'horizontal',
 				        x: 'center',
@@ -357,21 +363,11 @@
 						temp = {value:item.ACount,name:item.name};
 						_pieData1.vd.push(temp);
 					});
-					/* $.each(lgradearList,function(i,item){
-						_pieData.ld.push(item.name);
-						temp = {value:item.DCount,name:item.name};
-						_pieData.vd.push(temp);
-					}); */
 					$.each(hpredictList,function(i,item){
 						_pieData2.ld.push(item.name);
 						temp = {value:item.hpCount,name:item.name};
 						_pieData2.vd.push(temp);
 					});
-					/* $.each(lpredictList,function(i,item){
-						_pieData.ld.push(item.name);
-						temp = {value:item.lpCount,name:item.name};
-						_pieData.vd.push(temp);
-					}); */
 				},
 				complete:function(){
 					myChart1.hideLoading();
@@ -383,8 +379,6 @@
 		}
 		$(function() {
 			initEchartsData();
-			//Echarts1();
-			//Echarts2();
 			init();
 			$(".right .tabs-t>li").click(function(){
 				$(".right .tabs-c>li").eq($(this).index()).addClass("active").siblings("li").removeClass("active");

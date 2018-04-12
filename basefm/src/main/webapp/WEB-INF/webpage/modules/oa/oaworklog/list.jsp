@@ -32,7 +32,7 @@
 		    <grid:column label= "未完成的原因"  name="reason" />
 		    <grid:query name="staffId" queryMode="hidden" /> 
 			<grid:column label="日志时间"  name="logTime" query="true" queryMode="date" condition="between" />
-			<grid:column label="查看附件"  name="logAttach" formatter="true"/>
+			<grid:column label="附件"  name="logAttach" formatter="true"/>
 			<label class="Validform_checktip"></label>
 			<grid:toolbar function="update" winwidth="800px" winheight="600px"/>
 			<grid:toolbar title="删除" btnclass="btn-primary" function="batchDeleteLog" url="${adminPath}/oa/oaworklog/batchDelete"/>	
