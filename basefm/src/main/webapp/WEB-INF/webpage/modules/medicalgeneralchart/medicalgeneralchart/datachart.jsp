@@ -66,6 +66,16 @@
 				</li>
 			</ul>
 		</div>
+		<div class="absolute south">
+			<ul class="tabs-t">
+				<li class="active"><div id="echarts3-title">综合气泡分布图</div></li>
+			</ul>
+			<ul class="tabs-c">
+				<li class="active">
+					<div id="echarts3" style="width:100%;height:300px;"></div>
+				</li>
+			</ul>
+		</div>
 	</div>
 </div>
 
@@ -262,10 +272,12 @@
 <script type="text/javascript">
 	var myChart1 = echarts.init(document.getElementById('echarts1'));
 	var myChart2 = echarts.init(document.getElementById('echarts2'));
-	//var myChart3 = echarts.init(document.getElementById('echarts3'));
+	var myChart3 = echarts.init(document.getElementById('echarts3'));
 	//var myChart4 = echarts.init(document.getElementById('echarts4'));
 	var _pieData1={ld:[],vd:[]};
 	var _pieData2={ld:[],vd:[]};
+	var _bubbleData1={ld:[],vd:[],xd:[]};
+	var _bubbleData2={ld:[],vd:[],xd:[]}
 	function Echarts1(data){
 		 var option = {
 				    tooltip: {
@@ -334,6 +346,97 @@
 	        myChart2.setOption(option);
 	        window.onresize = myChart2.resize; 
 	}
+	
+	function Echarts3(data1,data2){
+		var option = {
+			    backgroundColor: new echarts.graphic.RadialGradient(0.3, 0.3, 0.8, [{
+			        offset: 0,
+			        color: '#f7f8fa'
+			    }, {
+			        offset: 1,
+			        color: '#cdd0d5'
+			    }]),
+			    title: {
+			        text: '综合分布统计'
+			    },
+			    legend: {
+			        right: 10,
+			        data: ['系统设置好评', '预测高分']
+			    },
+			    xAxis: {
+			        splitLine: {
+			            lineStyle: {
+			                type: 'dashed'
+			            }
+			        },
+			        data:['贵阳总医院','贵阳第一医院','贵阳第二医院','贵阳第三医院','贵阳第四医院']
+			    },
+			    yAxis: {
+			        splitLine: {
+			            lineStyle: {
+			                type: 'dashed'
+			            }
+			        },
+			        scale: true
+			    },
+			    series: [{
+			        name: '系统设置好评',
+			        data: data1.vd,
+			        type: 'scatter',
+			        label: {
+			            emphasis: {
+			                show: true,
+			                position: 'top'
+			            }
+			        },
+			        itemStyle: {
+			            normal: {
+			                shadowBlur: 10,
+			                shadowColor: 'rgba(120, 36, 50, 0.5)',
+			                shadowOffsetY: 5,
+			                color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
+			                    offset: 0,
+			                    color: 'rgb(251, 118, 123)'
+			                }, {
+			                    offset: 1,
+			                    color: 'rgb(204, 46, 72)'
+			                }])
+			            }
+			        }
+			    }, {
+			        name: '预测高分',
+			        data: data2.vd,
+			        type: 'scatter',
+			        label: {
+			            emphasis: {
+			                show: true,
+			                formatter: function (param) {
+			                    return param.data2.vd;
+			                },
+			                position: 'top'
+			            }
+			        },
+			        itemStyle: {
+			            normal: {
+			                shadowBlur: 10,
+			                shadowColor: 'rgba(25, 100, 150, 0.5)',
+			                shadowOffsetY: 5,
+			                color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
+			                    offset: 0,
+			                    color: 'rgb(129, 227, 238)'
+			                }, {
+			                    offset: 1,
+			                    color: 'rgb(25, 183, 207)'
+			                }])
+			            }
+			        }
+			    }]
+			};
+		 // 使用刚指定的配置项和数据显示图表。
+        myChart3.setOption(option);
+        window.onresize = myChart3.resize; 
+	}
+	
 		function init() {
 			var winW = $(".page-content").width();
 			$(".right").css({'width': winW - 415 + "px"});
@@ -345,6 +448,7 @@
 		function initEchartsData(){
 			myChart1.showLoading();
 			myChart2.showLoading();
+			myChart3.showLoading();
 			$.ajax({
 				type:"POST",
 				url:"${adminPath}/medicalgeneralchart/medicalgeneralchart/findGeneralCharts",
@@ -357,26 +461,45 @@
 					$("#echarts-title").html("好评百分比")
 					$("#echarts2-title").html("预测高分百分比")
 					
+					var d1=[];
+					var d2=[];
+					var tablelist = '';
+					
 					//饼图设置
 					$.each(hgradeList,function(i,item){
 						_pieData1.ld.push(item.name);
 						temp = {value:item.ACount,name:item.name};
 						_pieData1.vd.push(temp);
+						_bubbleData1.ld=[item.name];
+						_bubbleData1.xd.push(item.name);
+						d1.push(item.ACount);
+						if(i<=8) tablelist += '<tr><td>'+item.name+'</td><td>'+item.ACount+'</td><td>'
 					});
 					$.each(hpredictList,function(i,item){
+						_bubbleData2.ld=[item.name];
 						_pieData2.ld.push(item.name);
 						temp = {value:item.hpCount,name:item.name};
 						_pieData2.vd.push(temp);
+						_bubbleData2.xd.push(item.name);
+						d2.push(item.hpCount);
+						if(i<=8) tablelist += '<tr><td>'+item.name+'</td><td>'+item.hpCount+'</td><td>'
 					});
+					
+					//气泡图设置
+					_bubbleData1.vd=d1;
+					_bubbleData2.vd=d2;
 				},
 				complete:function(){
 					myChart1.hideLoading();
 					Echarts1(_pieData1);
 					myChart2.hideLoading();
 					Echarts2(_pieData2);
+					myChart3.hideLoading();
+					Echarts3(_bubbleData1,_bubbleData2);
 				}
 			});
 		}
+		
 		$(function() {
 			initEchartsData();
 			init();
