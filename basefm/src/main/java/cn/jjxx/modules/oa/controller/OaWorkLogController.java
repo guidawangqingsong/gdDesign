@@ -268,13 +268,11 @@ public class OaWorkLogController extends BaseBeanController<OaWorkLog> {
         try {
         	//判断日志id是否为空并且日志主题也不能为空，若为空，则执行插入操作。不为空则更新操作。
             if (StringUtils.isEmpty(oaWorkLog.getId())&&StringUtils.isNotEmpty(oaWorkLog.getLogTheme())) {
-	    		//System.out.print(oaWorkLog.getLogTheme()+"theme");
 	    		oaWorkLogService.insert(oaWorkLog);
 	    		ajaxJson.success("保存成功");
             	
             } else if(StringUtils.isNotEmpty(oaWorkLog.getId())) {
                 oaWorkLogService.insertOrUpdate(oaWorkLog);
-                //System.out.print(oaWorkLog.getLogAttach()+"dfsff");
             }
             else{
             	ajaxJson.fail("日志还没填写完整！");

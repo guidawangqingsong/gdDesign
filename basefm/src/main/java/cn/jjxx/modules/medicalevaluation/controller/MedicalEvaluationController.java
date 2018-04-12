@@ -16,6 +16,7 @@ import cn.jjxx.core.utils.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializeFilter;
 
+import org.python.antlr.PythonParser.else_clause_return;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -195,7 +196,7 @@ public class MedicalEvaluationController extends BaseBeanController<MedicalEvalu
     public AjaxJson doSave(MedicalEvaluation medicalEvaluation, HttpServletRequest request, HttpServletResponse response,
                            BindingResult result) {
         AjaxJson ajaxJson = new AjaxJson();
-        ajaxJson.success("保存成功");
+        
         if (hasError(medicalEvaluation, result)) {
             // 错误提示
             String errorMsg = errorMsg(result);
@@ -209,9 +210,11 @@ public class MedicalEvaluationController extends BaseBeanController<MedicalEvalu
         try {
             if (StringUtils.isEmpty(medicalEvaluation.getId())) {
                 medicalEvaluationService.insert(medicalEvaluation);
-            } else {
+                ajaxJson.success("保存成功");
+            } else{
                 medicalEvaluationService.insertOrUpdate(medicalEvaluation);
             }
+            ajaxJson.setData(medicalEvaluation);
         } catch (Exception e) {
             e.printStackTrace();
             ajaxJson.fail("保存失败!<br />原因:" + e.getMessage());

@@ -45,14 +45,14 @@
 		</grid:grid>
 	</div>
 	<%-- 中心布局 --%>
-	<div data-options="region:'center'">
+	<div data-options="region:'center'" style="width:100%;">
 		<div class="absolute left">
 			<ul class="tabs-t">
 				<li class="active"><div id="echarts-title">好评百分比</div></li>
 			</ul>
 			<ul class="tabs-c">
 				<li class="active">
-					<div id="echarts1" style="width:60%;height:300px;"></div>
+					<div id="echarts1" style="width:87%;height:300px;"></div>
 				</li>
 			</ul>
 		</div>
@@ -62,7 +62,7 @@
 			</ul>
 			<ul class="tabs-c">
 				<li class="active">
-					<div id="echarts2" style="width:60%;height:300px;"></div>
+					<div id="echarts2" style="width:87%;height:300px;"></div>
 				</li>
 			</ul>
 		</div>
