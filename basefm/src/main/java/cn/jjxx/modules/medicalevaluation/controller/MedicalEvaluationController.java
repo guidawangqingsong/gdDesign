@@ -40,8 +40,10 @@ import java.util.Map;
 import cn.jjxx.modules.medicalevaluation.entity.MedicalEvaluation;
 import cn.jjxx.modules.medicalevaluation.service.IMedicalEvaluationService;
 import cn.jjxx.modules.oa.entity.OaWorkLog;
+import cn.jjxx.modules.sys.entity.Attachment;
 import cn.jjxx.modules.sys.entity.Staff;
 import cn.jjxx.modules.sys.entity.User;
+import cn.jjxx.modules.sys.service.IAttachmentService;
 import cn.jjxx.modules.sys.service.IStaffService;
 import cn.jjxx.modules.sys.utils.UserUtils;
 
@@ -62,6 +64,8 @@ public class MedicalEvaluationController extends BaseBeanController<MedicalEvalu
     protected IMedicalEvaluationService medicalEvaluationService;
     @Autowired
     protected IStaffService staffService;
+    @Autowired
+    protected IAttachmentService attachment;
 
     public MedicalEvaluation get(String id) {
         if (!ObjectUtils.isNullOrEmpty(id)) {
@@ -164,7 +168,7 @@ public class MedicalEvaluationController extends BaseBeanController<MedicalEvalu
     		if(!ObjectUtils.isNullOrEmpty(staff)){			//判断staff实体有没有查询出来
     			medicalEva.setStaffNumber(staff.getCode());	//获取staff的编号
         	}
-            model.addAttribute("data", medicalEva);
+            model.addAttribute("data", medicalEva); 
         }
         return display("edit");
     }
@@ -210,11 +214,9 @@ public class MedicalEvaluationController extends BaseBeanController<MedicalEvalu
         try {
             if (StringUtils.isEmpty(medicalEvaluation.getId())) {
                 medicalEvaluationService.insert(medicalEvaluation);
-                ajaxJson.success("保存成功");
             } else{
                 medicalEvaluationService.insertOrUpdate(medicalEvaluation);
             }
-            ajaxJson.setData(medicalEvaluation);
         } catch (Exception e) {
             e.printStackTrace();
             ajaxJson.fail("保存失败!<br />原因:" + e.getMessage());

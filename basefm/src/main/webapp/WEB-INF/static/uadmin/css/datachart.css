@@ -53,7 +53,7 @@ li,a {
 	height: 3px;
 	background-color: #337BF3;
 	position: absolute;
-	bottom: 0;
+	bottom: 10px;
 	left: 10%;
 }
 
@@ -74,7 +74,6 @@ li,a {
 	float: left;
 	height: 50px;
 	line-height: 50px;
-	padding: 0 20px;
 	font-size: 14px;
 	position: relative;
 	cursor: pointer;
@@ -86,12 +85,8 @@ li,a {
 	height: 3px;
 	background-color: #337BF3;
 	position: absolute;
-	bottom: 0;
+	bottom: 10px;
 	left: 10%;
-}
-.right .tabs-c>li.active,
-.bottom .tabs-c>li.active{
-	display: block;
 }
 
 .south{

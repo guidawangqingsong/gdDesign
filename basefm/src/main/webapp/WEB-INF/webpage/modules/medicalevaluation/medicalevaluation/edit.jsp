@@ -87,12 +87,13 @@
 		            </td>
 					<td class="width-35" colspan="3">
 						<input id="relateTable" type="hidden" value="medical_evaluation"/>
-						<input id="relateFeild" type="hidden" value="evaAttach"/>						
-						<form:fileinput buttonText="选择文件" saveType="billId" 
-						fileActionSettings="{showRemove: true,showUpload: true}" isFormSubmit="true" 
-						uploadExtraFieldData="relateTable,relateFeild"
-						showUpload="false" showRemove="false" autoUpload="false" fileInputWidth="100px"  
-						fileInputHeight="100px"  path="evaAttach" htmlEscape="false" class="form-control" />
+						<input id="relateFeild" type="hidden" value="evaAttach"/>
+			            <form:fileinput buttonText="选择附件" saveType="billId" multiple="true"
+                             fileActionSettings="{showRemove: true,showUpload: false}"
+                             isFormSubmit="true" uploadExtraFieldData="relateTable,relateFeild"
+                             showUpload="false" showRemove="false" autoUpload="false"
+                             fileInputWidth="100px"  fileInputHeight="100px"  path="evaAttach"
+                             htmlEscape="false" class="form-control"/>
 					</td>
 				</tr>
 		   </tbody>
@@ -100,5 +101,9 @@
 	</form:form>
 <html:js name="bootstrap-fileinput" />
 <html:js name="simditor" />
+<!-- 全局js -->
+<html:js name="iCheck,Validform,markdown,syntaxhighlighter" />
+<!-- 自定义js -->
+<script src="${staticPath}/common/js/content.js?v=1.0.0"></script>
 </body>
 </html>

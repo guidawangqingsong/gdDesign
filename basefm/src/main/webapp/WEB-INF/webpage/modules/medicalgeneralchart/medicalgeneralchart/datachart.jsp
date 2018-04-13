@@ -62,7 +62,7 @@
 			</ul>
 			<ul class="tabs-c">
 				<li class="active">
-					<div id="echarts2" style="width:87%;height:300px;"></div>
+					<div id="echarts2" style="width:87%;height:300px;left:-8%"></div>
 				</li>
 			</ul>
 		</div>
@@ -287,8 +287,8 @@
 				    //颜色标记
 				    color:['#A4D3EE','#4A708B','#C67171','#C5C1AA','#4876FF'],
 				    legend: {
-				        orient: 'horizontal',
-				        x: 'center',
+				        orient: 'vertical',
+				        x: 'left',
 				        data:data.ld
 				    },
 		            itemStyle: {  
@@ -321,8 +321,8 @@
 				    //颜色标记
 				    color:['#A4D3EE','#4A708B','#C67171','#C5C1AA','#4876FF'],
 				    legend: {
-				        orient: 'horizontal',
-				        x: 'center',
+				        orient: 'vertical',
+				        x: 'left',
 				        data:data.ld
 				    },
 		            itemStyle: {  
@@ -360,7 +360,7 @@
 			        text: '综合分布统计'
 			    },
 			    legend: {
-			        right: 10,
+			        center:0,
 			        data: ['系统设置好评', '预测高分']
 			    },
 			    xAxis: {
