@@ -372,8 +372,6 @@ public class OaWorkLogController extends BaseBeanController<OaWorkLog> {
     @RequestMapping(value = "{id}/file", method = RequestMethod.GET)
     public String file(@PathVariable("id") String id, Model model, HttpServletRequest request,
                               HttpServletResponse response) {
-        OaWorkLog oaWorkLog = get(id);
-        model.addAttribute("data", oaWorkLog);
         return display("file");
     }
     

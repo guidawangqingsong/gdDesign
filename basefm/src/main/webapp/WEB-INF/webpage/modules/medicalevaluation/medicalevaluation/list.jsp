@@ -22,6 +22,8 @@
 		 <grid:grid id="medicalEvaluationGridId" url="${adminPath}/medicalevaluation/medicalevaluation/ajaxList">
 			<grid:column label="sys.common.key" hidden="true"   name="id" width="100"/>
 			<grid:column label="sys.common.opt"  name="opt" formatter="button" width="100"/>
+			<grid:button groupname="opt" title="附件" url="${adminPath}/medicalevaluation/medicalevaluation/{id}/file"  
+			 winwidth="800px" function="rowDialogDetailRefresh" outclass="btn-info" innerclass="fa-file"/>
 			<grid:button groupname="opt" function="delete" />
 			
 			<grid:column label="医护编号" name="staffId"/> <!-- 自动获取员工编号,不能手工添加 -->
@@ -208,43 +210,6 @@
 		}
 	}
 	
-	
-	/**附件的超链接*/
-	function medicalEvaluationGridIdEvaAttachFormatter(value, options, row){
-		var str = "";
-		if(value.length!=0){
-			str = "<a  onclick=file('"+row.id+"')>"+value+"</a>";
-		}
-		return str;
-	}
-	
-	/**打开附件窗口*/
-	function file(id){
-		var url = "${adminPath}/medicalevaluation/medicalevaluation/{id}/file";//{}占位符
-		url = url.replace("{id}", id);
-		openDialogView("附件详情", url + "?id=" + id, "800px", "500px");		
-	}
-
-	// 打开对话框(查看)
-	function openDialogView(title, url, width, height) {
-		if (navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i)) {// 如果是移动端，就使用自适应大小弹窗
-			width = 'auto';
-			height = 'auto';
-		} 
-		else {// 如果是PC端，根据用户设置的width和height显示。
-			
-		}
-		top.layer.open({
-			type : 2,
-			area : [ width, height ],
-			title : title,
-			maxmin : true, // 开启最大化最小化按钮
-			content : url,
-			btn : [ '关闭' ],
-			cancel : function(index) {
-			}
-		});
-	}
 </script>
 
 </body>

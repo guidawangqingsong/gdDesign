@@ -21,8 +21,12 @@
 	<div data-options="region:'center'">
 		 <grid:grid id="oaWorkLogGridId" url="${adminPath}/oa/oaworklog/ajaxList" >
 			<grid:column label="sys.common.key" hidden="true"   name="id" width="100"/>
+			<grid:column label="sys.common.opt" name="opt" formatter="button" width="100"/>
+			<grid:button groupname="opt" title="附件" url="${adminPath}/oa/oaworklog/{id}/file"  
+			 winwidth="800px" function="rowDialogDetailRefresh" outclass="btn-info" innerclass="fa-file"/>
+			<grid:button groupname="opt" function="delete" />
 			
-			<grid:column label="医护编号" name="staffId"/> <!-- 自动获取员工编号,不能手工添加 -->
+			<%-- <grid:column label="医护编号" name="staffId"/> --%> <!-- 自动获取员工编号,不能手工添加 -->
 			<grid:column label="创建人"  name="createByName" query="true" queryMode="input"/>
 			<grid:column label="更新时间"  name="updateDate" />
 		    <grid:column label="日志主题"  name="logTheme" query="true"  queryMode="input"/>
@@ -35,7 +39,7 @@
 			<grid:column label="附件"  name="logAttach" formatter="true"/>
 			<label class="Validform_checktip"></label>
 			<grid:toolbar function="update" winwidth="800px" winheight="600px"/>
-			<grid:toolbar title="删除" btnclass="btn-primary" function="batchDeleteLog" url="${adminPath}/oa/oaworklog/batchDelete"/>	
+			<grid:toolbar title="删除" btnclass="btn-primary" function="batchDeleteLog" url="${adminPath}/oa/oaworklog/batchDelete" icon="fa-trash"/>	
 			<grid:toolbar title="添加" btnclass="btn-primary" winwidth="800px" winheight="600px" icon="fa-plus" function="createPage"  url="${adminPath}/oa/oaworklog/create"/>
 			<grid:toolbar title="查看" function="detail"  url="${adminPath}/oa/oaworklog/{id}/update"  btnclass="btn btn-sm btn-success" 
 			winwidth="800px" winheight="600px" icon="fa-search"/>
@@ -218,36 +222,6 @@
 		}
 		return str;
 	}
-	
-	/**打开附件窗口*/
-	function file(id){
-		var url = "${adminPath}/oa/oaworklog/{id}/file";//{}占位符
-		url = url.replace("{id}", id);
-		openDialogView("附件详情", url + "?id=" + id, "800px", "500px");		
-	}
-	
-	// 打开对话框(查看)
-	function openDialogView(title, url, width, height) {
-		if (navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i)) {// 如果是移动端，就使用自适应大小弹窗
-			width = 'auto';
-			height = 'auto';
-		} 
-		else {// 如果是PC端，根据用户设置的width和height显示。
-			
-		}
-		top.layer.open({
-			type : 2,
-			area : [ width, height ],
-			title : title,
-			maxmin : true, // 开启最大化最小化按钮
-			content : url,
-			btn : [ '关闭' ],
-			cancel : function(index) {
-			}
-		});
-	}
-
-	
 	
 </script>
 </body>

@@ -10,20 +10,22 @@
 </head>
 
 <body class="white-bg"  formid="oaWorkLogForm">
-    <form:form id="oaWorkLogForm" modelAttribute="data" method="post" class="form-horizontal">
-		<form:hidden path="id"/>
-		<form:hidden path="staffId"/>
-		<table  class="table table-bordered  table-condensed dataTables-example dataTable no-footer">
-	       	<input id="relateTable" type="hidden" value="oa_work_log" />
-			<input id="relateFeild" type="hidden" value="logAttach" />						
-			<form:fileinput saveType="billId" 
-			fileActionSettings="{showRemove: false,showUpload: false}" 
-			isFormSubmit="true"  uploadExtraFieldData="relateTable,relateFeild"
-			showUpload="false" showRemove="false" autoUpload="false" fileInputWidth="100px"  
-			fileInputHeight="100px"  path="logAttach" htmlEscape="false" class="form-control" />
-		</table>   
-	</form:form>
+ <div class="portlet-body">
+    <input id="id" type="hidden" value="${param.id}"/>
+    <html:display>
+
+    </html:display>
+    <form:fileinput saveType="billId" nested="false"
+                    fileInputSetting="{showRemove : false, showBrowse : false, layoutTemplates : {actionDelete:''}}"
+                    showUpload="false" showRemove="false" autoUpload="false"
+                    path="infoid" buttonText="选择文件"/>
+</div>
+
 <html:js name="bootstrap-fileinput" />
 <html:js name="simditor" />
+<!-- 全局js -->
+<html:js name="iCheck,Validform,markdown,syntaxhighlighter"/>
+<!-- 自定义js -->
+<script src="${staticPath}/common/js/content.js?v=1.0.0"></script>
 </body>
 </html>

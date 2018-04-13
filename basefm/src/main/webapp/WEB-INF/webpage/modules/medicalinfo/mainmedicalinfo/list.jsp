@@ -25,7 +25,7 @@
 			<grid:button groupname="opt" title="预测" url="" outclass="btn-info" innerclass="fa-globe"/>
 			<grid:button groupname="opt" function="delete" />
 
-			<grid:column label="医护编号" name="staffId"/> <!-- 自动获取员工编号,不能手工添加 -->
+			<%-- <grid:column label="医护编号" name="staffId"/> --%> <!-- 自动获取员工编号,不能手工添加 -->
 			<grid:column label="创建人"  name="createByName" query="true" queryMode="input"/>
 			<grid:column label="创建时间"  name="createDate" query="true" queryMode="date" condition="between"/>
 			<grid:column label="更新人"  name="updateByName"/>

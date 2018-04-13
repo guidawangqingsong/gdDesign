@@ -109,12 +109,13 @@
 		            </td>
 					<td class="width-35" colspan="3">
 						<input id="relateTable" type="hidden" value="oa_work_log"/>
-						<input id="relateFeild" type="hidden" value="logAttach"/>						
-						<form:fileinput buttonText="选择文件" saveType="billId" 
-						fileActionSettings="{showRemove: true,showUpload: true}" isFormSubmit="true" 
-						uploadExtraFieldData="relateTable,relateFeild"
-						showUpload="false" showRemove="false" autoUpload="false" fileInputWidth="100px"  
-						fileInputHeight="100px"  path="logAttach" htmlEscape="false" class="form-control" />
+						<input id="relateFeild" type="hidden" value="logAttach"/>
+				            <form:fileinput buttonText="选择附件" saveType="billId" multiple="true"
+				                     fileActionSettings="{showRemove: true,showUpload: false}"
+				                     isFormSubmit="true" uploadExtraFieldData="relateTable,relateFeild"
+				                     showUpload="false" showRemove="false" autoUpload="false"
+				                     fileInputWidth="100px"  fileInputHeight="100px"  path="logAttach"
+				                     htmlEscape="false" class="form-control"/>
 					</td>
 				</tr>
 		   </tbody>
