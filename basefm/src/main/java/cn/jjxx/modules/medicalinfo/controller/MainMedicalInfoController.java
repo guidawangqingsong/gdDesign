@@ -288,12 +288,18 @@ public class MainMedicalInfoController extends BaseBeanController<MainMedicalInf
 			 
 			 @SuppressWarnings("resource")
 			 PythonInterpreter interpreter = new PythonInterpreter(); 
-			 sys.path.add("C:\\Users\\Administrator\\PycharmProjects\\untitled\\venv1\\Lib\\site-packages");
+//			 sys.path.add("C:\\Users\\Administrator\\PycharmProjects\\untitled\\venv1\\Lib\\site-packages");
+//			 interpreter.exec("import sys");
+//			 interpreter.exec("print sys.path");  
+//			 interpreter.exec("path = \"C:\\Users\\Administrator\\PycharmProjects\\untitled\\venv1\\Lib\\site-packages\"");  
+//	         interpreter.exec("sys.path.append(path)");
+//			 InputStream filepy = new FileInputStream("C:\\Users\\Administrator\\PycharmProjects\\untitled\\venv1\\pytest\\predictTest.py");
+			 sys.path.add("D:\\python\\venv\\Lib\\site-packages");
 			 interpreter.exec("import sys");
 			 interpreter.exec("print sys.path");  
-			 interpreter.exec("path = \"C:\\Users\\Administrator\\PycharmProjects\\untitled\\venv1\\Lib\\site-packages\"");  
+			 interpreter.exec("path = \"D:\\python\\venv\\Lib\\site-packages\"");  
 	         interpreter.exec("sys.path.append(path)");
-			 InputStream filepy = new FileInputStream("C:\\Users\\Administrator\\PycharmProjects\\untitled\\venv1\\pytest\\predictTest.py");
+			 InputStream filepy = new FileInputStream("D:\\python\\predictTest.py"+id);
 			 interpreter.execfile(filepy);
 			 filepy.close();
             } catch (Exception e) {

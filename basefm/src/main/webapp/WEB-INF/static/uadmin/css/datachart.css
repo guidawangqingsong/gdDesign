@@ -25,7 +25,7 @@ li,a {
 	box-shadow: 0 0 10px #ccc;
 }
 .left{
-	width: 50%;
+	min-width: 50%;
 	height: 390px;
 	top: 5px;
 	left: 1%;
@@ -58,7 +58,7 @@ li,a {
 }
 
 .right{
-	width: 50%;
+	min-width: 50%;
 	height: 390px;
 	top: 5px;
 	left: 51%;
@@ -90,7 +90,7 @@ li,a {
 }
 
 .south{
-	width: 100%;
+	min-width: 100%;
 	height: 400px;
 	top: 350px;
 	left: 1%;

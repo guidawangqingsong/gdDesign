@@ -21,31 +21,43 @@
 		 <div class="zTreeDemoBackground left">
 			<ul id="treeObj" class="ztree"></ul>
 		</div>
-	</div>
+	</div> 
 	<%-- 中心布局 --%>
 	<div data-options="region:'center'">
-		 <grid:grid id="medicalGeneralChartGridId" url="${adminPath}/medicalgeneralchart/medicalgeneralchart/ajaxList">
-			<grid:column label="sys.common.key" hidden="true"   name="id" width="100"/>
-			<grid:column label="sys.common.opt"  name="opt" formatter="button" width="100"/>
-			<grid:button groupname="opt" function="delete" />
-			
-			<grid:column label="医护编号" name="staffId"/> <!-- 自动获取员工编号,不能手工添加 -->
-			<grid:column label="创建人"  name="createByName" query="true" queryMode="input"/>
-			<grid:column label="创建时间"  name="createDate" query="true" queryMode="date" condition="between"/>
-			<grid:column label="好评数量"  name="highOpinon"/>
-			<grid:column label="差评数量"  name="lowOpinon"/>
-			
-			<grid:toolbar title="删除" btnclass="btn-primary" function="batchDeleteInfo" url="${adminPath}/medicalgeneralchart/medicalgeneralchart/batch/delete" icon="fa-trash"/>	
-			<grid:toolbar title="查看" function="detail"  url="${adminPath}/medicalgeneralchart/medicalgeneralchart/{id}/update"  btnclass="btn btn-sm btn-success" 
-			winwidth="600px" winheight="400px" icon="fa-search"/>
-			<grid:toolbar title="添加" btnclass="btn-primary" winwidth="800px" winheight="600px" icon="fa-plus" function="createPage"  url="${adminPath}/medicalgeneralchart/medicalgeneralchart/create"/>
-			
-			<grid:toolbar title="搜索" function="dataSearch" btnclass="btn-info" layout="right" icon="fa fa-search" />
-			<grid:toolbar function="reset"/>
-		</grid:grid>
+	 	<ul class="tabs-t">
+			<li class="active"><div id="echarts3-title">综合气泡分布图</div></li>
+		</ul>
+		<ul class="tabs-c">
+			<li class="active">
+				<div id="echarts3" style="width:100%;height:300px;"></div>
+			</li>
+		</ul>
+		<ul class="tabs-c">
+				<li class="active">
+					<grid:grid id="medicalGeneralChartGridId" url="${adminPath}/medicalgeneralchart/medicalgeneralchart/ajaxList">
+					<grid:column label="sys.common.key" hidden="true"   name="id" width="100"/>
+					<grid:column label="sys.common.opt"  name="opt" formatter="button" width="100"/>
+					<grid:button groupname="opt" function="delete" />
+					
+					<grid:column label="医护编号" name="staffId"/> <!-- 自动获取员工编号,不能手工添加 -->
+					<grid:column label="创建人"  name="createByName" query="true" queryMode="input"/>
+					<grid:column label="创建时间"  name="createDate" query="true" queryMode="date" condition="between"/>
+					<grid:column label="好评数量"  name="highOpinon"/>
+					<grid:column label="差评数量"  name="lowOpinon"/>
+					
+					<grid:toolbar title="删除" btnclass="btn-primary" function="batchDeleteInfo" url="${adminPath}/medicalgeneralchart/medicalgeneralchart/batch/delete" icon="fa-trash"/>	
+					<grid:toolbar title="查看" function="detail"  url="${adminPath}/medicalgeneralchart/medicalgeneralchart/{id}/update"  btnclass="btn btn-sm btn-success" 
+					winwidth="600px" winheight="400px" icon="fa-search"/>
+					<grid:toolbar title="添加" btnclass="btn-primary" winwidth="800px" winheight="600px" icon="fa-plus" function="createPage"  url="${adminPath}/medicalgeneralchart/medicalgeneralchart/create"/>
+					
+					<grid:toolbar title="搜索" function="dataSearch" btnclass="btn-info" layout="right" icon="fa fa-search" />
+					<grid:toolbar function="reset"/>
+				</grid:grid>
+				</li>
+			</ul>	
 	</div>
 	<%-- 底部布局 --%>
-	<div data-options="region:'south',split:true" style="width:100%;height:90%">
+	<div data-options="region:'south',split:true" style="width:100%;height:60%">
 		<div class="absolute left">
 			<ul class="tabs-t">
 				<li class="active"><div id="echarts-title">好评百分比</div></li>
@@ -62,17 +74,7 @@
 			</ul>
 			<ul class="tabs-c">
 				<li class="active">
-					<div id="echarts2" style="width:87%;height:300px;left:-8%"></div>
-				</li>
-			</ul>
-		</div>
-		<div class="absolute south">
-			<ul class="tabs-t">
-				<li class="active"><div id="echarts3-title">综合气泡分布图</div></li>
-			</ul>
-			<ul class="tabs-c">
-				<li class="active">
-					<div id="echarts3" style="width:100%;height:300px;"></div>
+					<div id="echarts2" style="width:87%;height:300px;left:-85px"></div>
 				</li>
 			</ul>
 		</div>
