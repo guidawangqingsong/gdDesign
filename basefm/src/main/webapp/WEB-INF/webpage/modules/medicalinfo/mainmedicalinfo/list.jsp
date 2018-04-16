@@ -22,7 +22,8 @@
 		 <grid:grid id="mainMedicalInfoGridId" url="${adminPath}/medicalinfo/mainmedicalinfo/ajaxList">
 			<grid:column label="sys.common.key" hidden="true"   name="id" width="100"/>
 			<grid:column label="sys.common.opt" name="opt" formatter="button" width="100"/>
-			<grid:button groupname="opt" title="预测" url="" outclass="btn-info" innerclass="fa-globe"/>
+			<!-- 点击预测按钮调用Python预测算法并展示demo图 -->
+			<grid:button groupname="opt" title="预测" url="${adminPath}/medicalinfo/mainmedicalinfo/{id}/predict" function="rowDialogDetailRefresh" outclass="btn-info" innerclass="fa-globe"/>
 			<grid:button groupname="opt" function="delete" />
 
 			<%-- <grid:column label="医护编号" name="staffId"/> --%> <!-- 自动获取员工编号,不能手工添加 -->

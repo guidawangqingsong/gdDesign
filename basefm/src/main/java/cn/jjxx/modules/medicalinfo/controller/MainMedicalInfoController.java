@@ -16,6 +16,9 @@ import cn.jjxx.core.utils.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializeFilter;
 
+import org.python.core.Py;
+import org.python.core.PySystemState;
+import org.python.util.PythonInterpreter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,7 +32,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -273,5 +278,27 @@ public class MainMedicalInfoController extends BaseBeanController<MainMedicalInf
             validJson.setInfo("验证异常，请检查字段是否正确!");
         }
         return validJson;
+    }
+    
+    @RequestMapping(value = "{id}/predict", method = RequestMethod.GET)
+    public String predict(Model model, @PathVariable("id") String id, HttpServletRequest request,
+                       HttpServletResponse response) {
+    	 try {  
+			 PySystemState sys = Py.getSystemState();
+			 
+			 @SuppressWarnings("resource")
+			 PythonInterpreter interpreter = new PythonInterpreter(); 
+			 sys.path.add("C:\\Users\\Administrator\\PycharmProjects\\untitled\\venv1\\Lib\\site-packages");
+			 interpreter.exec("import sys");
+			 interpreter.exec("print sys.path");  
+			 interpreter.exec("path = \"C:\\Users\\Administrator\\PycharmProjects\\untitled\\venv1\\Lib\\site-packages\"");  
+	         interpreter.exec("sys.path.append(path)");
+			 InputStream filepy = new FileInputStream("C:\\Users\\Administrator\\PycharmProjects\\untitled\\venv1\\pytest\\predictTest.py");
+			 interpreter.execfile(filepy);
+			 filepy.close();
+            } catch (Exception e) {
+            	e.printStackTrace();  
+          }
+        return display("medicalevaluation/medicalevaluation/file.jsp");
     }
 }

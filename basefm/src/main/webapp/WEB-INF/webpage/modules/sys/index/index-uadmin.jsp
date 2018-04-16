@@ -117,8 +117,8 @@
 	<script type="text/javascript">
 	 var myChart1 = echarts.init(document.getElementById('echarts'));
 	 var myChart2 = echarts.init(document.getElementById('echarts2'));
-	var _pieData={ld:[],vd:[]};
-	var _barData={ld:[],vd:[],xd:[]};
+	 var _pieData={ld:[],vd:[]};
+	 var _barData={ld:[],vd:[],xd:[]};
 	function Echarts1(data){
 		 var option = {
 				    tooltip: {
