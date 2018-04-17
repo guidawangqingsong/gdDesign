@@ -74,7 +74,7 @@
 			</ul>
 			<ul class="tabs-c">
 				<li class="active">
-					<div id="echarts2" style="width:77%;height:300px;left:-85px"></div>
+					<div id="echarts2" style="width:87%;height:300px;left:-85px"></div>
 				</li>
 			</ul>
 		</div>

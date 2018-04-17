@@ -297,15 +297,15 @@ public class MainMedicalInfoController extends BaseBeanController<MainMedicalInf
 			@SuppressWarnings("resource")
 			PythonInterpreter interpreter = new PythonInterpreter(); 
 	        
-			interpreter.exec("import sys");
-	        interpreter.exec("sys.path.append('C:/Users/Administrator/PycharmProjects/untitled/venv1/Lib/')");//jython自己的
-	        interpreter.exec("sys.path.append('C:/Users/Administrator/PycharmProjects/untitled/venv1/Lib/site-packages/')");//jython 加载脚本的Python的jar包
-			InputStream filepy = new FileInputStream("C:/Users/Administrator/PycharmProjects/untitled/venv1/pytest/predictTest.py");
-			 
 //			interpreter.exec("import sys");
-//	        interpreter.exec("sys.path.append('D:/python/venv/Lib/untitled/venv1/Lib')");//jython自己的
-//	        interpreter.exec("sys.path.append('D:/python/venv/Lib/untitled/venv1/Lib/site-packages')");//jython 加载脚本的Python的jar包
-//			InputStream filepy = new FileInputStream("D:\\python\\predictTest.py");
+//	        interpreter.exec("sys.path.append('C:/Users/Administrator/PycharmProjects/untitled/venv1/Lib/')");//jython自己的
+//	        interpreter.exec("sys.path.append('C:/Users/Administrator/PycharmProjects/untitled/venv1/Lib/site-packages/')");//jython 加载脚本的Python的jar包
+//			InputStream filepy = new FileInputStream("C:/Users/Administrator/PycharmProjects/untitled/venv1/pytest/predictTest.py");
+			 
+			interpreter.exec("import sys");
+	        interpreter.exec("sys.path.append('D:/python/venv/Lib')");//jython自己的
+	        interpreter.exec("sys.path.append('D:/python/venv/Lib/site-packages')");//jython 加载脚本的Python的jar包
+			InputStream filepy = new FileInputStream("D:/python/predictTest.py");
 			interpreter.execfile(filepy);
 			MainMedicalInfo medicalInfo=get(id);
 			model.addAttribute("data", medicalInfo);
