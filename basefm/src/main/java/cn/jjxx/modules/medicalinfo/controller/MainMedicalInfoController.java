@@ -17,6 +17,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializeFilter;
 
 import org.python.core.Py;
+import org.python.core.PyObject;
 import org.python.core.PySystemState;
 import org.python.util.PythonInterpreter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import cn.jjxx.modules.medicalinfo.entity.MainMedicalInfo;
 import cn.jjxx.modules.medicalinfo.service.IMainMedicalInfoService;
@@ -280,31 +282,37 @@ public class MainMedicalInfoController extends BaseBeanController<MainMedicalInf
         return validJson;
     }
     
-    @RequestMapping(value = "{id}/predict", method = RequestMethod.GET)
+	@RequestMapping(value = "{id}/predict", method = RequestMethod.GET)
+	@ResponseBody
     public String predict(Model model, @PathVariable("id") String id, HttpServletRequest request,
                        HttpServletResponse response) {
-    	 try {  
-			 PySystemState sys = Py.getSystemState();
+    	try {  
+			Properties props = new Properties();
+			props.put("python.home", "path to the Lib folder");
+	        props.put("python.console.encoding", "UTF-8");  
+	        props.put("python.security.respectJavaAccessibility", "false");  
+	        props.put("python.import.site", "false");  
+			Properties preprops = System.getProperties(); 
+			PythonInterpreter.initialize(preprops, props, new String[0]);
+			@SuppressWarnings("resource")
+			PythonInterpreter interpreter = new PythonInterpreter(); 
+	        
+			interpreter.exec("import sys");
+	        interpreter.exec("sys.path.append('C:/Users/Administrator/PycharmProjects/untitled/venv1/Lib/')");//jython自己的
+	        interpreter.exec("sys.path.append('C:/Users/Administrator/PycharmProjects/untitled/venv1/Lib/site-packages/')");//jython 加载脚本的Python的jar包
+			InputStream filepy = new FileInputStream("C:/Users/Administrator/PycharmProjects/untitled/venv1/pytest/predictTest.py");
 			 
-			 @SuppressWarnings("resource")
-			 PythonInterpreter interpreter = new PythonInterpreter(); 
-//			 sys.path.add("C:\\Users\\Administrator\\PycharmProjects\\untitled\\venv1\\Lib\\site-packages");
-//			 interpreter.exec("import sys");
-//			 interpreter.exec("print sys.path");  
-//			 interpreter.exec("path = \"C:\\Users\\Administrator\\PycharmProjects\\untitled\\venv1\\Lib\\site-packages\"");  
-//	         interpreter.exec("sys.path.append(path)");
-//			 InputStream filepy = new FileInputStream("C:\\Users\\Administrator\\PycharmProjects\\untitled\\venv1\\pytest\\predictTest.py");
-			 sys.path.add("D:\\python\\venv\\Lib\\site-packages");
-			 interpreter.exec("import sys");
-			 interpreter.exec("print sys.path");  
-			 interpreter.exec("path = \"D:\\python\\venv\\Lib\\site-packages\"");  
-	         interpreter.exec("sys.path.append(path)");
-			 InputStream filepy = new FileInputStream("D:\\python\\predictTest.py"+id);
-			 interpreter.execfile(filepy);
-			 filepy.close();
-            } catch (Exception e) {
-            	e.printStackTrace();  
-          }
-        return display("medicalevaluation/medicalevaluation/file.jsp");
+//			interpreter.exec("import sys");
+//	        interpreter.exec("sys.path.append('D:/python/venv/Lib/untitled/venv1/Lib')");//jython自己的
+//	        interpreter.exec("sys.path.append('D:/python/venv/Lib/untitled/venv1/Lib/site-packages')");//jython 加载脚本的Python的jar包
+//			InputStream filepy = new FileInputStream("D:\\python\\predictTest.py");
+			interpreter.execfile(filepy);
+			MainMedicalInfo medicalInfo=get(id);
+			model.addAttribute("data", medicalInfo);
+			filepy.close();
+           } catch (Exception e) {
+            e.printStackTrace();  
+        }
+        return display("edit");
     }
 }
