@@ -74,7 +74,7 @@
 			</ul>
 			<ul class="tabs-c">
 				<li class="active">
-					<div id="echarts2" style="width:87%;height:300px;left:-85px"></div>
+					<div id="echarts2" style="width:77%;height:300px;left:-85px"></div>
 				</li>
 			</ul>
 		</div>
@@ -288,8 +288,8 @@
 				    //颜色标记
 				    color:['#A4D3EE','#4A708B','#C67171','#C5C1AA','#4876FF'],
 				    legend: {
-				        orient: 'vertical',
-				        x: 'left',
+				        orient: 'horizontal',
+				        x: 'top',
 				        data:data.ld
 				    },
 		            itemStyle: {  
@@ -301,6 +301,7 @@
 				        {
 				            name:'占比',
 				            type:'pie',
+				            roseType : 'area',
 				            radius: ['40%', '70%'],
 				            avoidLabelOverlap: false,
 				            //悬浮提示框
@@ -322,8 +323,8 @@
 				    //颜色标记
 				    color:['#A4D3EE','#4A708B','#C67171','#C5C1AA','#4876FF'],
 				    legend: {
-				        orient: 'vertical',
-				        x: 'left',
+				        orient: 'horizontal',
+				        x: 'top',
 				        data:data.ld
 				    },
 		            itemStyle: {  
@@ -335,6 +336,7 @@
 				        {
 				            name:'占比',
 				            type:'pie',
+				            roseType : 'area',
 				            radius: ['40%', '70%'],
 				            avoidLabelOverlap: false,
 				            //悬浮提示框
@@ -349,7 +351,6 @@
 	}
 	
 	function Echarts3(data1,data2){
-		//console.info("data1.vd=="+JSON.stringify(data1)+"\n  data2.vd="+JSON.stringify(data2))
 		var option = {
 			    backgroundColor: new echarts.graphic.RadialGradient(0.3, 0.3, 0.8, [{
 			        offset: 0,
@@ -400,9 +401,13 @@
 			        name: '系统设置好评',
 			        data: data1.vd,
 			        type: 'scatter',
+			        symbolSize: 15,
 			        label: {
 			            emphasis: {
 			                show: true,
+			                formatter: function (param) {
+			                    return param.value;
+			                },
 			                position: 'top'
 			            }
 			        },
@@ -424,11 +429,13 @@
 			        name: '预测高分',
 			        data: data2.vd,
 			        type: 'scatter',
+			        xAxisIndex: 1,
+			        symbolSize: 15,
 			        label: {
 			            emphasis: {
 			                show: true,
 			                formatter: function (param) {
-			                    return param.data2.vd;
+			                    return param.value;
 			                },
 			                position: 'top'
 			            }

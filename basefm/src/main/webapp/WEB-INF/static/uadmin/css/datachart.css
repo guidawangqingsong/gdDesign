@@ -88,6 +88,10 @@ li,a {
 	bottom: 10px;
 	left: 10%;
 }
+.right .tabs-c>li.active,
+.bottom .tabs-c>li.active{
+	display: block;
+}
 
 .south{
 	min-width: 100%;
@@ -115,14 +119,3 @@ li,a {
 .bottom .tabs-c>li.active{
 	display: block;
 }
-
-#echarts-list{
-	width:400px;
-	height:400px;
-	position: absolute;
-	top:40px;right:50px;
-}
-#echarts-list>table{width:100%;border:1px solid #F8F8F8;}
-#echarts-list>table th,
-#echarts-list>table td{text-align: center;border-color:#F8F8F8;line-height:35px;}
-#echarts-list>table th{background-color: #F1F2F6;}
