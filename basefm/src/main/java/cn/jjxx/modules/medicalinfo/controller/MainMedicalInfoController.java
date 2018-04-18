@@ -16,9 +16,10 @@ import cn.jjxx.core.utils.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializeFilter;
 
-import org.python.core.Py;
+import org.python.core.PyFunction;
+import org.python.core.PyList;
 import org.python.core.PyObject;
-import org.python.core.PySystemState;
+import org.python.core.PyString;
 import org.python.util.PythonInterpreter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,9 +34,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -284,35 +287,42 @@ public class MainMedicalInfoController extends BaseBeanController<MainMedicalInf
     
 	@RequestMapping(value = "{id}/predict", method = RequestMethod.GET)
 	@ResponseBody
-    public String predict(Model model, @PathVariable("id") String id, HttpServletRequest request,
+	@SuppressWarnings("resource")
+    public AjaxJson predict(Model model, @PathVariable("id") String id, HttpServletRequest request,
                        HttpServletResponse response) {
-    	try {  
-			Properties props = new Properties();
-			props.put("python.home", "path to the Lib folder");
-	        props.put("python.console.encoding", "UTF-8");  
-	        props.put("python.security.respectJavaAccessibility", "false");  
-	        props.put("python.import.site", "false");  
-			Properties preprops = System.getProperties(); 
-			PythonInterpreter.initialize(preprops, props, new String[0]);
-			@SuppressWarnings("resource")
-			PythonInterpreter interpreter = new PythonInterpreter(); 
+		 AjaxJson ajaxJson = new AjaxJson();
+	     ajaxJson.success("预测完成！");
+	     try {
+			 Properties props = new Properties();
+			 props.put("python.home", "path to the Lib folder");
+	         props.put("python.console.encoding", "UTF-8");  
+	         props.put("python.security.respectJavaAccessibility", "false");  
+	         props.put("python.import.site", "false");  
+			 Properties preprops = System.getProperties(); 
+			 PythonInterpreter.initialize(preprops, props, new String[0]);
+			 PythonInterpreter interpreter = new PythonInterpreter(); 
+	         
+			 interpreter.exec("import sys");
+			 interpreter.exec("sys.path.append('E:/python/jython27/Lib')");//jython自己的
+	         interpreter.exec("sys.path.append('E:/python/jython27/Lib/site-packages')");//jython 加载脚本的Python的jar包
+			 InputStream filepy = new FileInputStream("D:/wangqingsong/predictTest.py");
+			 interpreter.execfile(filepy,"idString");
+             
+			 //向Python传递表的id
+			 PyFunction func = (PyFunction) interpreter.get("idString",PyFunction.class);//加载Py的方法
+	         MainMedicalInfo mainMedicalInfo=new MainMedicalInfo();
+	         PyObject obj = new PyString(id.toString());
+	         PyList pyobj = (PyList) func.__call__(obj);
 	        
-			interpreter.exec("import sys");
-	        interpreter.exec("sys.path.append('C:/Users/Administrator/PycharmProjects/untitled/venv1/Lib/')");//jython自己的
-	        interpreter.exec("sys.path.append('C:/Users/Administrator/PycharmProjects/untitled/venv1/Lib/site-packages/')");//jython 加载脚本的Python的jar包
-			InputStream filepy = new FileInputStream("C:/Users/Administrator/PycharmProjects/untitled/venv1/pytest/predictTest.py");
-			 
 //			interpreter.exec("import sys");
 //	        interpreter.exec("sys.path.append('D:/python/venv/Lib')");//jython自己的
 //	        interpreter.exec("sys.path.append('D:/python/venv/Lib/site-packages')");//jython 加载脚本的Python的jar包
 //			InputStream filepy = new FileInputStream("D:/python/predictTest.py");
-			interpreter.execfile(filepy);
-			MainMedicalInfo medicalInfo=get(id);
-			model.addAttribute("data", medicalInfo);
+			
 			filepy.close();
            } catch (Exception e) {
             e.printStackTrace();  
         }
-        return display("edit");
+        return ajaxJson;
     }
 }

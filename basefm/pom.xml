@@ -615,11 +615,18 @@
 		</dependency>
 		
 		<!--引入jython jar包  -->
+		<!-- https://mvnrepository.com/artifact/org.python/jython -->
 		<dependency>
 		    <groupId>org.python</groupId>
-		    <artifactId>jython-standalone</artifactId>
+		    <artifactId>jython</artifactId>
 		    <version>2.7.0</version>
 		</dependency>
+		
+		<!-- <dependency>
+		    <groupId>org.python</groupId>
+		    <artifactId>jython-standalone</artifactId>
+		    <version>2.5.4-rc1</version>
+		</dependency> -->
 		
 		<!-- 注释掉oracle、sqlserver，需要的自己添加 
 		<dependency>
