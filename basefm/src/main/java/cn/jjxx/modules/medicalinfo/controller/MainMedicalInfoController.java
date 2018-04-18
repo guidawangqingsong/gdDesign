@@ -306,7 +306,7 @@ public class MainMedicalInfoController extends BaseBeanController<MainMedicalInf
 			 interpreter.exec("sys.path.append('E:/python/jython27/Lib')");//jython自己的
 	         interpreter.exec("sys.path.append('E:/python/jython27/Lib/site-packages')");//jython 加载脚本的Python的jar包
 			 InputStream filepy = new FileInputStream("D:/wangqingsong/predictTest.py");
-			 interpreter.execfile(filepy,"idString");
+			 interpreter.execfile(filepy);
              
 			 //向Python传递表的id
 			 PyFunction func = (PyFunction) interpreter.get("idString",PyFunction.class);//加载Py的方法
