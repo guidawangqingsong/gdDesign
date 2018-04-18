@@ -292,34 +292,35 @@ public class MainMedicalInfoController extends BaseBeanController<MainMedicalInf
                        HttpServletResponse response) {
 		 AjaxJson ajaxJson = new AjaxJson();
 	     ajaxJson.success("预测完成！");
+	     
+	     Properties props = new Properties();
+		 props.put("python.home", "path to the Lib folder");
+         props.put("python.console.encoding", "UTF-8");  
+         props.put("python.security.respectJavaAccessibility", "false");  
+         props.put("python.import.site", "false");  
+		 Properties preprops = System.getProperties(); 
+		 PythonInterpreter.initialize(preprops, props, new String[0]);
+		 PythonInterpreter interpreter = new PythonInterpreter(); 
+         
+		 interpreter.exec("import sys");
+		 interpreter.exec("sys.path.append('E:/python/jython27/Lib')");//jython自己的
+         interpreter.exec("sys.path.append('E:/python/jython27/Lib/site-packages')");//jython 加载脚本的Python的jar包
+//			interpreter.exec("import sys");
+//	        interpreter.exec("sys.path.append('D:/python/venv/Lib')");//jython自己的
+//	        interpreter.exec("sys.path.append('D:/python/venv/Lib/site-packages')");//jython 加载脚本的Python的jar包
+//			InputStream filepy = new FileInputStream("D:/python/predictTest.py");
 	     try {
-			 Properties props = new Properties();
-			 props.put("python.home", "path to the Lib folder");
-	         props.put("python.console.encoding", "UTF-8");  
-	         props.put("python.security.respectJavaAccessibility", "false");  
-	         props.put("python.import.site", "false");  
-			 Properties preprops = System.getProperties(); 
-			 PythonInterpreter.initialize(preprops, props, new String[0]);
-			 PythonInterpreter interpreter = new PythonInterpreter(); 
-	         
-			 interpreter.exec("import sys");
-			 interpreter.exec("sys.path.append('E:/python/jython27/Lib')");//jython自己的
-	         interpreter.exec("sys.path.append('E:/python/jython27/Lib/site-packages')");//jython 加载脚本的Python的jar包
 			 InputStream filepy = new FileInputStream("D:/wangqingsong/predictTest.py");
 			 interpreter.execfile(filepy);
              
 			 //向Python传递表的id
 			 PyFunction func = (PyFunction) interpreter.get("idString",PyFunction.class);//加载Py的方法
 	         MainMedicalInfo mainMedicalInfo=new MainMedicalInfo();
-	         PyObject obj = new PyString(id.toString());
+	         PyObject obj = new PyString(id);
 	         PyList pyobj = (PyList) func.__call__(obj);
+	         System.out.println("id = " + pyobj.toString());
 	        
-//			interpreter.exec("import sys");
-//	        interpreter.exec("sys.path.append('D:/python/venv/Lib')");//jython自己的
-//	        interpreter.exec("sys.path.append('D:/python/venv/Lib/site-packages')");//jython 加载脚本的Python的jar包
-//			InputStream filepy = new FileInputStream("D:/python/predictTest.py");
-			
-			filepy.close();
+			 filepy.close();
            } catch (Exception e) {
             e.printStackTrace();  
         }
