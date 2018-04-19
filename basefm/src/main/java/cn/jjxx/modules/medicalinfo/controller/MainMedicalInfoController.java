@@ -34,11 +34,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -287,8 +285,7 @@ public class MainMedicalInfoController extends BaseBeanController<MainMedicalInf
     
 	@RequestMapping(value = "{id}/predict", method = RequestMethod.GET)
 	@ResponseBody
-	@SuppressWarnings("resource")
-    public AjaxJson predict(Model model, @PathVariable("id") String id, HttpServletRequest request,
+	public AjaxJson predict(Model model, @PathVariable("id") String id, HttpServletRequest request,
                        HttpServletResponse response) {
 		 AjaxJson ajaxJson = new AjaxJson();
 	     ajaxJson.success("预测完成！");
@@ -303,14 +300,10 @@ public class MainMedicalInfoController extends BaseBeanController<MainMedicalInf
 		 PythonInterpreter interpreter = new PythonInterpreter(); 
          
 		 interpreter.exec("import sys");
-		 interpreter.exec("sys.path.append('E:/python/jython27/Lib')");//jython自己的
-         interpreter.exec("sys.path.append('E:/python/jython27/Lib/site-packages')");//jython 加载脚本的Python的jar包
-//			interpreter.exec("import sys");
-//	        interpreter.exec("sys.path.append('D:/python/venv/Lib')");//jython自己的
-//	        interpreter.exec("sys.path.append('D:/python/venv/Lib/site-packages')");//jython 加载脚本的Python的jar包
-//			InputStream filepy = new FileInputStream("D:/python/predictTest.py");
+		 interpreter.exec("sys.path.append('D:/jython/jython/Lib')");//jython自己的
+         interpreter.exec("sys.path.append('D:/jython/jython/Lib/site-packages')");//jython 加载脚本的Python的jar包
 	     try {
-			 InputStream filepy = new FileInputStream("D:/wangqingsong/predictTest.py");
+			 InputStream filepy = new FileInputStream("D:/python/predictTest.py");
 			 interpreter.execfile(filepy);
              
 			 //向Python传递表的id
