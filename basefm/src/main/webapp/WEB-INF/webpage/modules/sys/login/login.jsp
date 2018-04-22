@@ -33,23 +33,6 @@
 				 <form  id="loginform"  method="post">
 				<div class="box form">
 					<div class="user-in">
-						<a href="javascript:" class="QR-icon"></a>
-						<div class="QR" style="display: none;">
-							<div class="qr-t">
-								APP下载
-								<p>扫描下面二维码下载APP</p>
-							</div>
-							<div class="qr-img">
-								<div class="imgbox">
-									<img id="ios-img" src=""  onerror="this.src=''"/>
-									<p>苹果版 v1.0</p>
-								</div>
-								<div class="imgbox">
-									<img id="android-img" src="" onerror="this.src=''"/>
-									<p>安卓版 v1.0</p>
-								</div>
-							</div>
-						</div>
 						<div class="pwdLogin" >
 							<div class="t"><spring:message code="sys.login.title"/></div>
 							<div class="in"><input name="username" class="form-control" placeholder="<spring:message code="sys.login.username.placeholder"/>" required=""></div>
@@ -75,9 +58,10 @@
 								<button type="submit" class="btn btn-success btn-block"><spring:message code="sys.login.submit.label"/> </button>
 		                    </div>
 		                    <div class="error">${error}</div>
-                            <p><font style="font-size:10px">如果您没有帐号? 
-                            <a id="btn-register" href="${adminPath }/sys/user/create.jsp">请注册</a></font>
-               				</p>
+		                    <p><font style="font-size:10px">如果您没有帐号? </font>
+		                    <button onclick="create()"/>创建</button>
+                    		<%-- <a id="btn-register" href="${adminPath }/sys/user/create.jsp"><font style="font-size:10px">请注册</font></a> --%>
+               	 			</p>
 						</div>
 					</div>
 				</div>
@@ -94,42 +78,12 @@
 	            document.getElementById("img_jcaptcha").src='${appPath}/jcaptcha.jpg?_='+(new Date()).getTime();  
 	        } 
 		 window.onload = function(){
-			 getIOSandAND();
-				var qr = document.getElementsByClassName("QR")[0];
 				var pwdLogin = document.getElementsByClassName("pwdLogin")[0];
-				var qrClick =  document.getElementsByClassName("QR-icon")[0];
-				qrClick.onclick = function(){
-					if(qr.style.display === "none"){
-						//切换APP下载页面
-						this.className +=" active";
-						pwdLogin.style.display = "none";
-						qr.style.display = "block";
-					}else{
-						//切换登录页面
-						this.className = "QR-icon";
-						pwdLogin.style.display = "block";
-						qr.style.display = "none";
-					}
-				}
 			}
-		    function getIOSandAND(){
-				 $.ajax({
-					type:"POST",
-					url:"${adminPath}/sys/appversion/findAppVersion",
-					async:false,
-					success:function(data){
-						data = data.data;
-						$.each(data,function(i,item){
-							if(item.type==2){
-								$("img#ios-img").attr("src","${appPath}/"+item.qrcodeUrl);
-							}else{
-								$("img#android-img").attr("src","${appPath}/"+item.qrcodeUrl);
-							}
-						});
-						
-					}
-				 });
-			 }
+		 function create(){
+			 window.location.href="${adminPath }/sys/user/create.jsp";
+		 }
+		 
 		</script>
 	</body>
 </html>
