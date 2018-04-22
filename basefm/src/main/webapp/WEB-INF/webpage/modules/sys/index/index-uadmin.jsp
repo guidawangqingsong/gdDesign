@@ -41,11 +41,11 @@
                      <%@include file="../../../decorators/uadmin/main.jsp"%>
 			    </div>
 			    <!--END CONTENT-->
-    </div>
+    		</div>
     <!--BEGIN FOOTER-->
-   <%--  <div id="footer">
+    <div id="footer">
         <div class="copyright"><spring:message code="sys.site.bottom.copyright" /></div>
-    </div> --%>
+    </div>
     <!--END FOOTER-->
     <!--END PAGE WRAPPER-->
     </div>

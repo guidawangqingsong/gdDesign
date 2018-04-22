@@ -17,6 +17,9 @@
     <meta http-equiv="cache-control" content="no-cache">
     <link rel="stylesheet" type="text/css" href="${staticPath}/uadmin/css/login.css"/>
     
+    <html:css  name="iCheck,Validform"/>
+    <html:js  name="iCheck,Validform"/>
+    
 </head>
 <body>
 		<div id="main-center">
@@ -50,15 +53,20 @@
 								</div>
 							</div>
 						</div>
-						<div class="pwdLogin" >
-							<div class="t"><spring:message code="sys.login.title"/></div>
-							<div class="in"><input name="username" class="form-control" placeholder="<spring:message code="sys.login.username.placeholder"/>" required=""></div>
+						<div class="pwdRegister" >
+							<div class="t"><spring:message code="sys.user.createuser"/></div>
 							<div class="in">
-								<input name="password" type="password" class="form-control" placeholder="<spring:message code="sys.login.password.placeholder"/>" required="">
-								<div class="auto">
-									<input id="rememberMe"  type="checkbox" name="rememberMe" value="1" class="i-checks">
-									<spring:message code="sys.login.rememberMe"/>
-								</div>
+								<form:input path="phone" class="form-control" ajaxurl="${adminPath}/sys/user/validate"  
+		             	              readonly="true" htmlEscape="false"  datatype="m"  nullmsg="请输入联系电话！"/>
+		             				  <label class="Validform_checktip"></label>
+							</div>
+							<div class="in">
+								<input type="password" value="" name="password"  class="form-control" datatype="*6-16" nullmsg="请设置密码！" errormsg="密码范围在6~16位之间！" />
+		                        <label class="Validform_checktip"></label>
+							</div>
+							<div class="in">
+								<input type="password" value="" name="userpassword2" class="form-control" datatype="*" recheck="password" nullmsg="请再输入一次密码！" errormsg="您两次输入的账号密码不一致！" />
+		             			<label class="Validform_checktip"></label>
 							</div>
 							 <c:if test="${showCaptcha eq 1}">
 				                <div class="form-group">
@@ -72,12 +80,9 @@
 				                <div class="clearfix"></div>
 			                </c:if>
 							<div class="sub">
-								<button type="submit" class="btn btn-success btn-block"><spring:message code="sys.login.submit.label"/> </button>
+								<button type="submit" class="btn btn-success btn-block">创&nbsp;&nbsp;建</button>
 		                    </div>
 		                    <div class="error">${error}</div>
-                            <p><font style="font-size:10px">如果您没有帐号? 
-                            <a id="btn-register" href="${adminPath }/sys/user/create.jsp">请注册</a></font>
-               				</p>
 						</div>
 					</div>
 				</div>
@@ -95,19 +100,20 @@
 	        } 
 		 window.onload = function(){
 			 getIOSandAND();
+			 registerUser();
 				var qr = document.getElementsByClassName("QR")[0];
-				var pwdLogin = document.getElementsByClassName("pwdLogin")[0];
+				var pwdLogin = document.getElementsByClassName("pwdRegister")[0];
 				var qrClick =  document.getElementsByClassName("QR-icon")[0];
 				qrClick.onclick = function(){
 					if(qr.style.display === "none"){
 						//切换APP下载页面
 						this.className +=" active";
-						pwdLogin.style.display = "none";
+						pwdRegister.style.display = "none";
 						qr.style.display = "block";
 					}else{
 						//切换登录页面
 						this.className = "QR-icon";
-						pwdLogin.style.display = "block";
+						pwdRegister.style.display = "block";
 						qr.style.display = "none";
 					}
 				}
@@ -127,6 +133,18 @@
 							}
 						});
 						
+					}
+				 });
+			 }
+		    function registerUser(){
+				 $.ajax({
+					type:"POST",
+					url:"${adminPath}/sys/user/createUser",
+					async:false,
+					success:function(data){
+						data = data.data;
+						top.layer.alert('创建成功!', {icon: 0, title:'success'});
+						window.location.href("${adminPath}/sys/login/login.jsp");
 					}
 				 });
 			 }
