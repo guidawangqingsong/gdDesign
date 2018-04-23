@@ -59,8 +59,7 @@
 		                    </div>
 		                    <div class="error">${error}</div>
 		                    <p><font style="font-size:10px">如果您没有帐号? </font>
-		                    <button onclick="create()"/>创建</button>
-                    		<%-- <a id="btn-register" href="${adminPath }/sys/user/create.jsp"><font style="font-size:10px">请注册</font></a> --%>
+                    		<a id="btn-register" href="sys/user/create.jsp"><font style="font-size:10px">请注册</font></a> 
                	 			</p>
 						</div>
 					</div>
@@ -80,10 +79,6 @@
 		 window.onload = function(){
 				var pwdLogin = document.getElementsByClassName("pwdLogin")[0];
 			}
-		 function create(){
-			 window.location.href="${adminPath }/sys/user/create.jsp";
-		 }
-		 
 		</script>
 	</body>
 </html>
