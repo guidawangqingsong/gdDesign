@@ -18,7 +18,7 @@
     
 </head>
 
-<body formid="userForm">
+<body class="white-bg" formid="userForm">
 <script src="${staticPath}/uadmin/js/jquery-1.10.2.min.js"></script>
 		<div id="main-center">
 			<div class="w-1200">
