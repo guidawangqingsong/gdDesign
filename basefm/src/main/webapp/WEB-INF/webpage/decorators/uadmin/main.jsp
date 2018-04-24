@@ -2,8 +2,7 @@
  		
   		<div class="absolute left">
 			<div class="uinfo">
-			<!--${appPath}/${fns:getUser().portrait}  -->
-				<img src="" style="height:143px" class="head" onload="this.style.left=-(this.width-145)/2+'px'" onerror="this.src='${staticPath}/uadmin/images/gallery/adminFlower.jpg'"/>
+				<img src="${appPath}/${fns:getUser().portrait}" style="height:143px" class="head" onload="this.style.left=-(this.width-145)/2+'px'" onerror="this.src='${staticPath}/uadmin/images/gallery/adminFlower.jpg'"/>
 				<p class="name">${fns:getUser().username}</p>
 				<p class="job">${fns:getUser().realname}</p>
 			</div>
