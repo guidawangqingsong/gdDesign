@@ -444,6 +444,10 @@ public class UserController extends BaseCRUDController<User, String> {
 		if (!StringUtils.isEmpty(creteaView)) {
 			return creteaView;
 		}
+		String type = request.getParameter("type");
+		if(!StringUtils.isEmpty(type)){
+			return display("createUser");
+		}
 		return display("create");
 	}
 

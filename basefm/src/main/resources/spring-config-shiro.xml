@@ -170,6 +170,8 @@
         <property name="filterChainDefinitions">
             <value>
             	/upload/** = anon
+            	${admin.url.prefix}/sys/user/createUser = anon
+            	${admin.url.prefix}/sys/user/saveUser = anon
             	/activiti/** = anon
                 /static/** = anon
                 /jcaptcha* = anon
