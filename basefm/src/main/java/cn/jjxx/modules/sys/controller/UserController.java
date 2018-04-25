@@ -444,8 +444,13 @@ public class UserController extends BaseCRUDController<User, String> {
 		if (!StringUtils.isEmpty(creteaView)) {
 			return creteaView;
 		}
+		User entity=new User();
 		String type = request.getParameter("type");
+//		Organization organization=new Organization();
+//		organization=organizationService.selectById("8b79b439b19b47aba036c515f96d22e0");
+		//String orgId=organization.getId();
 		if(!StringUtils.isEmpty(type)){
+//			user.setOrgId("40288ab85b6080e1015b60996d690005");
 			return display("createUser");
 		}
 		return display("create");

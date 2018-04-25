@@ -59,7 +59,7 @@
 		                    </div>
 		                    <div class="error">${error}</div>
 		                    <p><font style="font-size:10px">如果您没有帐号? </font>
-                    		<a id="btn-register" href="${adminPath}/sys/user/createUser?type=register"><font style="font-size:10px;color:#033661">请注册>></font></a> 
+                    		<a id="btn-register" href="${adminPath}/sys/user/createUser?type=3&adminType=0"><font style="font-size:10px;color:#033661">请注册>></font></a> 
                	 			</p>
 						</div>
 					</div>

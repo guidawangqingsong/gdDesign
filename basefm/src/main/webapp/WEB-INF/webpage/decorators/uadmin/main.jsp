@@ -48,7 +48,7 @@
 			</ul>
 			<ul class="tabs-c">
 				<li class="active">
-					<div id="echarts2" style="width:100%;min-height:300px;"></div>
+					<div id="echarts2" style="width:100%;min-height:280px;"></div>
 				</li>
 			</ul>
 		</div>
