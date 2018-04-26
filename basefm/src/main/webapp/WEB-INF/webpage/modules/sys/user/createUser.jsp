@@ -34,7 +34,9 @@
 				<div class="box form">
 					<div class="user-in">
 						<div class="pwdLogin" >
-							<div class="t">用户注册&nbsp;<a id="btn-register" href="${adminPath}/admin"><font style="font-size:10px;color:#033661">请登录>></font></a></div>
+							<div class="t">用户注册&nbsp;
+							<a id="btn-register" href="${adminPath}/admin"><font style="font-size:10px;color:#033661">请登录>></font></a>
+							</div>
 							<div><input name="id" type="hidden" /></div>
 							<div><input name="orgId" type="hidden" value="40288ab85b6080e1015b60996d690005"/></div>
 							<div class="in1">
@@ -48,15 +50,15 @@
 								<label class="Validform_checktip"></label>
 							</div>
 							<div class="in1">
+								<input name="phone" class="form-control" ajaxurl="${adminPath}/sys/user/validate"  
+								placeholder="输入联系电话" htmlEscape="false"  datatype="m"  nullmsg="请输入联系电话！">
+								<label class="Validform_checktip"></label>
+							</div>
+							<div class="in1">
 								<input name="password" type="password" class="form-control" datatype="*6-16" 
 								placeholder="<spring:message code="sys.login.password.placeholder"/>" nullmsg="请设置密码！" errormsg="密码范围在6~16位之间！" >
 								<label class="Validform_checktip"></label>
 							</div>
-							<div class="in1">
-								<input name="userpassword2" type="password" class="form-control" datatype="*" recheck="password" 
-								placeholder="确认密码" nullmsg="请再输入一次密码！" errormsg="您两次输入的账号密码不一致！">
-								<label class="Validform_checktip"></label>
-							</div> 
 						    <c:if test="${showCaptcha eq 1}">
 				                <div class="form-group">
 				               	   <div class="pull-left">
@@ -68,8 +70,8 @@
 				                </div>
 				                <div class="clearfix"></div>
 			                </c:if>
-							<div class="sub1">
-								<button class="btn btn-success btn-block">注&nbsp;册</button>
+			                <div class="sub1">
+									<button class="btn btn-success btn-block">注&nbsp;册</button>
 		                    </div>
 		                    <div class="error">${error}</div>
 						</div>

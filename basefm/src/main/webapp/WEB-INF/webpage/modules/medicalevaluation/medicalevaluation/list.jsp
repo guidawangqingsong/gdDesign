@@ -27,9 +27,9 @@
 			<grid:button groupname="opt" function="delete" />
 			
 			<grid:column label="医护编号" name="staffId"/> <!-- 自动获取员工编号,不能手工添加 -->
-			<grid:column label="创建人"  name="createByName" query="true" queryMode="input"/>
+			<grid:column label="创建人"  name="createByName" query="true" queryMode="input" condition="like"/>
 			<grid:column label="创建时间"  name="createDate" query="true" queryMode="date" condition="between" />
-		    <grid:column label="医用预测功能"  name="sysPredict" query="true" queryMode="input"/> 
+		    <grid:column label="医用预测功能"  name="sysPredict" query="true" queryMode="input" condition="like"/> 
 		    <grid:column label="组织评定"  name="originEva" />
 		    <grid:column label= "系统前端界面"  name="sysFrontUI" dict="sysEvaType"/>
 		    <grid:column label= "系统后台设计"  name="sysBackstage" dict="sysEvaType"/>

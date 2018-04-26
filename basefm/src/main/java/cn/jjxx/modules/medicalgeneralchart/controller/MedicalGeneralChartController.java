@@ -83,14 +83,16 @@ public class MedicalGeneralChartController extends BaseBeanController<MedicalGen
         EntityWrapper<MedicalGeneralChart> entityWrapper = new EntityWrapper<MedicalGeneralChart>(entityClass);
         propertyPreFilterable.addQueryProperty("id");
         
-      //获取没被删除的数据
+        //通过组织查询,如果orgId 不为空，拼接查询条件，通过orgId来查找
+	    //判断如果该用户是某组织下的，只能查看自己所属组织下的日志。
+	    String orgId = request.getParameter("orgId");
+        if(!StringUtils.isEmpty(orgId)){
+        	entityWrapper.eq("t.org_id", orgId);
+        }
+        
+        //获取没被删除的数据
         String delFlag = request.getParameter("delFlag");
         entityWrapper.eq("t.del_flag", 0);
-        
-        //通过组织查询,如果orgId 不为空，拼接查询条件，通过orgId来查找
-        //判断如果该用户是某组织下的，则只显示没有绑定组织的日志,只能查看自己所属组织下的日志。
-        String orgId = request.getParameter("orgId");
-        entityWrapper.eq("t.org_id", orgId);
         
         //根据创建人查询
     	String creatBy = request.getParameter("createByName");//获取页面的要查询的信息

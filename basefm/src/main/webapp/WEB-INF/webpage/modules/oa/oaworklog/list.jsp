@@ -19,7 +19,7 @@
 	</div>
 	<%-- 中心布局 --%>
 	<div data-options="region:'center'">
-		 <grid:grid id="oaWorkLogGridId" url="${adminPath}/oa/oaworklog/ajaxList" >
+		 <grid:grid id="oaWorkLogGridId" url="${adminPath}/oa/oaworklog/ajaxList">
 			<grid:column label="sys.common.key" hidden="true"   name="id" width="100"/>
 			<grid:column label="sys.common.opt" name="opt" formatter="button" width="100"/>
 			<grid:button groupname="opt" title="附件" url="${adminPath}/oa/oaworklog/{id}/file"  
@@ -27,9 +27,9 @@
 			<grid:button groupname="opt" function="delete" />
 			
 			<%-- <grid:column label="医护编号" name="staffId"/> --%> <!-- 自动获取员工编号,不能手工添加 -->
-			<grid:column label="创建人"  name="createByName" query="true" queryMode="input"/>
+			<grid:column label="创建人"  name="createByName" query="true" queryMode="input" condition="like"/>
 			<grid:column label="更新时间"  name="updateDate" />
-		    <grid:column label="日志主题"  name="logTheme" query="true"  queryMode="input"/>
+		    <grid:column label="日志主题"  name="logTheme" query="true"  queryMode="input" condition="like"/>
 		    <grid:column label="医用计划"  name="nextPlan" />
 		    <grid:column label="日志类型"  name="logType"  dict="logType" query="true" queryMode="select" /><!--实现字典框查询  -->
 		    <grid:column label="遗留问题"  name="unfinished" />
@@ -55,7 +55,7 @@
 
 
 <script type="text/javascript">
-    var orgId ='';
+    /* var orgId =''; */
 	var treeObj;
 	var setting = {
 			async: {
@@ -80,7 +80,7 @@
 	//单击组织树触发事件，并获取orgId的值
 	function onClick(event, treeId, treeNode, clickFlag) {
 		var gridId = 'oaWorkLogGridIdGrid';
-	    orgId = treeNode.id; 		 //获取组织的节点id，是变量生命期短很安全。
+	   orgId = treeNode.id; 		 //获取组织的节点id，是变量生命期短很安全。
 	    $("input[name='orgId']").val(treeNode.id);   // 选择属性name=orgId的input元素进行赋值操作
 	
 		$("#"+gridId).jqGrid('setGridParam',{

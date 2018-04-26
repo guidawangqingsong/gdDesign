@@ -98,6 +98,13 @@ public class OaWorkLogController extends BaseBeanController<OaWorkLog> {
         EntityWrapper<OaWorkLog> entityWrapper = new EntityWrapper<OaWorkLog>(entityClass);//因为EntityWrapper是一个范型类，所以需要传入一个实体类型*OaWorkLog
         propertyPreFilterable.addQueryProperty("id");
       
+	    //通过组织查询,如果orgId 不为空，拼接查询条件，通过orgId来查找
+	    //判断如果该用户是某组织下的，只能查看自己所属组织下的日志。
+	    String orgId = request.getParameter("orgId");
+        if(!StringUtils.isEmpty(orgId)){
+        	entityWrapper.eq("t.org_id", orgId);
+        }
+        
         //首先拿到所有同一组织下的日志
         String logState = request.getParameter("logState");
         // entityWrapper.eq("t.log_state", 0); 
@@ -109,10 +116,6 @@ public class OaWorkLogController extends BaseBeanController<OaWorkLog> {
         if(!user.getUsername().equals("admin")){ //判断如果登陆着为管理员的话就把所有日志都显示出来，否则只能看到自己的日志
         	entityWrapper.eq("t.create_by", userId);
         }
-        //通过组织查询,如果orgId 不为空，拼接查询条件，通过orgId来查找
-        //判断如果该用户是某组织下的，则只显示没有绑定组织的日志,只能查看自己所属组织下的日志。
-        String orgId = request.getParameter("orgId");
-        entityWrapper.eq("t.org_id", orgId); 
         
         //获取没被删除的数据
         String delFlag = request.getParameter("delFlag");
@@ -144,7 +147,6 @@ public class OaWorkLogController extends BaseBeanController<OaWorkLog> {
 			entityWrapper.between("t.log_time", timeMap.get("startTime"), timeMap.get("endTime"));
 		}
     	
-        //设置日志主题查询条件
         // 预处理
         QueryableConvertUtils.convertQueryValueToEntityValue(queryable, entityClass);
         SerializeFilter filter = propertyPreFilterable.constructFilter(entityClass);

@@ -32,6 +32,7 @@
 				<div id="echarts3" style="width:100%;height:300px;"></div>
 			</li>
 		</ul>
+		<br>
 		<ul class="tabs-c">
 				<li class="active">
 					<grid:grid id="medicalGeneralChartGridId" url="${adminPath}/medicalgeneralchart/medicalgeneralchart/ajaxList">
@@ -40,7 +41,7 @@
 					<grid:button groupname="opt" function="delete" />
 					
 					<grid:column label="医护编号" name="staffId"/> <!-- 自动获取员工编号,不能手工添加 -->
-					<grid:column label="创建人"  name="createByName" query="true" queryMode="input"/>
+					<grid:column label="创建人"  name="createByName" query="true" queryMode="input" condition="like"/>
 					<grid:column label="创建时间"  name="createDate" query="true" queryMode="date" condition="between"/>
 					<grid:column label="好评数量"  name="highOpinon"/>
 					<grid:column label="差评数量"  name="lowOpinon"/>
