@@ -172,6 +172,7 @@
             	/upload/** = anon
             	${admin.url.prefix}/sys/user/createUser = anon
             	${admin.url.prefix}/sys/user/saveUser = anon
+            	${admin.url.prefix}/sys/user/validate = anon
             	/activiti/** = anon
                 /static/** = anon
                 /jcaptcha* = anon
