@@ -446,9 +446,6 @@ public class UserController extends BaseCRUDController<User, String> {
 		}
 		User entity=new User();
 		String type = request.getParameter("type");
-//		Organization organization=new Organization();
-//		organization=organizationService.selectById("8b79b439b19b47aba036c515f96d22e0");
-		//String orgId=organization.getId();
 		if(!StringUtils.isEmpty(type)){
 			return display("createUser");
 		}

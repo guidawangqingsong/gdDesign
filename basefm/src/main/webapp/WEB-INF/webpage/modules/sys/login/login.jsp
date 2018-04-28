@@ -50,7 +50,7 @@
 				                   </div>
 				                   <div class="pull-right">
 				                     <img id="img_jcaptcha"  src="${appPath}/jcaptcha.jpg" width="100" height="35" onclick="changeJcaptchaSrc();" />
-				                    </div>   
+				                   </div>   
 				                </div>
 				                <div class="clearfix"></div>
 			                </c:if>

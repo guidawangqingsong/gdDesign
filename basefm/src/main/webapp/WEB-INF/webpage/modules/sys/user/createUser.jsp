@@ -13,6 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="cache-control" content="no-cache">
     <link rel="stylesheet" type="text/css" href="${staticPath}/uadmin/css/login.css"/>
+    <html:css  name="iCheck,Validform"/>
 </head>
 
 <body>
@@ -44,13 +45,13 @@
 								<input name="realname" class="form-control" placeholder="姓名" required="">
 							</div>
 							<div class="in1">
-								<input name="phone" class="form-control" placeholder="输入联系电话" required="">
+								<input name="phone" class="form-control" placeholder="输入联系电话" datatype="m" required="">
 							</div>
 							<div class="in1">
-								<input name="password" type="password" class="form-control" required="" placeholder="<spring:message code="sys.login.password.placeholder"/>" nullmsg="请设置密码！" errormsg="密码范围在6~16位之间！" >
+								<input name="password" type="password" class="form-control" required="" placeholder="<spring:message code="sys.login.password.placeholder"/>" errormsg="密码范围在6~16位之间！" >
 							</div>
 			                <div class="sub1">
-								<button class="btn btn-success btn-block" function="checkForm()">注&nbsp;册</button>
+								<button function="checkForm()" class="btn btn-success btn-block" >注&nbsp;册</button>
 		                    </div>
 		                    <div class="error">${error}</div>
 						</div>
@@ -64,15 +65,16 @@
 		<div id="light"></div>
 		<div id="light2"></div>
 	<script src="${staticPath}/uadmin/js/jquery-1.10.2.min.js"></script>
+	<html:js  name="iCheck,Validform"/>
 	<script type="text/javascript">
 	var username=$("#username").val();
 	var realname=$("#realname").val();
-	var realname=$("#phone").val();
+	var phone=$("#phone").val();
 	var password=$("#password").val();
 	
-	function createUser() {
+	function checkForm() {
 		$.ajax({
-			url : "${adminPath}/sys/user/createUser?type=3&adminType=0",
+			url : "${adminPath}/sys/user/validate",
 			type : 'post',
 			cache : false,
 			success : function(d) {
@@ -87,13 +89,6 @@
 			}
 		});
     }
-	
-	function checkForm(){
-		if(username.equals("")&&realname.equals("")){
-			alert("用户名或姓名不能为空！")
-		}
-	}
-	
 	</script>
 	</body>
 </html>
