@@ -51,7 +51,7 @@
 								<input name="password" type="password" class="form-control" required="" placeholder="<spring:message code="sys.login.password.placeholder"/>" errormsg="密码范围在6~16位之间！" >
 							</div>
 			                <div class="sub1">
-								<button function="checkForm()" class="btn btn-success btn-block" >注&nbsp;册</button>
+								<button onclick="checkform()" class="btn btn-success btn-block" >注&nbsp;册</button>
 		                    </div>
 		                    <div class="error">${error}</div>
 						</div>
@@ -72,7 +72,7 @@
 	var phone=$("#phone").val();
 	var password=$("#password").val();
 	
-	function checkForm() {
+	function checkFrom(){
 		$.ajax({
 			url : "${adminPath}/sys/user/validate",
 			type : 'post',
@@ -88,7 +88,7 @@
 				}
 			}
 		});
-    }
+	}
 	</script>
 	</body>
 </html>
