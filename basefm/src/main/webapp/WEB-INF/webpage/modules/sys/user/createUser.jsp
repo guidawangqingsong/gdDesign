@@ -55,7 +55,7 @@
 			                <div class="sub1">
 								<button id="checkButton" class="btn btn-success btn-block" >注&nbsp;册</button>
 		                    </div>
-		                    <div class="error">${error}</div>
+		                    <%-- <div class="error">${error}</div> --%>
 						</div>
 					</div>
 				</div>
@@ -84,7 +84,7 @@
 				"username" : username,
 				"realname" : realname,
 				"phone" : phone,
-				"password":password
+				"password" : password
 			},
 			success : function(d) {
 				if (d.ret==0) {
