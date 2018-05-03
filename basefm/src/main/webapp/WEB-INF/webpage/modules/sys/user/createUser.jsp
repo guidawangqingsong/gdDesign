@@ -14,6 +14,8 @@
     <meta http-equiv="cache-control" content="no-cache">
     <link rel="stylesheet" type="text/css" href="${staticPath}/uadmin/css/login.css"/>
     <html:css  name="iCheck,Validform"/>
+    <html:css name="bootstrap-fileinput" />
+    <html:css name="simditor" />
 </head>
 
 <body>
@@ -28,7 +30,7 @@
 						<img src="${staticPath}/uadmin/images/login/img.png"/>
 					</div>
 				</div>
-				<form  id="userForm"  method="post" action="${adminPath}/sys/user/createUser?type=3&adminType=0">
+				<form  id="userForm"  method="post">
 				<div class="box form">
 					<div class="user-in">
 						<div class="pwdLogin" >
@@ -38,20 +40,20 @@
 							<div><input name="id" type="hidden" /></div>
 							<div><input name="orgId" type="hidden" value="40288ab85b6080e1015b60996d690005"/></div>
 							<div class="in1">
-								<input name="username" class="form-control"
+								<input name="username" id="username" class="form-control"
 								placeholder="<spring:message code="sys.login.username.placeholder"/>" required="">
 							</div>
 							<div class="in1">
-								<input name="realname" class="form-control" placeholder="姓名" required="">
+								<input name="realname" id="realname" class="form-control" placeholder="姓名" required="">
 							</div>
 							<div class="in1">
-								<input name="phone" class="form-control" placeholder="输入联系电话" datatype="m" required="">
+								<input name="phone" id="phone" class="form-control" placeholder="输入联系电话" datatype="m" required="">
 							</div>
 							<div class="in1">
-								<input name="password" type="password" class="form-control" required="" placeholder="<spring:message code="sys.login.password.placeholder"/>" errormsg="密码范围在6~16位之间！" >
+								<input name="password" type="password" id="password" class="form-control" required="" placeholder="<spring:message code="sys.login.password.placeholder"/>" errormsg="密码范围在6~16位之间！" >
 							</div>
 			                <div class="sub1">
-								<button onclick="checkform()" class="btn btn-success btn-block" >注&nbsp;册</button>
+								<button id="checkButton" class="btn btn-success btn-block" >注&nbsp;册</button>
 		                    </div>
 		                    <div class="error">${error}</div>
 						</div>
@@ -66,29 +68,50 @@
 		<div id="light2"></div>
 	<script src="${staticPath}/uadmin/js/jquery-1.10.2.min.js"></script>
 	<html:js  name="iCheck,Validform"/>
+	<html:js name="bootstrap-fileinput" />
+	<html:js name="simditor" />
 	<script type="text/javascript">
 	var username=$("#username").val();
 	var realname=$("#realname").val();
 	var phone=$("#phone").val();
 	var password=$("#password").val();
 	
-	function checkFrom(){
+	$("#checkButton").click(function (){
 		$.ajax({
-			url : "${adminPath}/sys/user/validate",
+			url : "${adminPath}/sys/user/createUser?type=3&adminType=0",
 			type : 'post',
-			cache : false,
+			data:{
+				"username" : username,
+				"realname" : realname,
+				"phone" : phone,
+				"password":password
+			},
 			success : function(d) {
 				if (d.ret==0) {
 					var msg = d.msg;
-				    swal("提示！", msg, "success");
-				    window.location.href("${adminPath}/admin");
+				    alert("注册成功！请登录");
+				    window.location.href=("${adminPath}/admin");
 				}else{
 					var msg = d.msg;
-				    swal("提示！", msg, "error");
+				    alert("注册失败！");
+				    window.location.href=("${adminPath}/sys/user/createUser?type=3&adminType=0");
 				}
 			}
 		});
-	}
+	});
+	$("#username").blur(function (){
+		var strname = $("#username").val();
+		$.ajax({
+			url : "${adminPath}/sys/user/validate",
+			data : {
+				"str" : strname,
+				"Type" : "username"
+			},
+			success : function(d){
+				console.log(d);
+			}
+		});
+	});
 	</script>
 	</body>
 </html>
