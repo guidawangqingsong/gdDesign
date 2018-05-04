@@ -37,8 +37,8 @@
 							<div class="t">用户注册&nbsp;
 							<a id="btn-register" href="${adminPath}/admin"><font style="font-size:10px;color:#033661">请登录>></font></a>
 							</div>
-							<div><input name="id" type="hidden" /></div>
-							<div><input name="orgId" type="hidden" value="40288ab85b6080e1015b60996d690005"/></div>
+							<div><input name="id" id="id" type="hidden" /></div>
+							<div><input name="orgId" id="orgId" type="hidden" value="40288ab85b6080e1015b60996d690005"/></div>
 							<div class="in1">
 								<input name="username" id="username" class="form-control"
 								placeholder="<spring:message code="sys.login.username.placeholder"/>" required="">
@@ -55,7 +55,7 @@
 			                <div class="sub1">
 								<button id="checkButton" class="btn btn-success btn-block" >注&nbsp;册</button>
 		                    </div>
-		                    <%-- <div class="error">${error}</div> --%>
+		                    <div class="error">${error}</div> 
 						</div>
 					</div>
 				</div>
@@ -71,16 +71,49 @@
 	<html:js name="bootstrap-fileinput" />
 	<html:js name="simditor" />
 	<script type="text/javascript">
-	var username=$("#username").val();
-	var realname=$("#realname").val();
-	var phone=$("#phone").val();
-	var password=$("#password").val();
+	$("#checkButton").attr('disabled',true);
+	
+	$("#username").blur(function (){
+		var username=$("#username").val();
+		if(username!=''){
+			$("#checkButton").attr('disabled',false);
+		}
+		$.ajax({
+			url : "${adminPath}/sys/user/validate",
+			type : "post",
+			data : {
+				"username" : username
+			},
+			success : function(d){
+				if (d.status=='y') {
+					console.log(d.info);
+				}else{
+					alert(d.info);
+					window.location.href=("${adminPath}/sys/user/createUser?type=3&adminType=0");
+				}
+			}
+		});
+	});
+	
+	$("#realname").blur(function (){
+		var realname=$("#realname").val();
+		if(realname==null||realname==''){
+			this.value="默认姓名";
+		}
+	});
 	
 	$("#checkButton").click(function (){
+		var orgId=$("#orgId").val();
+		var username=$("#username").val();
+		var realname=$("#realname").val();
+		var phone=$("#phone").val();
+		var password=$("#password").val();
+		
 		$.ajax({
 			url : "${adminPath}/sys/user/createUser?type=3&adminType=0",
 			type : 'post',
 			data:{
+				"orgId" : orgId,
 				"username" : username,
 				"realname" : realname,
 				"phone" : phone,
@@ -88,27 +121,14 @@
 			},
 			success : function(d) {
 				if (d.ret==0) {
-					var msg = d.msg;
+					console.log(d);
 				    alert("注册成功！请登录");
 				    window.location.href=("${adminPath}/admin");
 				}else{
-					var msg = d.msg;
+					console.log(d);
 				    alert("注册失败！");
 				    window.location.href=("${adminPath}/sys/user/createUser?type=3&adminType=0");
 				}
-			}
-		});
-	});
-	$("#username").blur(function (){
-		var strname = $("#username").val();
-		$.ajax({
-			url : "${adminPath}/sys/user/validate",
-			data : {
-				"str" : strname,
-				"Type" : "username"
-			},
-			success : function(d){
-				console.log(d);
 			}
 		});
 	});
