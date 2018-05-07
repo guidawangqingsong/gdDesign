@@ -1,5 +1,7 @@
 package cn.jjxx.modules.ms.entity;
 
+import org.framework.superutil.thirdparty.excel.Excel;
+
 import cn.jjxx.core.common.entity.AbstractEntity;
 
 import com.baomidou.mybatisplus.annotations.TableId;
@@ -28,21 +30,27 @@ public class MedicalSample extends AbstractEntity<String> {
 	private String delFlag;
     /**挂号费*/
     @TableField(value = "register_fee")
+    @Excel(name="挂号费")
 	private Double registerFee;
     /**医药费*/
     @TableField(value = "medical_fee")
+    @Excel(name="医药费")
 	private Double medicalFee;
     /**治疗费*/
     @TableField(value = "treatment_fee")
+    @Excel(name="治疗费")
 	private Double treatmentFee;
     /**住院费*/
     @TableField(value = "hospital_fee")
+    @Excel(name="住院费")
 	private Double hospitalFee;
     /**其他*/
     @TableField(value = "other")
+    @Excel(name="其他")
 	private Double other;
     /**人均费用（样本）*/
     @TableField(value = "personal_fee")
+    @Excel(name="人均费用（样本）")
 	private Double personalFee;
 	
 	/**

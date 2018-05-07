@@ -25,6 +25,8 @@
 	<grid:toolbar title="添加" function="create" btnclass="btn-primary" winwidth="600px" winheight="400px" icon="fa-plus"/>
 	<grid:toolbar title="查看" function="detail"  url="${adminPath}/ms/medicalsample/{id}/update"  btnclass="btn btn-sm btn-success" 
 	winwidth="600px" winheight="400px" icon="fa-search"/>
+	<grid:toolbar title="excel导入" function="importExcel" btnclass="btn btn-sm btn-green" icon="fa-list"/>
+	<grid:toolbar title="模板下载" function="exportExcelModel" btnclass="btn btn-sm btn-green" icon="fa-file"/>
 	
 	<grid:toolbar function="search"/>
 	<grid:toolbar function="reset"/>
@@ -108,7 +110,6 @@ function dataSearch(gridId) {
 		queryParams[$(this).attr('name')] = val;
 	});
 	
-
 	//刷新
 	//传入查询条件参数  
 	$("#"+gridId).jqGrid('setGridParam',{  
@@ -122,6 +123,20 @@ function dataSearch(gridId) {
 function refreshTable(gridId){
 	dataSearch(gridId);
 }
+
+/**excel导入*/
+function importExcel(){
+	var controllerName = '${adminPath}/ms/medicalsample/excelUpload';
+	var url = '${adminPath}/sys/common/excelUpload?controllerName='+controllerName+'&extend=xls,xlsx';
+	uploadExcel('导入excel',url,"medicalSampleGridIdGrid");
+	clickEditCount=1;//导入过后设置为1
+}
+
+/**excel模板下载**/
+function exportExcelModel(){
+   	 var url = '${adminPath}/ms/medicalsample/exportExcelModel';
+   	 window.open(url);
+   }
 
 </script>
 

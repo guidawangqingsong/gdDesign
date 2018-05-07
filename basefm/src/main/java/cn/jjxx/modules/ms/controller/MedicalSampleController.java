@@ -16,11 +16,17 @@ import cn.jjxx.core.utils.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializeFilter;
 
+import org.apache.commons.fileupload.disk.DiskFileItem;
+import org.framework.superutil.thirdparty.excel.ExcelUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import cn.jjxx.core.common.controller.BaseBeanController;
 import cn.jjxx.core.security.shiro.authz.annotation.RequiresPathPermission;
@@ -30,10 +36,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Iterator;
 import java.util.List;
 
+import cn.jjxx.modules.common.bean.UploadExcel;
 import cn.jjxx.modules.ms.entity.MedicalSample;
 import cn.jjxx.modules.ms.service.IMedicalSampleService;
+import cn.jjxx.modules.sys.utils.UserUtils;
 
 /**   
  * @Title: MedicalSample
@@ -214,4 +224,47 @@ public class MedicalSampleController extends BaseBeanController<MedicalSample> {
         }
         return validJson;
     }
+    
+    @RequestMapping(value = "excelUpload", method = RequestMethod.POST)
+    @ResponseBody
+    public AjaxJson excelUpload(Model model,UploadExcel excel,HttpServletRequest request, HttpServletResponse response) {
+    	AjaxJson j = new AjaxJson();
+    	//设置上传文件类型为文本
+    	response.setContentType("text/plain");
+    	//创建一个通用的多部分解析器. 
+		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
+		if (multipartResolver.isMultipart(request)) { // 判断request是否有文件上传
+			//转换成多部分request 
+			MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+			//定义一个迭代器，用于存放文件的名称
+			Iterator<String> ite = multiRequest.getFileNames();
+			while (ite.hasNext()) {
+				try {
+					MultipartFile file = multiRequest.getFile(ite.next());
+					CommonsMultipartFile cFile = (CommonsMultipartFile) file;
+			        DiskFileItem fileItem = (DiskFileItem) cFile.getFileItem();
+			        InputStream inputStream = fileItem.getInputStream();
+			        //得到Excel导入的单元列表
+					List<MedicalSample> medicalSampleList = 
+							new ExcelUtils<MedicalSample>(new MedicalSample()).readFromFile(null, inputStream);
+					medicalSampleService.insertBatch(medicalSampleList);
+					j.setMsg("文件上传成功！");
+				}catch (Exception e) {
+					e.printStackTrace(); 
+					j.setMsg("文件上传失败!");
+					break;
+				}
+			}
+		}
+		return j;
+    }
+
+    @RequestMapping(value = "exportExcelModel", method = RequestMethod.GET)
+    public void exportExcelModel(HttpServletRequest request, HttpServletResponse response) {
+    	ExcelUtils.setIsExportTemplate(true);
+    	ExcelUtils.setFirstTitle("医疗费用信息样本");
+    	ExcelUtils.setSecTitle("导出人："+UserUtils.getUser().getRealname());
+    	ExcelUtils.downloadXlsx(response, null, MedicalSample.class, null, "医疗费用信息样本");
+    }
+    
 }
