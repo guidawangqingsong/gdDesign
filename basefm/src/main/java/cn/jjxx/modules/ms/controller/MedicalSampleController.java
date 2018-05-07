@@ -245,8 +245,7 @@ public class MedicalSampleController extends BaseBeanController<MedicalSample> {
 			        DiskFileItem fileItem = (DiskFileItem) cFile.getFileItem();
 			        InputStream inputStream = fileItem.getInputStream();
 			        //得到Excel导入的单元列表
-					List<MedicalSample> medicalSampleList = 
-							new ExcelUtils<MedicalSample>(new MedicalSample()).readFromFile(null, inputStream);
+					List<MedicalSample> medicalSampleList = new ExcelUtils<MedicalSample>(new MedicalSample()).readFromFile(null, inputStream);
 					medicalSampleService.insertBatch(medicalSampleList);
 					j.setMsg("文件上传成功！");
 				}catch (Exception e) {
