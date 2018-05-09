@@ -81,9 +81,17 @@ public class MedicalSampleController extends BaseBeanController<MedicalSample> {
                           HttpServletResponse response) throws IOException {
         EntityWrapper<MedicalSample> entityWrapper = new EntityWrapper<MedicalSample>(entityClass);
         propertyPreFilterable.addQueryProperty("id");
+        //通过组织查询,如果orgId 不为空，拼接查询条件，通过orgId来查找
+	    //判断如果该用户是某组织下的，只能查看自己所属组织下的日志。
+	    String orgId = request.getParameter("orgId");
+        if(!StringUtils.isEmpty(orgId)){
+        	entityWrapper.eq("t.org_id", orgId);
+        }
+        
         //获取没被删除的数据
         String delFlag = request.getParameter("delFlag");
-        entityWrapper.eq("del_flag", 0);
+        entityWrapper.eq("t.del_flag", 0);
+        
         // 预处理
         QueryableConvertUtils.convertQueryValueToEntityValue(queryable, entityClass);
         SerializeFilter filter = propertyPreFilterable.constructFilter(entityClass);
@@ -244,8 +252,15 @@ public class MedicalSampleController extends BaseBeanController<MedicalSample> {
 					CommonsMultipartFile cFile = (CommonsMultipartFile) file;
 			        DiskFileItem fileItem = (DiskFileItem) cFile.getFileItem();
 			        InputStream inputStream = fileItem.getInputStream();
+			        
+			        //获取对应得组织号
+			        String orgId = request.getParameter("nodeId");
 			        //得到Excel导入的单元列表
 					List<MedicalSample> medicalSampleList = new ExcelUtils<MedicalSample>(new MedicalSample()).readFromFile(null, inputStream);
+					for(MedicalSample oneAccount : medicalSampleList){
+						//设置组织id
+						oneAccount.setOrgId(orgId);
+					}
 					medicalSampleService.insertBatch(medicalSampleList);
 					j.setMsg("文件上传成功！");
 				}catch (Exception e) {

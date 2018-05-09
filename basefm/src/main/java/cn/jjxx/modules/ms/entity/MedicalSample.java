@@ -11,10 +11,10 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.enums.FieldFill;
 
 /**   
- * @Title: MedicalSample
- * @Description: MedicalSample
+ * @Title: 样本信息
+ * @Description: 样本信息
  * @author jjxx.wangqingsong
- * @date 2018-04-04 17:59:20
+ * @date 2018-05-09 21:29:54
  * @version V1.0   
  *
  */
@@ -52,7 +52,29 @@ public class MedicalSample extends AbstractEntity<String> {
     @TableField(value = "personal_fee")
     @Excel(name="人均费用（样本）")
 	private Double personalFee;
-	
+    /**组织编号*/
+    @TableField(value = "org_id")
+	private String orgId;
+    /**职员编号*/
+    @TableField(exist=false)
+    private String staffNumber;
+    
+	public String getOrgId() {
+		return orgId;
+	}
+
+	public void setOrgId(String orgId) {
+		this.orgId = orgId;
+	}
+
+	public String getStaffNumber() {
+		return staffNumber;
+	}
+
+	public void setStaffNumber(String staffNumber) {
+		this.staffNumber = staffNumber;
+	}
+
 	/**
 	 * 获取  id
 	 *@return: Integer  字段主键

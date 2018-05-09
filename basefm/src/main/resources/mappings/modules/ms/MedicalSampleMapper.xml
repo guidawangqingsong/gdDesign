@@ -10,8 +10,26 @@
     t.treatment_fee,
     t.hospital_fee,
     t.other,
-    t.personal_fee
+    t.personal_fee,
+    t.org_id
   </sql>
+
+  <select id="selectPage" resultType="MainMedicalInfo">
+		SELECT
+	    t.id,
+	    t.del_flag,
+	    t.register_fee,
+	    t.medical_fee,
+	    t.treatment_fee,
+	    t.hospital_fee,
+	    t.other,
+	    t.personal_fee,
+	    t.org_id
+		FROM medical_sample t
+	<where>
+		${ew.sqlSegment} 
+	</where>
+ 	</select>
   
   <!-- 批量删除（数据伪删除Sql）重写删除方法，该方法名*id与mybatis层的方法名称一样，所以只需要写xml文件即可 -->
 	<update id = "deleteBatchIds" parameterType="java.util.List" >

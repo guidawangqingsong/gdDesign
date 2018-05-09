@@ -4,12 +4,13 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
 import cn.jjxx.modules.ms.entity.MedicalSample;
  
 /**   
- * @Title: MedicalSample数据库控制层接口
- * @Description: MedicalSample数据库控制层接口
+ * @Title: 样本信息数据库控制层接口
+ * @Description: 样本信息数据库控制层接口
  * @author jjxx.wangqingsong
- * @date 2018-04-04 17:59:20
+ * @date 2018-05-09 21:29:54
  * @version V1.0   
  *
  */
 public interface MedicalSampleMapper extends BaseMapper<MedicalSample> {
+    
 }

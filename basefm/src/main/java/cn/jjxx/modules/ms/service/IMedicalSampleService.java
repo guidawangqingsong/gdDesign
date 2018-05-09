@@ -4,13 +4,14 @@ import cn.jjxx.core.common.service.ICommonService;
 import cn.jjxx.modules.ms.entity.MedicalSample;
 
 /**   
- * @Title: MedicalSample
- * @Description: MedicalSample
+ * @Title: 样本信息
+ * @Description: 样本信息
  * @author jjxx.wangqingsong
- * @date 2018-04-04 17:59:20
+ * @date 2018-05-09 21:29:54
  * @version V1.0   
  *
  */
 public interface IMedicalSampleService extends ICommonService<MedicalSample> {
+
 }
 
